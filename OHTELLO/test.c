@@ -145,6 +145,134 @@ void afficher_plateau(SDL_Renderer* renderer, Board* board, SDL_Texture* black_t
 
     SDL_RenderPresent(renderer);
 }
+void cancel_affiche_tour(){
+    
+}
+void affiche_tour(SDL_Renderer* renderer, const char* message,TTF_Font* font){
+      // Charger la police d'écriture
+    
+    if (!font) {
+        printf("Erreur de chargement de la police : %s\n", TTF_GetError());
+        return;
+    }
+    
+    // Créer une surface avec le message
+    SDL_Color color = { 255, 255, 255 }; // Couleur du texte (blanc)
+    SDL_Surface* surface = TTF_RenderText_Solid(font, message, color);
+    if (!surface) {
+        printf("Erreur de création de la surface : %s\n", SDL_GetError());
+        TTF_CloseFont(font);
+        return;
+    }
+    
+    // Créer une texture à partir de la surface
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+    if (!texture) {
+        printf("Erreur de création de la texture : %s\n", SDL_GetError());
+        SDL_FreeSurface(surface);
+        TTF_CloseFont(font);
+        return;
+    }
+    
+    // Créer un rectangle pour la boîte de dialogue
+    SDL_Rect rect;
+    rect.x = 20; // Position x de la boîte de dialogue (centrée horizontalement)
+    rect.y = 20; // Position y de la boîte de dialogue (en haut de l'écran)
+    rect.w = surface->w + 20; // Largeur de la boîte de dialogue (surface + 20 pixels de padding)
+    rect.h = surface->h + 20; // Hauteur de la boîte de dialogue (surface + 20 pixels de padding)
+    
+    // Dessiner la boîte de dialogue
+    SDL_SetRenderDrawColor(renderer, 50, 128, 65, 255); // Couleur de fond de la boîte de dialogue (noir)
+    SDL_RenderFillRect(renderer, &rect);
+    
+    // Dessiner le texte
+    SDL_Rect text_rect;
+    text_rect.x = rect.x + 10; // Position x du texte (10 pixels de padding)
+    text_rect.y = rect.y + 10; // Position y du texte (10 pixels de padding)
+    text_rect.w = surface->w;
+    text_rect.h = surface->h;
+    SDL_RenderCopy(renderer, texture, NULL, &text_rect);
+    
+    // Rafraîchir l'affichage
+    SDL_RenderPresent(renderer);
+    
+    /* Attendre 2 secondes
+    SDL_Delay(1500);
+    
+    // Dessiner un rectangle noir pour effacer le texte
+    SDL_SetRenderDrawColor(renderer, 50, 128, 65, 255);
+    SDL_RenderFillRect(renderer, &rect);
+    SDL_RenderPresent(renderer);
+    
+    // Libérer les ressources
+    SDL_FreeSurface(surface);
+    SDL_DestroyTexture(texture);
+    TTF_CloseFont(font);
+    */
+}
+
+void afficher_popup(SDL_Renderer* renderer, const char* message) {
+    // Charger la police d'écriture
+    TTF_Init();
+    TTF_Font* font = TTF_OpenFont("arial.ttf", 24); // Modifier le chemin vers la police de votre choix
+    if (!font) {
+        printf("Erreur de chargement de la police : %s\n", TTF_GetError());
+        return;
+    }
+    
+    // Créer une surface avec le message
+    SDL_Color color = { 255, 255, 255 }; // Couleur du texte (blanc)
+    SDL_Surface* surface = TTF_RenderText_Solid(font, message, color);
+    if (!surface) {
+        printf("Erreur de création de la surface : %s\n", SDL_GetError());
+        TTF_CloseFont(font);
+        return;
+    }
+    
+    // Créer une texture à partir de la surface
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+    if (!texture) {
+        printf("Erreur de création de la texture : %s\n", SDL_GetError());
+        SDL_FreeSurface(surface);
+        TTF_CloseFont(font);
+        return;
+    }
+    
+    // Créer un rectangle pour la boîte de dialogue
+    SDL_Rect rect;
+    rect.x = (800 - surface->w - 20) / 2; // Position x de la boîte de dialogue (centrée horizontalement)
+    rect.y = 50; // Position y de la boîte de dialogue (en haut de l'écran)
+    rect.w = surface->w + 20; // Largeur de la boîte de dialogue (surface + 20 pixels de padding)
+    rect.h = surface->h + 20; // Hauteur de la boîte de dialogue (surface + 20 pixels de padding)
+    
+    // Dessiner la boîte de dialogue
+    SDL_SetRenderDrawColor(renderer, 50, 128, 65, 255); // Couleur de fond de la boîte de dialogue (noir)
+    SDL_RenderFillRect(renderer, &rect);
+    
+    // Dessiner le texte
+    SDL_Rect text_rect;
+    text_rect.x = rect.x + 10; // Position x du texte (10 pixels de padding)
+    text_rect.y = rect.y + 10; // Position y du texte (10 pixels de padding)
+    text_rect.w = surface->w;
+    text_rect.h = surface->h;
+    SDL_RenderCopy(renderer, texture, NULL, &text_rect);
+    
+    // Rafraîchir l'affichage
+    SDL_RenderPresent(renderer);
+    
+    // Attendre 2 secondes
+    SDL_Delay(1000);
+    
+    // Dessiner un rectangle noir pour effacer le texte
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 205);
+    SDL_RenderFillRect(renderer, &rect);
+    SDL_RenderPresent(renderer);
+    
+    // Libérer les ressources
+    SDL_FreeSurface(surface);
+    SDL_DestroyTexture(texture);
+    TTF_CloseFont(font);
+}
 
 void placer_pion(int x, int y, SDL_Renderer* renderer, SDL_Texture* texture, Board* board) {
     //permet d'avoir la cellule du tableau ou l'on clique
@@ -161,7 +289,7 @@ void placer_pion(int x, int y, SDL_Renderer* renderer, SDL_Texture* texture, Boa
 
     if (cell->player != EMPTY) {
         // Case déjà occupée
-        Pop_up(renderer);
+        afficher_popup(renderer,"vous ne pouvez pas jouer le coup ");
         return;
     }
 
@@ -178,41 +306,6 @@ void placer_pion(int x, int y, SDL_Renderer* renderer, SDL_Texture* texture, Boa
     };
     SDL_RenderCopy(renderer, texture, NULL, &dest_rect);
     SDL_RenderPresent(renderer);
-}
-void Pop_up(SDL_Renderer* renderer){
-        TTF_Init();
-
-    // Police de caractères pour le message
-    TTF_Font* font = TTF_OpenFont("arial.ttf", 24);
-
-    // Couleur du texte
-    SDL_Color color = { 255, 255, 255, 255 };
-
-    // Surface pour le message
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, "Bonjour !", color);
-
-    // Texture pour le message
-    SDL_Texture* message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
-
-    // Rectangles pour le message et le fond du popup
-    SDL_Rect messageRect = { 0, 0, surfaceMessage->w, surfaceMessage->h };
-    SDL_Rect popupRect = { 100, 50, surfaceMessage->w + 20, surfaceMessage->h + 20 };
-
-    // Fond du popup
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    SDL_RenderFillRect(renderer, &popupRect);
-
-    // Affichage du message
-    SDL_RenderCopy(renderer, message, NULL, &messageRect);
-
-    // Rafraîchissement de l'écran
-    SDL_RenderPresent(renderer);
-
-    // Attente de 5 secondes
-    SDL_Delay(5000);
-        SDL_DestroyTexture(message);
-    SDL_FreeSurface(surfaceMessage);
-    TTF_CloseFont(font);
 }
 
 void init_SDL(){
@@ -258,9 +351,13 @@ printf("coucou");
 }
 
 int main(int argc, char *argv[]) {
+    TTF_Init();
+
+    TTF_Font* font = TTF_OpenFont("arial.ttf", 24); // Modifier le chemin vers la police de votre choix
  // Créer la fenêtre et le rendu SDL
 Player* joueur_noir = creer_joueur("Noir", BLACK);
 Player* joueur_blanc = creer_joueur("Blanc", WHITE);
+Player* current_player = joueur_blanc; // Le joueur courant est le joueur 1
 //creation de la fenetre
 SDL_Window* window = SDL_CreateWindow("Othello", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, BOARD_SIZE * CELL_SIZE+300, BOARD_SIZE * CELL_SIZE+300,0);
 //creation du renderer, ce qu on va mettre a jour pour afficher des choses
@@ -284,23 +381,45 @@ afficher_plateau(renderer, &board, black_texture, white_texture,grille_texture,c
 SDL_Event event;
 int quit = 0;
 while (!quit) {
+    if(current_player==joueur_blanc){
+        affiche_tour(renderer,"joueur blanc a toi",font);}
+        else{
+        affiche_tour(renderer,"joueur noir a toi",font);
+        }
     while (SDL_PollEvent(&event)) {
+
+        //printf("la case est de type : %d", board.cells[3][3].player);
         if(event.type == SDL_QUIT){
                 quit=1;
             }
+
     switch (event.type) {
+        case SDL_QUIT:
+            quit=1;
+            break;
+        
         case SDL_MOUSEBUTTONUP:
             if (event.button.button == SDL_BUTTON_LEFT) {
                 int x = event.button.x;
                 int y = event.button.y;
                 printf("%d =x et %d = y\n,",x,y);
-                placer_pion(x, y,renderer, black_texture , &board); // la texture definit la couleur du pion qu'on va placer
+                //verification_mouvement();
+                if(current_player==joueur_blanc){
+                    printf("joueur blanc");
+                placer_pion(x, y,renderer, white_texture , &board); // la texture definit la couleur du pion qu'on va placer
+                current_player = joueur_noir;
+                }
+                else{
+                   placer_pion(x, y,renderer, black_texture , &board); // la texture definit la couleur du pion qu'on va placer 
+                   current_player = joueur_blanc;
+                }
             }
             break;
             }
     }
     SDL_RenderPresent(renderer);
 }
+printf("coucoufefezefzgred");
 
 // Libérer les ressources allouées
 SDL_DestroyTexture(black_texture);
