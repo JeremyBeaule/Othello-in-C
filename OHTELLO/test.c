@@ -148,24 +148,14 @@ void afficher_plateau(SDL_Renderer* renderer, Board* board, SDL_Texture* black_t
 void cancel_affiche_tour(){
     
 }
-void affiche_tour(SDL_Renderer* renderer,Player* current_player) {
-    // Charger la police d'écriture
-        TTF_Init();
-    TTF_Font* font = TTF_OpenFont("ASMAN.TTF", 24); // Modifier le chemin vers la police de votre choix
+void affiche_tour(SDL_Renderer* renderer, const char* message,TTF_Font* font){
+      // Charger la police d'écriture
+    
     if (!font) {
         printf("Erreur de chargement de la police : %s\n", TTF_GetError());
         return;
     }
-
-    // Créer le message
-    const char* message;
-    message="au noir de commencer";
-    if (current_player->couleur == WHITE) {
-        message = "Tour du joueur blanc";
-    } else {
-        message = "Tour du joueur noir";
-    }
-
+    
     // Créer une surface avec le message
     SDL_Color color = { 255, 255, 255 }; // Couleur du texte (blanc)
     SDL_Surface* surface = TTF_RenderText_Solid(font, message, color);
@@ -174,7 +164,7 @@ void affiche_tour(SDL_Renderer* renderer,Player* current_player) {
         TTF_CloseFont(font);
         return;
     }
-
+    
     // Créer une texture à partir de la surface
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
     if (!texture) {
@@ -183,33 +173,48 @@ void affiche_tour(SDL_Renderer* renderer,Player* current_player) {
         TTF_CloseFont(font);
         return;
     }
-
-    // Définir la zone d'affichage du texte
-    SDL_Rect text_rect;
-    text_rect.x = 20; // Position x du texte (20 pixels de marge)
-    text_rect.y = 20; // Position y du texte (20 pixels de marge)
-    text_rect.w = surface->w +20; // Largeur du texte
-    text_rect.h = surface->h; // Hauteur du texte
-
-    // Effacer la zone de texte précédente
-    SDL_SetRenderDrawColor(renderer, 50, 128, 65, 255); // Couleur de fond de la zone de texte (noir)
-    SDL_RenderFillRect(renderer, &text_rect);
- text_rect.w = surface->w;
+    
+    // Créer un rectangle pour la boîte de dialogue
+    SDL_Rect rect;
+    rect.x = 20; // Position x de la boîte de dialogue (centrée horizontalement)
+    rect.y = 20; // Position y de la boîte de dialogue (en haut de l'écran)
+    rect.w = surface->w + 20; // Largeur de la boîte de dialogue (surface + 20 pixels de padding)
+    rect.h = surface->h + 20; // Hauteur de la boîte de dialogue (surface + 20 pixels de padding)
+    
+    // Dessiner la boîte de dialogue
+    SDL_SetRenderDrawColor(renderer, 50, 128, 65, 255); // Couleur de fond de la boîte de dialogue (noir)
+    SDL_RenderFillRect(renderer, &rect);
+    
     // Dessiner le texte
+    SDL_Rect text_rect;
+    text_rect.x = rect.x + 10; // Position x du texte (10 pixels de padding)
+    text_rect.y = rect.y + 10; // Position y du texte (10 pixels de padding)
+    text_rect.w = surface->w;
+    text_rect.h = surface->h;
     SDL_RenderCopy(renderer, texture, NULL, &text_rect);
-
+    
     // Rafraîchir l'affichage
     SDL_RenderPresent(renderer);
-
+    
+    /* Attendre 2 secondes
+    SDL_Delay(1500);
+    
+    // Dessiner un rectangle noir pour effacer le texte
+    SDL_SetRenderDrawColor(renderer, 50, 128, 65, 255);
+    SDL_RenderFillRect(renderer, &rect);
+    SDL_RenderPresent(renderer);
+    
     // Libérer les ressources
     SDL_FreeSurface(surface);
     SDL_DestroyTexture(texture);
     TTF_CloseFont(font);
+    */
 }
+
 void afficher_popup(SDL_Renderer* renderer, const char* message) {
     // Charger la police d'écriture
     TTF_Init();
-    TTF_Font* font = TTF_OpenFont("ASMAN.TTF", 24); // Modifier le chemin vers la police de votre choix
+    TTF_Font* font = TTF_OpenFont("arial.ttf", 24); // Modifier le chemin vers la police de votre choix
     if (!font) {
         printf("Erreur de chargement de la police : %s\n", TTF_GetError());
         return;
@@ -259,7 +264,7 @@ void afficher_popup(SDL_Renderer* renderer, const char* message) {
     SDL_Delay(1000);
     
     // Dessiner un rectangle noir pour effacer le texte
-    SDL_SetRenderDrawColor(renderer, 50, 128, 65, 205);
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 205);
     SDL_RenderFillRect(renderer, &rect);
     SDL_RenderPresent(renderer);
     
@@ -346,7 +351,9 @@ printf("coucou");
 }
 
 int main(int argc, char *argv[]) {
-    
+    TTF_Init();
+
+    TTF_Font* font = TTF_OpenFont("arial.ttf", 24); // Modifier le chemin vers la police de votre choix
  // Créer la fenêtre et le rendu SDL
 Player* joueur_noir = creer_joueur("Noir", BLACK);
 Player* joueur_blanc = creer_joueur("Blanc", WHITE);
@@ -374,8 +381,11 @@ afficher_plateau(renderer, &board, black_texture, white_texture,grille_texture,c
 SDL_Event event;
 int quit = 0;
 while (!quit) {
-        affiche_tour(renderer,current_player);
-
+    if(current_player==joueur_blanc){
+        affiche_tour(renderer,"joueur blanc a toi",font);}
+        else{
+        affiche_tour(renderer,"joueur noir a toi",font);
+        }
     while (SDL_PollEvent(&event)) {
 
         //printf("la case est de type : %d", board.cells[3][3].player);
