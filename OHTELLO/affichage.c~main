@@ -1,37 +1,23 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <stdio.h>
-#include <math.h>
-#include <SDL2/SDL_ttf.h>
-#include <SDL2/SDL_mixer.h>
 
-#define BOARD_SIZE 8
-#define CELL_SIZE 64
-#define PIECE_SIZE 50 //taille de pion en pixel
-
-typedef enum {
-    EMPTY,
-    BLACK,
-    WHITE
-} PlayerColor;
-
-typedef struct {
-    PlayerColor player;
-    SDL_Rect rect;
-} Cell;
-
-typedef struct {
-    Cell cells[BOARD_SIZE][BOARD_SIZE];
-    int grid_x;
-    int grid_y;
-    int cell_size;
-} Board;
-typedef struct {
-    char* nom;
-    PlayerColor couleur;
-    int score;
-} Player;
-
+#include "struct.h"
+//fonction qui bloque toutes les entrées utilisateurs pendant 2 secondes
+void wait_two_seconds() {
+    SDL_Event event;
+    Uint32 start_time = SDL_GetTicks();
+    Uint32 current_time = start_time;
+    SDL_PumpEvents();
+    SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
+    while (current_time - start_time < 2000) {
+        SDL_PumpEvents();
+        while (SDL_PollEvent(&event)) {
+            /* Bloquer les entrées utilisateur */
+        }
+        SDL_Delay(10);
+        current_time = SDL_GetTicks();
+    }
+    SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
+    SDL_PumpEvents();
+}
 void initialiser_plateau(Board *board) {
     // Calculer les dimensions de la grille
     int screen_height=800;
@@ -62,21 +48,6 @@ void initialiser_plateau(Board *board) {
     board->cells[center - 1][center].player = BLACK;
     board->cells[center][center - 1].player = BLACK;
 }
-
-
-Player* creer_joueur(char* nom, PlayerColor couleur) {
-    Player* joueur = (Player*)malloc(sizeof(Player));
-    if (joueur == NULL) {
-        fprintf(stderr, "Erreur : impossible d'allouer la mémoire pour le joueur.\n");
-        exit(EXIT_FAILURE);
-    }
-    joueur->nom = nom;
-    joueur->couleur = couleur;
-    joueur->score = 0;
-    return joueur;
-}
-
-
 
 void afficher_plateau(SDL_Renderer* renderer, Board* board, SDL_Texture* black_texture, SDL_Texture* white_texture, SDL_Texture* grille_texture,SDL_Texture* contour) {
     SDL_RenderClear(renderer);
@@ -145,12 +116,20 @@ void afficher_plateau(SDL_Renderer* renderer, Board* board, SDL_Texture* black_t
 
     SDL_RenderPresent(renderer);
 }
+<<<<<<< HEAD:OHTELLO/test.c
 void cancel_affiche_tour(){
     
 }
 void affiche_tour(SDL_Renderer* renderer, const char* message,TTF_Font* font){
       // Charger la police d'écriture
     
+=======
+
+void affiche_tour(SDL_Renderer* renderer,Player* current_player) {
+    // Charger la police d'écriture
+        TTF_Init();
+    TTF_Font* font = TTF_OpenFont("ASMAN.TTF", 24); // Modifier le chemin vers la police de votre choix
+>>>>>>> main:OHTELLO/affichage.c
     if (!font) {
         printf("Erreur de chargement de la police : %s\n", TTF_GetError());
         return;
@@ -173,6 +152,7 @@ void affiche_tour(SDL_Renderer* renderer, const char* message,TTF_Font* font){
         TTF_CloseFont(font);
         return;
     }
+<<<<<<< HEAD:OHTELLO/test.c
     
     // Créer un rectangle pour la boîte de dialogue
     SDL_Rect rect;
@@ -185,6 +165,20 @@ void affiche_tour(SDL_Renderer* renderer, const char* message,TTF_Font* font){
     SDL_SetRenderDrawColor(renderer, 50, 128, 65, 255); // Couleur de fond de la boîte de dialogue (noir)
     SDL_RenderFillRect(renderer, &rect);
     
+=======
+
+    // Définir la zone d'affichage du texte
+    SDL_Rect text_rect;
+    text_rect.x = 20; // Position x du texte (20 pixels de marge)
+    text_rect.y = 20; // Position y du texte (20 pixels de marge)
+    text_rect.w = surface->w +20; // Largeur du texte
+    text_rect.h = surface->h; // Hauteur du texte
+
+    // Effacer la zone de texte précédente
+    SDL_SetRenderDrawColor(renderer, 50, 128, 65, 255); // Couleur de fond de la zone de texte (noir)
+    SDL_RenderFillRect(renderer, &text_rect);
+    text_rect.w = surface->w;
+>>>>>>> main:OHTELLO/affichage.c
     // Dessiner le texte
     SDL_Rect text_rect;
     text_rect.x = rect.x + 10; // Position x du texte (10 pixels de padding)
@@ -261,7 +255,7 @@ void afficher_popup(SDL_Renderer* renderer, const char* message) {
     SDL_RenderPresent(renderer);
     
     // Attendre 2 secondes
-    SDL_Delay(1000);
+    wait_two_seconds();
     
     // Dessiner un rectangle noir pour effacer le texte
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 205);
@@ -272,6 +266,7 @@ void afficher_popup(SDL_Renderer* renderer, const char* message) {
     SDL_FreeSurface(surface);
     SDL_DestroyTexture(texture);
     TTF_CloseFont(font);
+<<<<<<< HEAD:OHTELLO/test.c
 }
 
 void placer_pion(int x, int y, SDL_Renderer* renderer, SDL_Texture* texture, Board* board) {
@@ -429,4 +424,6 @@ SDL_DestroyWindow(window);
 IMG_Quit();
 SDL_Quit();
 return 0;
+=======
+>>>>>>> main:OHTELLO/affichage.c
 }
