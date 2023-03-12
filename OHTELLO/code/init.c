@@ -48,6 +48,8 @@ Player* creer_joueur(char* nom, PlayerColor couleur) {
     return joueur;
 }
 void init_All(){
+    TTF_Init();
+    //creation des joueurs
 joueur_noir = creer_joueur("Noir", BLACK);
 joueur_blanc = creer_joueur("Blanc", WHITE);
 current_player = joueur_blanc; // Le joueur courant est le joueur 1
@@ -56,13 +58,46 @@ window = SDL_CreateWindow("Othello", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTE
 //creation du renderer, ce qu on va mettre a jour pour afficher des choses
 renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 // Charger les textures pour les pions noirs et blancs
-black_texture = IMG_LoadTexture(renderer, "pion_noir.png");
-white_texture = IMG_LoadTexture(renderer, "pion_blanc.png");
+black_texture = IMG_LoadTexture(renderer, "image/pion_noir.png");
+white_texture = IMG_LoadTexture(renderer, "image/pion_blanc.png");
 // Charger les textures la grille et le contour de jeu
-grille_surface = IMG_Load("Board.png");
+grille_surface = IMG_Load("image/Board.png");
 grille_texture = SDL_CreateTextureFromSurface(renderer, grille_surface);
-contour_surface = IMG_Load("contour_board.png");
+SDL_FreeSurface(grille_surface);//on en a plus besoin on peut liberer
+contour_surface = IMG_Load("image/contour_board.png");
 contour_texture = SDL_CreateTextureFromSurface(renderer, contour_surface);
+SDL_FreeSurface(contour_surface);//on en a plus besoin on peut liberer
 Init_texture(black_texture,white_texture,grille_surface,contour_surface,window,renderer);
     
+}
+
+void initialiser_plateau(Board *board) {
+    // Calculer les dimensions de la grille
+    int screen_height=800;
+    int screen_width=800;
+    int grid_size = screen_height * 0.6;
+    int margin_x = (screen_width - grid_size) / 2;
+    int margin_y = (screen_height - grid_size) / 2;
+    int cell_size = grid_size / BOARD_SIZE;
+    int grid_x = margin_x;
+    int grid_y = margin_y;
+
+    board->grid_x = grid_x;
+    board->grid_y = grid_y;
+    board->cell_size = cell_size;
+    for (int i = 0; i < BOARD_SIZE; i++) {
+        for (int j = 0; j < BOARD_SIZE; j++) {
+            board->cells[i][j].player = EMPTY;
+            board->cells[i][j].rect.x = i * CELL_SIZE;
+            board->cells[i][j].rect.y = j * CELL_SIZE;
+            board->cells[i][j].rect.w = CELL_SIZE;
+            board->cells[i][j].rect.h = CELL_SIZE;
+        }
+    }
+
+    int center = BOARD_SIZE / 2;
+    board->cells[center - 1][center - 1].player = WHITE;
+    board->cells[center][center].player = WHITE;
+    board->cells[center - 1][center].player = BLACK;
+    board->cells[center][center - 1].player = BLACK;
 }

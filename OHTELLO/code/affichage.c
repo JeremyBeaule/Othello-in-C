@@ -1,5 +1,6 @@
 
 #include "struct.h"
+#include "affichage.h"
 //fonction qui bloque toutes les entrées utilisateurs pendant 2 secondes
 void wait_two_seconds() {
     SDL_Event event;
@@ -18,36 +19,7 @@ void wait_two_seconds() {
     SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
     SDL_PumpEvents();
 }
-void initialiser_plateau(Board *board) {
-    // Calculer les dimensions de la grille
-    int screen_height=800;
-    int screen_width=800;
-    int grid_size = screen_height * 0.6;
-    int margin_x = (screen_width - grid_size) / 2;
-    int margin_y = (screen_height - grid_size) / 2;
-    int cell_size = grid_size / BOARD_SIZE;
-    int grid_x = margin_x;
-    int grid_y = margin_y;
 
-    board->grid_x = grid_x;
-    board->grid_y = grid_y;
-    board->cell_size = cell_size;
-    for (int i = 0; i < BOARD_SIZE; i++) {
-        for (int j = 0; j < BOARD_SIZE; j++) {
-            board->cells[i][j].player = EMPTY;
-            board->cells[i][j].rect.x = i * CELL_SIZE;
-            board->cells[i][j].rect.y = j * CELL_SIZE;
-            board->cells[i][j].rect.w = CELL_SIZE;
-            board->cells[i][j].rect.h = CELL_SIZE;
-        }
-    }
-
-    int center = BOARD_SIZE / 2;
-    board->cells[center - 1][center - 1].player = WHITE;
-    board->cells[center][center].player = WHITE;
-    board->cells[center - 1][center].player = BLACK;
-    board->cells[center][center - 1].player = BLACK;
-}
 
 void afficher_plateau(SDL_Renderer* renderer, Board* board, SDL_Texture* black_texture, SDL_Texture* white_texture, SDL_Texture* grille_texture,SDL_Texture* contour) {
     SDL_RenderClear(renderer);
@@ -119,8 +91,8 @@ void afficher_plateau(SDL_Renderer* renderer, Board* board, SDL_Texture* black_t
 
 void affiche_tour(SDL_Renderer* renderer,Player* current_player) {
     // Charger la police d'écriture
-        TTF_Init();
-    TTF_Font* font = TTF_OpenFont("ASMAN.TTF", 24); // Modifier le chemin vers la police de votre choix
+    
+    TTF_Font* font = TTF_OpenFont("image/ASMAN.TTF", 24); 
     if (!font) {
         printf("Erreur de chargement de la police : %s\n", TTF_GetError());
         return;
@@ -177,8 +149,8 @@ void affiche_tour(SDL_Renderer* renderer,Player* current_player) {
 }
 void afficher_popup(SDL_Renderer* renderer, const char* message) {
     // Charger la police d'écriture
-    TTF_Init();
-    TTF_Font* font = TTF_OpenFont("ASMAN.TTF", 24); // Modifier le chemin vers la police de votre choix
+    
+    TTF_Font* font = TTF_OpenFont("ASMAN.TTF", 24); 
     if (!font) {
         printf("Erreur de chargement de la police : %s\n", TTF_GetError());
         return;
@@ -236,93 +208,4 @@ void afficher_popup(SDL_Renderer* renderer, const char* message) {
     SDL_FreeSurface(surface);
     SDL_DestroyTexture(texture);
     TTF_CloseFont(font);
-}
-// Fonction pour afficher le menu
-int afficher_menu(SDL_Renderer* renderer) {
-
-  // Chargement de l'image pour le fond
-  SDL_Surface* fond_surface = IMG_Load("Board.png");
-
-  // Création de la texture à partir de l'image du fond
-  SDL_Texture* fond_texture = SDL_CreateTextureFromSurface(renderer, fond_surface);
-
-  // Libération de la surface du fond, nous n'en avons plus besoin
-  SDL_FreeSurface(fond_surface);
-
-  // Boucle principale du menu
-  int continuer = 1;
-  SDL_Event evenement;
-  while (continuer) {
-    // Gestion des événements
-    while (SDL_PollEvent(&evenement)) {
-      switch (evenement.type) {
-        case SDL_QUIT:
-          continuer = 0;
-          break;
-        case SDL_MOUSEBUTTONUP:
-        if (evenement.button.button == SDL_BUTTON_LEFT) {
-      
-          // Récupération des coordonnées de la souris lors du clic
-          int x = evenement.button.x;
-          int y = evenement.button.y;
-          // Vérification si le clic est sur l'un des choix
-          if (x >= 100 && x <= 200 && y >= 100 && y <= 150) {
-            return 1;
-          }
-          if (x >= 100 && x <= 200 && y >= 200 && y <= 250) {
-            return 2; // Appel de la fonction pour le choix 2
-          }
-          if (x >= 100 && x <= 200 && y >= 300 && y <= 350) {
-            return 3; // Appel de la fonction pour le choix 3
-          }
-          break;
-      }}
-    }
-
-    // Effacement de l'écran
-    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-    SDL_RenderClear(renderer);
-
-    // Dessin du fond
-    SDL_RenderCopy(renderer, fond_texture, NULL, NULL);
-
-    // Dessin des choix
-    SDL_Rect rect_choix1 = { 100, 100, 100, 50 };
-    SDL_Rect rect_choix2 = { 100, 200, 100, 50 };
-    SDL_Rect rect_choix3 = { 100, 300, 100, 50 };
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    SDL_RenderClear(renderer);
-//Copy Blend Mode
-SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-
-//Choice 1
-SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-SDL_RenderFillRect(renderer, &rect_choix1);
-SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-SDL_RenderDrawRect(renderer, &rect_choix1);
-
-//Choice 2
-SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-SDL_RenderFillRect(renderer, &rect_choix2);
-SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-SDL_RenderDrawRect(renderer, &rect_choix2);
-
-//Choice 3
-SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-SDL_RenderFillRect(renderer, &rect_choix3);
-SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-SDL_RenderDrawRect(renderer, &rect_choix3);
-
-//Update Screen
-SDL_RenderPresent(renderer);
-}
-
-// Free resources
-SDL_DestroyTexture(fond_texture);
-SDL_DestroyRenderer(renderer);
-SDL_DestroyWindow(window);
-
-//Quit SDL
-SDL_Quit();
-return 0;
 }

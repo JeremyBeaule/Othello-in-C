@@ -1,4 +1,4 @@
-main : main.c affichage.c init.c logique.c game.c
-	gcc -Wall main.c affichage.c init.c game.c logique.c -o main -lSDL2 -lSDL2_image -lSDL2_ttf
+main : main.c code/affichage.c code/init.c code/logique.c code/game.c code/menu.c
+	gcc -Wall main.c code/affichage.c code/init.c code/game.c code/logique.c code/menu.c -o main -lSDL2 -lSDL2_image -lSDL2_ttf
 clean :
 	rm main
