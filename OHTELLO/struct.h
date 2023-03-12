@@ -38,6 +38,8 @@ Player* creer_joueur(char* nom, PlayerColor couleur) ;
 void init_All();
 void placer_pion(int x, int y, SDL_Renderer* renderer, SDL_Texture* texture, Board* board);
 void wait_two_seconds() ;
+int afficher_menu(SDL_Renderer* renderer) ;
+void start();
 SDL_Window* window;
 SDL_Renderer *renderer;
 // Charger les textures pour les pions noirs et blancs

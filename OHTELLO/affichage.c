@@ -228,7 +228,7 @@ void afficher_popup(SDL_Renderer* renderer, const char* message) {
     wait_two_seconds();
     
     // Dessiner un rectangle noir pour effacer le texte
-    SDL_SetRenderDrawColor(renderer, 50, 128, 65, 205);
+    SDL_SetRenderDrawColor(renderer, 50, 128, 65, 255);
     SDL_RenderFillRect(renderer, &rect);
     SDL_RenderPresent(renderer);
     
@@ -236,4 +236,93 @@ void afficher_popup(SDL_Renderer* renderer, const char* message) {
     SDL_FreeSurface(surface);
     SDL_DestroyTexture(texture);
     TTF_CloseFont(font);
+}
+// Fonction pour afficher le menu
+int afficher_menu(SDL_Renderer* renderer) {
+
+  // Chargement de l'image pour le fond
+  SDL_Surface* fond_surface = IMG_Load("Board.png");
+
+  // Création de la texture à partir de l'image du fond
+  SDL_Texture* fond_texture = SDL_CreateTextureFromSurface(renderer, fond_surface);
+
+  // Libération de la surface du fond, nous n'en avons plus besoin
+  SDL_FreeSurface(fond_surface);
+
+  // Boucle principale du menu
+  int continuer = 1;
+  SDL_Event evenement;
+  while (continuer) {
+    // Gestion des événements
+    while (SDL_PollEvent(&evenement)) {
+      switch (evenement.type) {
+        case SDL_QUIT:
+          continuer = 0;
+          break;
+        case SDL_MOUSEBUTTONUP:
+        if (evenement.button.button == SDL_BUTTON_LEFT) {
+      
+          // Récupération des coordonnées de la souris lors du clic
+          int x = evenement.button.x;
+          int y = evenement.button.y;
+          // Vérification si le clic est sur l'un des choix
+          if (x >= 100 && x <= 200 && y >= 100 && y <= 150) {
+            return 1;
+          }
+          if (x >= 100 && x <= 200 && y >= 200 && y <= 250) {
+            return 2; // Appel de la fonction pour le choix 2
+          }
+          if (x >= 100 && x <= 200 && y >= 300 && y <= 350) {
+            return 3; // Appel de la fonction pour le choix 3
+          }
+          break;
+      }}
+    }
+
+    // Effacement de l'écran
+    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+    SDL_RenderClear(renderer);
+
+    // Dessin du fond
+    SDL_RenderCopy(renderer, fond_texture, NULL, NULL);
+
+    // Dessin des choix
+    SDL_Rect rect_choix1 = { 100, 100, 100, 50 };
+    SDL_Rect rect_choix2 = { 100, 200, 100, 50 };
+    SDL_Rect rect_choix3 = { 100, 300, 100, 50 };
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_RenderClear(renderer);
+//Copy Blend Mode
+SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+
+//Choice 1
+SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+SDL_RenderFillRect(renderer, &rect_choix1);
+SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+SDL_RenderDrawRect(renderer, &rect_choix1);
+
+//Choice 2
+SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+SDL_RenderFillRect(renderer, &rect_choix2);
+SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+SDL_RenderDrawRect(renderer, &rect_choix2);
+
+//Choice 3
+SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+SDL_RenderFillRect(renderer, &rect_choix3);
+SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+SDL_RenderDrawRect(renderer, &rect_choix3);
+
+//Update Screen
+SDL_RenderPresent(renderer);
+}
+
+// Free resources
+SDL_DestroyTexture(fond_texture);
+SDL_DestroyRenderer(renderer);
+SDL_DestroyWindow(window);
+
+//Quit SDL
+SDL_Quit();
+return 0;
 }
