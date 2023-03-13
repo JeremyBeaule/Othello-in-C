@@ -1,5 +1,6 @@
 
 #include "struct.h"
+
 //fonction qui bloque toutes les entrées utilisateurs pendant 2 secondes
 void wait_two_seconds() {
     SDL_Event event;

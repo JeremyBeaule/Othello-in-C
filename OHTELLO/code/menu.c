@@ -70,10 +70,6 @@ SDL_GetWindowSize(window, &largeur_fenetre, &hauteur_fenetre);
 // Définir le rectangle de destination pour l'image de fond (ici, on utilise les dimensions de la fenêtre)
 SDL_Rect rect = {0, 0, largeur_fenetre, hauteur_fenetre};
 
-
-
-
-
     // rectangle pour les choix
     SDL_Rect rect_choix1 = { 100, 100, 100, 50 };
     SDL_Rect rect_choix2 = { 100, 200, 100, 50 };
