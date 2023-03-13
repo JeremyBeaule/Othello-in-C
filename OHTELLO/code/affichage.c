@@ -25,8 +25,8 @@ void afficher_plateau(SDL_Renderer* renderer, Board* board, SDL_Texture* black_t
     SDL_RenderClear(renderer);
 
     // Définir la taille de la fenêtre
-    int SCREEN_WIDTH = 800;
-    int SCREEN_HEIGHT = 800;
+    int SCREEN_WIDTH = 800;// a changer dans init et affichage et logique.c si on change
+    int SCREEN_HEIGHT = 800;// a changer dans init et affichage et logique.c si on change
 
     // Calculer les dimensions de la grille
     int grid_size = SCREEN_HEIGHT * 0.6;//taille de la grille comme 70% de la hauteur de la fenetre
@@ -36,7 +36,7 @@ void afficher_plateau(SDL_Renderer* renderer, Board* board, SDL_Texture* black_t
     int grid_x = margin_x; //pour placer les pions, on aurait pu utiliser margin_x direct mais c est une question de lisibilité
     int grid_y = margin_y;
     // Calculer la taille de la bordure en fonction de la taille de la grille
-    int border_size = (int)(grid_size * 0.05); // Par exemple, la bordure peut faire 5% de la taille de la grille
+    int border_size = (int)(grid_size * 0.07); // Par exemple, la bordure peut faire 5% de la taille de la grille
     int border_x = margin_x - border_size;
     int border_y = margin_y - border_size;
     int border_width = grid_size + border_size * 2;
@@ -45,20 +45,20 @@ void afficher_plateau(SDL_Renderer* renderer, Board* board, SDL_Texture* black_t
     // Dessiner le contour du plateau
     SDL_Rect border_rect = {border_x, border_y, border_width, border_height};
 
-   
-   
+   //dessine le quadrillage
+   SDL_Rect grille_rect = {grid_x, grid_y, grid_size, grid_size};
     // Dessiner le fond vert
     SDL_SetRenderDrawColor(renderer, 50, 128, 65, 255);
     SDL_RenderClear(renderer);
 
     // Dessiner l'image de fond pour la grille et pour le contour de la grille
-    SDL_Rect grille_rect = {grid_x, grid_y, grid_size, grid_size};
+    
     SDL_RenderCopy(renderer, contour, NULL, &border_rect);
-    SDL_RenderCopy(renderer, grille_texture, NULL, &grille_rect);
+    SDL_RenderCopy(renderer, grille_texture, NULL, &grille_rect);//dessine le quadrillage
 
 
     //Dessiner le cadrillage
-    SDL_SetRenderDrawColor(renderer, 150, 0, 0, 255);
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     for (int i = 1; i < BOARD_SIZE; i++) {
         SDL_RenderDrawLine(renderer, grid_x + i * cell_size, grid_y, grid_x + i * cell_size, grid_y + grid_size);
         SDL_RenderDrawLine(renderer, grid_x, grid_y + i * cell_size, grid_x + grid_size, grid_y + i * cell_size);

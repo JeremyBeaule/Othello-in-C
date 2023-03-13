@@ -56,7 +56,7 @@ current_player = joueur_blanc; // Le joueur courant est le joueur 1
 //creation de la fenetre
 window = SDL_CreateWindow("Othello", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, BOARD_SIZE * CELL_SIZE+300, BOARD_SIZE * CELL_SIZE+300,0);
 //creation du renderer, ce qu on va mettre a jour pour afficher des choses
-renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 // Charger les textures pour les pions noirs et blancs
 black_texture = IMG_LoadTexture(renderer, "image/pion_noir.png");
 white_texture = IMG_LoadTexture(renderer, "image/pion_blanc.png");
@@ -73,8 +73,8 @@ Init_texture(black_texture,white_texture,grille_surface,contour_surface,window,r
 
 void initialiser_plateau(Board *board) {
     // Calculer les dimensions de la grille
-    int screen_height=800;
-    int screen_width=800;
+    int screen_height=800;// a changer dans init et affichage et logique.c si on change
+    int screen_width=800;// a changer dans init et affichage et logique.c si on change
     int grid_size = screen_height * 0.6;
     int margin_x = (screen_width - grid_size) / 2;
     int margin_y = (screen_height - grid_size) / 2;
