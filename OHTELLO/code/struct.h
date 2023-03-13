@@ -44,17 +44,3 @@ extern void placer_pion(int x, int y, SDL_Renderer* renderer, SDL_Texture* textu
 
 extern int afficher_menu(SDL_Renderer* renderer) ;
 extern void start();
-SDL_Window* window;
-SDL_Renderer *renderer;
-// Charger les textures pour les pions noirs et blancs
-SDL_Texture *black_texture;
-SDL_Texture *white_texture ;
-// Charger les textures la grille et le contour de jeu
-SDL_Surface* grille_surface;
-SDL_Texture* grille_texture ;
-SDL_Surface* contour_surface ;
-SDL_Texture* contour_texture ;
-Player* joueur_noir ;
-Player* joueur_blanc;
-Player* current_player;
-TTF_Font* font; // police d ecriture
