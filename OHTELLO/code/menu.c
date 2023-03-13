@@ -1,10 +1,11 @@
 #include "struct.h"
 // Fonction pour afficher le menu
-int afficher_menu(SDL_Renderer* renderer) {
+
+int afficher_menu() {
     //charger la police
 TTF_Font* font = TTF_OpenFont("image/ASMAN.TTF", 24); 
   /// Charger l'image à partir d'une image png'
-SDL_Surface* surface = IMG_Load("image/fond.png");
+SDL_Surface* fond = IMG_Load("image/fond.png");
 // Créer une surface de texte
 SDL_Color couleur_texte = {0,0,0}; // Blanc
 SDL_Surface* surface_texte1 = TTF_RenderText_Solid(font, "choix 1", couleur_texte);
@@ -16,13 +17,13 @@ SDL_Texture* texture_texte1 = SDL_CreateTextureFromSurface(renderer, surface_tex
 SDL_Texture* texture_texte2 = SDL_CreateTextureFromSurface(renderer, surface_texte2);
 SDL_Texture* texture_texte3 = SDL_CreateTextureFromSurface(renderer, surface_texte3);
 // Créer une texture à partir de la surface de l'image
-SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, fond);
 // Libérer la surface de texte (nous n'en avons plus besoin)
 SDL_FreeSurface(surface_texte1);
 SDL_FreeSurface(surface_texte2);
 SDL_FreeSurface(surface_texte3);
 // Libérer la surface de l'image (nous n'en avons plus besoin)
-SDL_FreeSurface(surface);
+SDL_FreeSurface(fond);
 
 
 
@@ -51,7 +52,8 @@ SDL_GetWindowSize(window, &largeur_fenetre, &hauteur_fenetre);
           int y = evenement.button.y;
           // Vérification si le clic est sur l'un des choix
           if (x >= 100 && x <= 200 && y >= 100 && y <= 150) {
-            printf("\n eofeaonvzovnzkju \n");
+            
+            printf("\n Bouton 1 cliqué, lancement du programme\n");
             return 1;
           }
           if (x >= 100 && x <= 200 && y >= 200 && y <= 250) {

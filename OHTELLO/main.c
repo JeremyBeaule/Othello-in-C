@@ -4,7 +4,7 @@
 int main(int argc, char *argv[]) {
     printf("coucou");
 int choix;
-// tout initialiser (texture/png...)
+// tout initialiser (texture/png/structure)
 init_All();
 
 choix =afficher_menu(renderer); //fichier affichage.c
