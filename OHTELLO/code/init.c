@@ -50,22 +50,22 @@ Player* creer_joueur(char* nom, PlayerColor couleur) {
 void init_All(){
     TTF_Init();
     //creation des joueurs
-Player* joueur_noir = creer_joueur("Noir", BLACK);
-Player* joueur_blanc = creer_joueur("Blanc", WHITE);
-Player* scurrent_player = joueur_blanc; // Le joueur courant est le joueur 1
+joueur_noir = creer_joueur("Noir", BLACK);
+joueur_blanc = creer_joueur("Blanc", WHITE);
+current_player = joueur_blanc; // Le joueur courant est le joueur 1
 //creation de la fenetre
-SDL_Window*  window = SDL_CreateWindow("Othello", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, BOARD_SIZE * CELL_SIZE+300, BOARD_SIZE * CELL_SIZE+300,0);
+window = SDL_CreateWindow("Othello", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, BOARD_SIZE * CELL_SIZE+300, BOARD_SIZE * CELL_SIZE+300,0);
 //creation du renderer, ce qu on va mettre a jour pour afficher des choses
-SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 // Charger les textures pour les pions noirs et blancs
-SDL_Texture *black_texture = IMG_LoadTexture(renderer, "image/pion_noir.png");
-SDL_Texture *white_texture = IMG_LoadTexture(renderer, "image/pion_blanc.png");
+black_texture = IMG_LoadTexture(renderer, "image/pion_noir.png");
+white_texture = IMG_LoadTexture(renderer, "image/pion_blanc.png");
 // Charger les textures la grille et le contour de jeu
-SDL_Surface* grille_surface = IMG_Load("image/Board.png");
-SDL_Texture*grille_texture = SDL_CreateTextureFromSurface(renderer, grille_surface);
+grille_surface = IMG_Load("image/Board.png");
+grille_texture = SDL_CreateTextureFromSurface(renderer, grille_surface);
 SDL_FreeSurface(grille_surface);//on en a plus besoin on peut liberer
-SDL_Surface* contour_surface = IMG_Load("image/contour_board.png");
-SDL_Texture* contour_texture = SDL_CreateTextureFromSurface(renderer, contour_surface);
+contour_surface = IMG_Load("image/contour_board.png");
+contour_texture = SDL_CreateTextureFromSurface(renderer, contour_surface);
 SDL_FreeSurface(contour_surface);//on en a plus besoin on peut liberer
 Init_texture(black_texture,white_texture,grille_surface,contour_surface,window,renderer);
     
