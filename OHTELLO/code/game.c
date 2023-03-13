@@ -5,14 +5,14 @@ void start(){
 // Initialiser le plateau de jeu et l'afficher
 Board board;
 initialiser_plateau(&board);
-afficher_plateau(renderer, &board, black_texture, white_texture,grille_texture,contour_texture);
+afficher_plateau(&board);
 
 
 // Attendre que l'utilisateur ferme la fenêtre
 SDL_Event event;
 int quit = 0;
 while (!quit) {
-    affiche_tour(renderer,current_player);
+    affiche_tour(renderer);
 
     while (SDL_PollEvent(&event)) {
 
@@ -33,12 +33,12 @@ while (!quit) {
                 printf("%d =x et %d = y\n,",x,y);
                 //verification_mouvement();
                 if(current_player==joueur_blanc){
-                    printf("joueur blanc");
-                placer_pion(x, y,renderer, white_texture , &board); // la texture definit la couleur du pion qu'on va placer
+                printf("joueur blanc");
+                placer_pion(x, y,white_texture , &board); // la texture definit la couleur du pion qu'on va placer
                 current_player = joueur_noir;
                 }
                 else{
-                   placer_pion(x, y,renderer, black_texture , &board); // la texture definit la couleur du pion qu'on va placer 
+                   placer_pion(x, y,black_texture , &board); // la texture definit la couleur du pion qu'on va placer 
                    current_player = joueur_blanc;
                 }
             }

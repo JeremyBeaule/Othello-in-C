@@ -1,6 +1,13 @@
 
 #include "struct.h"
-
+  extern  int screen_height;
+  extern  int screen_width;// a changer dans init et affichage et logique.c si on change
+  extern int grid_size ; //800*0.6
+   extern int margin_x ;
+   extern int margin_y ;
+   extern int cell_size ;
+  extern int grid_x ; //=margin x
+  extern  int grid_y ;//=margin y
 //fonction qui bloque toutes les entrées utilisateurs pendant 2 secondes
 void wait_two_seconds() {
     SDL_Event event;
@@ -21,20 +28,9 @@ void wait_two_seconds() {
 }
 
 
-void afficher_plateau(SDL_Renderer* renderer, Board* board, SDL_Texture* black_texture, SDL_Texture* white_texture, SDL_Texture* grille_texture,SDL_Texture* contour) {
+void afficher_plateau(Board* board) {
     SDL_RenderClear(renderer);
 
-    // Définir la taille de la fenêtre
-    int SCREEN_WIDTH = 800;// a changer dans init et affichage et logique.c si on change
-    int SCREEN_HEIGHT = 800;// a changer dans init et affichage et logique.c si on change
-
-    // Calculer les dimensions de la grille
-    int grid_size = SCREEN_HEIGHT * 0.6;//taille de la grille comme 70% de la hauteur de la fenetre
-    int margin_x = (SCREEN_WIDTH - grid_size) / 2; //pour la marge sur les cotés
-    int margin_y = (SCREEN_HEIGHT - grid_size) / 2;//pour la marge haut et bas
-    int cell_size = grid_size / BOARD_SIZE ; // taille de chaque case
-    int grid_x = margin_x; //pour placer les pions, on aurait pu utiliser margin_x direct mais c est une question de lisibilité
-    int grid_y = margin_y;
     // Calculer la taille de la bordure en fonction de la taille de la grille
     int border_size = (int)(grid_size * 0.07); // Par exemple, la bordure peut faire 5% de la taille de la grille
     int border_x = margin_x - border_size;
@@ -52,8 +48,7 @@ void afficher_plateau(SDL_Renderer* renderer, Board* board, SDL_Texture* black_t
     SDL_RenderClear(renderer);
 
     // Dessiner l'image de fond pour la grille et pour le contour de la grille
-    
-    SDL_RenderCopy(renderer, contour, NULL, &border_rect);
+    SDL_RenderCopy(renderer, contour_texture, NULL, &border_rect);
     SDL_RenderCopy(renderer, grille_texture, NULL, &grille_rect);//dessine le quadrillage
 
 
@@ -89,7 +84,7 @@ void afficher_plateau(SDL_Renderer* renderer, Board* board, SDL_Texture* black_t
     SDL_RenderPresent(renderer);
 }
 
-void affiche_tour(SDL_Renderer* renderer,Player* current_player) {
+void affiche_tour(SDL_Renderer* renderer) {
     // Charger la police d'écriture
     
     TTF_Font* font = TTF_OpenFont("image/ASMAN.TTF", 24); 

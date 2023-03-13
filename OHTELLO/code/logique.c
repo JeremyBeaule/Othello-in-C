@@ -1,11 +1,11 @@
 #include "struct.h"
-
-void placer_pion(int x, int y, SDL_Renderer* renderer, SDL_Texture* texture, Board* board) {
+  extern  int screen_height;
+  extern  int screen_width;
+void placer_pion(int x, int y, SDL_Texture* texture, Board* board) {
     //permet d'avoir la cellule du tableau ou l'on clique
     int cell_x = (x - board->grid_x) / board->cell_size ;
     int cell_y = (y - board->grid_y) / board->cell_size ;
-    int screen_height=800; // a changer dans init et affichage et logique.c si on change
-  int screen_width=800; // a changer dans init et affichage et logique.c si on change
+
     printf("\nboard->grid %d\n",board->grid_y);
     printf("\ncell_x:%d et celle_y:%d\n",cell_x,cell_y);
 
@@ -21,9 +21,18 @@ void placer_pion(int x, int y, SDL_Renderer* renderer, SDL_Texture* texture, Boa
         afficher_popup(renderer,"vous ne pouvez pas jouer le coup ");
         return;
     }
-
+    if(current_player==joueur_blanc){
+            cell->player = WHITE;
+            }
+        else{
+                 cell->player = BLACK;  
+            }
+    current_player->score+=1;
+    printf("\n ton score est : %d \n",current_player->score);
+    printf("\n ton score est : %d \n",joueur_noir->score);
+    printf("\n la case est  : %d  (0=vide, 1=noir,2=blanc)\n",board->cells[2][3].player);//verifie une case en particulier
     // Mettre à jour le plateau
-    cell->player = BLACK;
+    
 
     // Afficher le pion
  

@@ -1,6 +1,13 @@
 #include "struct.h"
-
-void Init_texture(SDL_Texture *black_texture,SDL_Texture *white_texture,SDL_Surface* grille_surface,SDL_Surface* contour_surface,SDL_Window* window,SDL_Renderer *renderer){
+    int screen_height=800;
+    int screen_width=800;// a changer dans init et affichage et logique.c si on change
+    int grid_size = 480; //800*0.6
+    int margin_x = (800 - 480) / 2;
+    int margin_y = (800 - 480) / 2;
+    int cell_size = 480 / BOARD_SIZE;
+    int grid_x = 160; //=margin x
+    int grid_y = 160;//=margin y
+void Init_texture(){
 if (!black_texture) {
     printf("Erreur de chargement de la texture pour les pions noirs: %s\n", IMG_GetError());
     SDL_DestroyRenderer(renderer);
@@ -17,11 +24,25 @@ if (!white_texture) {
 
 }
 if (grille_surface == NULL) {
-    printf("Erreur de chargement de l'image de fond pour la grille : %s\n", IMG_GetError());
+    printf("Erreur de chargement de l'image de la grille : %s\n", IMG_GetError());
+
+}
+if (!grille_texture) {
+    printf("Erreur de chargement de la texture pour la grille: %s\n", IMG_GetError());
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+
+}
+if (!contour_texture) {
+    printf("Erreur de chargement de la texture pour le contour: %s\n", IMG_GetError());
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
 
 }
 if (contour_surface == NULL) {
-    printf("Erreur de chargement de l'image de fond pour la grille : %s\n", IMG_GetError());
+    printf("Erreur de chargement de l'image du contour : %s\n", IMG_GetError());
 
 }
 if (!renderer) {
@@ -35,6 +56,8 @@ if (!window) {
     SDL_Quit();
 
 }
+
+
 }
 Player* creer_joueur(char* nom, PlayerColor couleur) {
     Player* joueur = (Player*)malloc(sizeof(Player));
@@ -60,27 +83,26 @@ renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 // Charger les textures pour les pions noirs et blancs
 black_texture = IMG_LoadTexture(renderer, "image/pion_noir.png");
 white_texture = IMG_LoadTexture(renderer, "image/pion_blanc.png");
-// Charger les textures la grille et le contour de jeu
+// Charger les textures la grille 
 grille_surface = IMG_Load("image/Board.png");
 grille_texture = SDL_CreateTextureFromSurface(renderer, grille_surface);
-SDL_FreeSurface(grille_surface);//on en a plus besoin on peut liberer
+// Charger les textures du contour
 contour_surface = IMG_Load("image/contour_board.png");
 contour_texture = SDL_CreateTextureFromSurface(renderer, contour_surface);
+// Charger les textures du fond du menu
+
+Init_texture();
+
 SDL_FreeSurface(contour_surface);//on en a plus besoin on peut liberer
-Init_texture(black_texture,white_texture,grille_surface,contour_surface,window,renderer);
+SDL_FreeSurface(grille_surface);//on en a plus besoin on peut liberer
+
     
 }
 
 void initialiser_plateau(Board *board) {
     // Calculer les dimensions de la grille
-    int screen_height=800;// a changer dans init et affichage et logique.c si on change
-    int screen_width=800;// a changer dans init et affichage et logique.c si on change
-    int grid_size = screen_height * 0.6;
-    int margin_x = (screen_width - grid_size) / 2;
-    int margin_y = (screen_height - grid_size) / 2;
-    int cell_size = grid_size / BOARD_SIZE;
-    int grid_x = margin_x;
-    int grid_y = margin_y;
+    // a changer dans init et affichage et logique.c si on change
+
 
     board->grid_x = grid_x;
     board->grid_y = grid_y;
