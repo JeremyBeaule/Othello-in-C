@@ -2,7 +2,7 @@
 
 
 int main(int argc, char *argv[]) {
-    
+    printf("coucou");
 int choix;
 // tout initialiser (texture/png...)
 init_All();
