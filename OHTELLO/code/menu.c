@@ -51,6 +51,7 @@ SDL_GetWindowSize(window, &largeur_fenetre, &hauteur_fenetre);
           int y = evenement.button.y;
           // Vérification si le clic est sur l'un des choix
           if (x >= 100 && x <= 200 && y >= 100 && y <= 150) {
+            printf("\n eofeaonvzovnzkju \n");
             return 1;
           }
           if (x >= 100 && x <= 200 && y >= 200 && y <= 250) {

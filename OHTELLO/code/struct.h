@@ -3,7 +3,6 @@
 #include <math.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
-#include "affichage.h"
 #define BOARD_SIZE 8
 #define CELL_SIZE 64
 #define PIECE_SIZE 50 //taille de pion en pixel

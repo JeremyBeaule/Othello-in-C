@@ -1,6 +1,5 @@
 
 #include "struct.h"
-#include "affichage.h"
 //fonction qui bloque toutes les entrées utilisateurs pendant 2 secondes
 void wait_two_seconds() {
     SDL_Event event;
@@ -150,7 +149,7 @@ void affiche_tour(SDL_Renderer* renderer,Player* current_player) {
 void afficher_popup(SDL_Renderer* renderer, const char* message) {
     // Charger la police d'écriture
     
-    TTF_Font* font = TTF_OpenFont("ASMAN.TTF", 24); 
+    TTF_Font* font = TTF_OpenFont("image/ASMAN.TTF", 24); 
     if (!font) {
         printf("Erreur de chargement de la police : %s\n", TTF_GetError());
         return;
