@@ -8,6 +8,8 @@
    extern int cell_size ;
   extern int grid_x ; //=margin x
   extern  int grid_y ;//=margin y
+
+  
 //fonction qui bloque toutes les entrées utilisateurs pendant 2 secondes
 void wait_two_seconds() {
     SDL_Event event;
@@ -52,12 +54,12 @@ void afficher_plateau(Board* board) {
     SDL_RenderCopy(renderer, grille_texture, NULL, &grille_rect);//dessine le quadrillage
 
 
-    //Dessiner le cadrillage
+    /*Dessiner le cadrillage
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     for (int i = 1; i < BOARD_SIZE; i++) {
         SDL_RenderDrawLine(renderer, grid_x + i * cell_size, grid_y, grid_x + i * cell_size, grid_y + grid_size);
         SDL_RenderDrawLine(renderer, grid_x, grid_y + i * cell_size, grid_x + grid_size, grid_y + i * cell_size);
-    }
+    }*/
 
     // Dessiner les pions
     for (int i = 0; i < BOARD_SIZE; i++) {
@@ -204,3 +206,4 @@ void afficher_popup(SDL_Renderer* renderer, const char* message) {
     SDL_DestroyTexture(texture);
     TTF_CloseFont(font);
 }
+

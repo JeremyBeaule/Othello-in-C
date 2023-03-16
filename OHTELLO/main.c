@@ -2,15 +2,11 @@
 
 
 int main(int argc, char *argv[]) {
-    printf("coucou");
-int choix;
 // tout initialiser (texture/png/structure)
 init_All();
+printf("\n debut du programme\n");
 
-choix =afficher_menu(renderer); //fichier affichage.c
-if (choix==1){
-start(); // fichier game.c
+afficher_menu(renderer); //fichier affichage.c
 
-}
 return 0;
 }

@@ -36,12 +36,10 @@ extern void afficher_plateau(Board* board) ;
 extern void affiche_tour(SDL_Renderer* renderer);
 extern void afficher_popup(SDL_Renderer* renderer, const char* message);
 extern void wait_two_seconds() ;
-
 extern void Init_texture();
 Player* creer_joueur(char* nom, PlayerColor couleur) ;
 extern void init_All();
 extern void placer_pion(int x, int y,SDL_Texture* texture, Board* board);
-
 extern int afficher_menu() ;
 extern void start();
 
@@ -53,7 +51,7 @@ SDL_Renderer *renderer;
 SDL_Texture *black_texture;
 SDL_Texture *white_texture ;
 // Charger les textures la grille et le contour de jeu
-SDL_Surface* grille_surface;
+SDL_Surface* grille_surface ;
 SDL_Texture* grille_texture ;
 SDL_Surface* contour_surface ;
 SDL_Texture* contour_texture ;

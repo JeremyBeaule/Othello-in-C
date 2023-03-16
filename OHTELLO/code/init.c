@@ -23,17 +23,7 @@ if (!white_texture) {
     SDL_Quit();
 
 }
-if (grille_surface == NULL) {
-    printf("Erreur de chargement de l'image de la grille : %s\n", IMG_GetError());
 
-}
-if (!grille_texture) {
-    printf("Erreur de chargement de la texture pour la grille: %s\n", IMG_GetError());
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
-
-}
 if (!contour_texture) {
     printf("Erreur de chargement de la texture pour le contour: %s\n", IMG_GetError());
     SDL_DestroyRenderer(renderer);
@@ -70,6 +60,7 @@ Player* creer_joueur(char* nom, PlayerColor couleur) {
     joueur->score = 0;
     return joueur;
 }
+
 void init_All(){
     TTF_Init();
     //creation des joueurs
@@ -83,9 +74,7 @@ renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 // Charger les textures pour les pions noirs et blancs
 black_texture = IMG_LoadTexture(renderer, "image/pion_noir.png");
 white_texture = IMG_LoadTexture(renderer, "image/pion_blanc.png");
-// Charger les textures la grille 
-grille_surface = IMG_Load("image/Board.png");
-grille_texture = SDL_CreateTextureFromSurface(renderer, grille_surface);
+// Charger les textures la grille
 // Charger les textures du contour
 contour_surface = IMG_Load("image/contour_board.png");
 contour_texture = SDL_CreateTextureFromSurface(renderer, contour_surface);
