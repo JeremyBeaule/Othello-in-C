@@ -135,6 +135,7 @@ SDL_Texture* plateau_texture_actuel = plateau_texture1;
 
   // Boucle principale du menu
   int continuer = 1;
+  int choix;
   SDL_Event evenement;
   while (continuer) {
     // Gestion des événements
@@ -151,10 +152,24 @@ SDL_Texture* plateau_texture_actuel = plateau_texture1;
           // Vérification si le clic est sur l'un des choix
           if (x >= 350 && x <= 450 && y >= 650 && y <= 750) {
             printf("valider");
-            grille_texture = plateau_texture_actuel; //pour le plateau de jeu
-            black_texture = IMG_LoadTexture(renderer, "image/black.png");//pour la couleur de pion du jeu
-            white_texture = IMG_LoadTexture(renderer, "image/white.png");//pour la couleur de pion du jeu
-            contour_texture = IMG_LoadTexture(renderer, "image/contour.png");//pour le contour du jeu
+            if(choix==1){
+                //grille_texture = IMG_LoadTexture(renderer, "image/black.png")
+                //black_texture = IMG_LoadTexture(renderer, "image/black.png");//pour la couleur de pion du jeu
+            //white_texture = IMG_LoadTexture(renderer, "image/white.png");//pour la couleur de pion du jeu
+            //contour_texture = IMG_LoadTexture(renderer, "image/contour.png");//pour le contour du jeu
+            }
+            else if(choix==2){
+                //grille_texture = IMG_LoadTexture(renderer, "image/black.png")
+                //black_texture = IMG_LoadTexture(renderer, "image/black.png");//pour la couleur de pion du jeu
+            //white_texture = IMG_LoadTexture(renderer, "image/white.png");//pour la couleur de pion du jeu
+            //contour_texture = IMG_LoadTexture(renderer, "image/contour.png");//pour le contour du jeu
+            }
+            else if(choix==3){
+                //grille_texture = IMG_LoadTexture(renderer, "image/black.png")
+                //black_texture = IMG_LoadTexture(renderer, "image/black.png");//pour la couleur de pion du jeu
+            //white_texture = IMG_LoadTexture(renderer, "image/white.png");//pour la couleur de pion du jeu
+            //contour_texture = IMG_LoadTexture(renderer, "image/contour.png");//pour le contour du jeu
+            }
             afficher_menu();
           }
           
@@ -164,26 +179,31 @@ SDL_Texture* plateau_texture_actuel = plateau_texture1;
             printf("precedent");
             if (plateau_texture_actuel == plateau_texture3){
                 plateau_texture_actuel = plateau_texture2;
+                choix=2;
                 }
             else if (plateau_texture_actuel == plateau_texture2){
                 plateau_texture_actuel = plateau_texture1;
-
+                choix=1;
             }
             else {
               plateau_texture_actuel = plateau_texture3;
+              choix=3;
             }
              // Appel de la fonction pour le choix 2
           }
           if (x >= 600 && x <= 750 && y >= 350 && y <= 450) {
             if (plateau_texture_actuel == plateau_texture1){
                 plateau_texture_actuel = plateau_texture2;
+                choix=2;
                 }
             else if (plateau_texture_actuel == plateau_texture2){
                 plateau_texture_actuel = plateau_texture3;
+                choix=3;
 
             }
             else {
               plateau_texture_actuel = plateau_texture1;
+              choix=1;
             }
             printf("suivant");
              // Appel de la fonction pour le choix 3
