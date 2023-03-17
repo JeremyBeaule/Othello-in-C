@@ -17,9 +17,6 @@ while (!quit) {
     while (SDL_PollEvent(&event)) {
 
         //printf("la case est de type : %d", board.cells[3][3].player);
-        if(event.type == SDL_QUIT){
-                quit=1;
-            }
 
     switch (event.type) {
         case SDL_QUIT:
@@ -41,6 +38,7 @@ while (!quit) {
                    placer_pion(x, y,black_texture , &board); // la texture definit la couleur du pion qu'on va placer 
                    current_player = joueur_blanc;
                 }
+                
             }
             break;
             }
@@ -56,5 +54,5 @@ SDL_DestroyRenderer(renderer);
 SDL_DestroyWindow(window);
 IMG_Quit();
 SDL_Quit();
-
+return;
 }

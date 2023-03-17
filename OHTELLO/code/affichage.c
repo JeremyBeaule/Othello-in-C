@@ -39,16 +39,19 @@ void afficher_plateau(Board* board) {
     int border_y = margin_y - border_size;
     int border_width = grid_size + border_size * 2;
     int border_height = grid_size + border_size * 2;
-
+    
     // Dessiner le contour du plateau
     SDL_Rect border_rect = {border_x, border_y, border_width, border_height};
+    //rect pour le fond
+    int largeur_fenetre, hauteur_fenetre;
+    SDL_GetWindowSize(window, &largeur_fenetre, &hauteur_fenetre);
+    SDL_Rect rect = {0, 0, largeur_fenetre, hauteur_fenetre};
 
    //dessine le quadrillage
    SDL_Rect grille_rect = {grid_x, grid_y, grid_size, grid_size};
-    // Dessiner le fond vert
-    SDL_SetRenderDrawColor(renderer, 50, 128, 65, 255);
     SDL_RenderClear(renderer);
-
+    //dessine le fond
+    SDL_RenderCopy(renderer, fond_board, NULL, &rect);
     // Dessiner l'image de fond pour la grille et pour le contour de la grille
     SDL_RenderCopy(renderer, contour_texture, NULL, &border_rect);
     SDL_RenderCopy(renderer, grille_texture, NULL, &grille_rect);//dessine le quadrillage

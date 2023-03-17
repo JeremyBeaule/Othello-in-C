@@ -31,10 +31,7 @@ if (!contour_texture) {
     SDL_Quit();
 
 }
-if (contour_surface == NULL) {
-    printf("Erreur de chargement de l'image du contour : %s\n", IMG_GetError());
 
-}
 if (!renderer) {
     printf("Erreur de création du rendu SDL: %s\n", SDL_GetError());
     SDL_DestroyWindow(window);
@@ -72,18 +69,21 @@ window = SDL_CreateWindow("Othello", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTE
 //creation du renderer, ce qu on va mettre a jour pour afficher des choses
 renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 // Charger les textures pour les pions noirs et blancs
-black_texture = IMG_LoadTexture(renderer, "image/pion_noir.png");
-white_texture = IMG_LoadTexture(renderer, "image/pion_blanc.png");
+black_texture = IMG_LoadTexture(renderer, "image/pion_noir.png");//si on ne choisit aucun theme celui ci est pris par defaut
+white_texture = IMG_LoadTexture(renderer, "image/pion_blanc.png");//si on ne choisit aucun theme celui ci est pris par defaut
 // Charger les textures la grille
+grille_texture = IMG_LoadTexture(renderer, "image/Board.png");// si on ne choisit aucun theme celui ci est pris par defaut
+fond_board=IMG_LoadTexture(renderer, "image/fond_board.png");//si on ne choisit aucun theme celui ci est pris par defaut
+
 // Charger les textures du contour
-contour_surface = IMG_Load("image/contour_board.png");
-contour_texture = SDL_CreateTextureFromSurface(renderer, contour_surface);
+
+contour_texture = IMG_LoadTexture(renderer, "image/contour_board.png");
 // Charger les textures du fond du menu
 
 Init_texture();
 
-SDL_FreeSurface(contour_surface);//on en a plus besoin on peut liberer
-SDL_FreeSurface(grille_surface);//on en a plus besoin on peut liberer
+
+
 
     
 }

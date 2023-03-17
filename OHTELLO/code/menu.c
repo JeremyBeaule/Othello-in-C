@@ -1,40 +1,25 @@
 #include "struct.h"
 // Fonction pour afficher le menu
-void afficher_theme();
+int afficher_theme();
 
-int afficher_menu() {
+void afficher_menu() {
 
   // Charger l'image à partir d'une image png'
-SDL_Surface* fond = IMG_Load("image/fond.png");
-
-// Charger image bouton1
-SDL_Surface* Bstart = IMG_Load("image/bouton-start.png");
-SDL_Surface* Bt2 = IMG_Load("image/bouton-start.png");
-SDL_Surface* Bt3 = IMG_Load("image/bouton-start.png");
-
-
-
-
+SDL_Texture* texture = IMG_LoadTexture(renderer, "image/fond_menu.png");
+SDL_Texture* son_on_texture = IMG_LoadTexture(renderer, "image/volume.png");
+SDL_Texture* son_off_texture = IMG_LoadTexture(renderer, "image/volume_off.png");
+SDL_Texture* son_actuelle = son_on_texture;
 
 // Créer une texture à partir de la surface de l'image
-SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, fond);
-SDL_Texture* Bstart_texture = SDL_CreateTextureFromSurface(renderer, Bstart);
-SDL_Texture* Bt2_texture = SDL_CreateTextureFromSurface(renderer, Bt2);
-SDL_Texture* Bt3_texture = SDL_CreateTextureFromSurface(renderer, Bt3);
-
-// Libérer la surface de l'image (nous n'en avons plus besoin)
-SDL_FreeSurface(fond);
-SDL_FreeSurface(Bstart);
-SDL_FreeSurface(Bt2);
-SDL_FreeSurface(Bt3);
-
+SDL_Texture* Bstart_texture = IMG_LoadTexture(renderer, "image/bouton-start.png");
+SDL_Texture* Bt2_texture = IMG_LoadTexture(renderer, "image/bouton-quit.png");
+SDL_Texture* Bt3_texture = IMG_LoadTexture(renderer, "image/bouton-load.png");
+SDL_Texture* Bt4_texture = IMG_LoadTexture(renderer, "image/bouton-load.png");
 
 
 // Récupérer les dimensions de la fenêtre
 int largeur_fenetre, hauteur_fenetre;
 SDL_GetWindowSize(window, &largeur_fenetre, &hauteur_fenetre);
-
-
   // Boucle principale du menu
   int continuer = 1;
   SDL_Event evenement;
@@ -52,24 +37,33 @@ SDL_GetWindowSize(window, &largeur_fenetre, &hauteur_fenetre);
           int x = evenement.button.x;
           int y = evenement.button.y;
           // Vérification si le clic est sur l'un des choix
-          if (x >= 100 && x <= 200 && y >= 500 && y <= 600) {
-
-            
+          if (x >= 275 && x <= 525 && y >= 250 && y <= 350) {
             printf("\n Bouton 1 cliqué, lancement du programme\n");
-
             start();
-
-
           continue;
           }
-          if (x >= 360 && x <= 460 && y >= 500 && y <= 600) {
+          if (x >= 275 && x <= 525 && y >= 375 && y <= 475) {
             printf("\n Bouton 2 cliqué, choix du theme\n");
-            afficher_theme();
+            continuer = afficher_theme();
             printf("fin");
             continue;
           }
-          if (x >= 640 && x <= 840 && y >= 500 && y <= 850) {
-            return 3; // Appel de la fonction pour le choix 3
+          if (x >= 275 && x <= 525 && y >= 500 && y <= 600) {
+
+            start();
+            continue;
+          }
+          if (x >= 275 && x <= 525 && y >= 625 && y <= 725) {
+            return ; // Appel de la fonction pour le choix 3
+          }
+          if (x >= 700 && x <= 780 && y >= 700 && y <= 780) {
+            if(son_actuelle == son_off_texture){
+              son_actuelle = son_on_texture;
+            }
+            else{
+              son_actuelle = son_off_texture;
+            }
+            continue;
           }
           break;
       }}
@@ -82,19 +76,22 @@ SDL_RenderClear(renderer);
 SDL_Rect rect = {0, 0, largeur_fenetre, hauteur_fenetre};
 
 // rectangle pour les choix
-SDL_Rect rect_choix1 = { 100, 500, 100, 100 };
-SDL_Rect rect_choix2 = { 360, 500, 100, 100 };
-SDL_Rect rect_choix3 = { 640, 500, 100, 100 };
-
-SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+SDL_Rect rect_choix1 = { 275, 250, 250, 100 };
+SDL_Rect rect_choix2 = { 275, 375, 250, 100 };
+SDL_Rect rect_choix3 = { 275, 500, 250, 100 };
+SDL_Rect rect_choix4 = { 275, 625, 250, 100 };
+SDL_Rect son = { 700, 700, 80, 80 };
 SDL_RenderClear(renderer);
 
 
 // Copier la texture sur le renderer avec le rectangle de destination spécifié(affiche le png)
 SDL_RenderCopy(renderer, texture, NULL, &rect);
+SDL_RenderCopy(renderer, son_actuelle, NULL, &son);
 SDL_RenderCopy(renderer, Bstart_texture, NULL, &rect_choix1);
 SDL_RenderCopy(renderer, Bt2_texture, NULL, &rect_choix2);
 SDL_RenderCopy(renderer, Bt3_texture, NULL, &rect_choix3);
+SDL_RenderCopy(renderer, Bt4_texture, NULL, &rect_choix4);
+
 //Update Screen
 SDL_RenderPresent(renderer);
 }
@@ -104,50 +101,37 @@ SDL_DestroyTexture(texture);
 SDL_DestroyTexture(Bstart_texture);
 SDL_DestroyTexture(Bt2_texture);
 SDL_DestroyTexture(Bt3_texture);
+SDL_DestroyTexture(son_on_texture);
+SDL_DestroyTexture(son_off_texture);
+SDL_DestroyTexture(Bt4_texture);
 SDL_DestroyRenderer(renderer);
 SDL_DestroyWindow(window);
+
 
 //Quit SDL
 SDL_Quit();
 printf("\n le menu ce ferme\n");
-return 0;
+exit( EXIT_SUCCESS );
 }
 
 
 
 
-void afficher_theme() {
+int afficher_theme() {
 //fond coloré
 SDL_SetRenderDrawColor(renderer, 50, 128, 65, 255);
 SDL_RenderClear(renderer);
-
-// Charger image bouton1
-SDL_Surface* quit = IMG_Load("image/quit.png");
-SDL_Surface* valider = IMG_Load("image/valider.png");
-SDL_Surface* suivant= IMG_Load("image/suivant.png");
-SDL_Surface* precedent= IMG_Load("image/precedent.png");
-SDL_Surface* plateau1 = IMG_Load("image/Game.jpg");
-SDL_Surface* plateau2 = IMG_Load("image/Board.png");
-
 // Créer une texture à partir de la surface de l'image
+SDL_Texture* quit_texture = IMG_LoadTexture(renderer, "image/quit.png");
+SDL_Texture* valider_texture = IMG_LoadTexture(renderer, "image/valider.png");
+SDL_Texture* suivant_texture = IMG_LoadTexture(renderer, "image/suivant.png");
+SDL_Texture* precedent_texture = IMG_LoadTexture(renderer, "image/precedent.png");
+SDL_Texture* plateau_texture1 = IMG_LoadTexture(renderer, "image/Game.jpg");
+SDL_Texture* plateau_texture2 = IMG_LoadTexture(renderer, "image/Board.png");
+SDL_Texture* plateau_texture3 = IMG_LoadTexture(renderer, "image/Board.png");
+SDL_Texture* fond_texture = IMG_LoadTexture(renderer, "image/fond_menu.png");
 
-SDL_Texture* quit_texture = SDL_CreateTextureFromSurface(renderer, quit);
-SDL_Texture* valider_texture = SDL_CreateTextureFromSurface(renderer, valider);
-SDL_Texture* suivant_texture = SDL_CreateTextureFromSurface(renderer, suivant);
-SDL_Texture* precedent_texture = SDL_CreateTextureFromSurface(renderer, precedent);
-SDL_Texture* plateau_texture1 = SDL_CreateTextureFromSurface(renderer, plateau1);
-SDL_Texture* plateau_texture2 = SDL_CreateTextureFromSurface(renderer, plateau2);
 SDL_Texture* plateau_texture_actuel = plateau_texture1;
-
-
-// Libérer la surface de l'image (nous n'en avons plus besoin)
-SDL_FreeSurface(quit);
-SDL_FreeSurface(valider);
-SDL_FreeSurface(suivant);
-SDL_FreeSurface(precedent);
-SDL_FreeSurface(plateau1);
-SDL_FreeSurface(plateau2);
-
 
   // Boucle principale du menu
   int continuer = 1;
@@ -157,7 +141,7 @@ SDL_FreeSurface(plateau2);
     while (SDL_PollEvent(&evenement)) {
       switch (evenement.type) {
         case SDL_QUIT:
-          continuer = 0;
+          return 0;
           break;
         case SDL_MOUSEBUTTONUP:
         if (evenement.button.button == SDL_BUTTON_LEFT) {
@@ -167,35 +151,44 @@ SDL_FreeSurface(plateau2);
           // Vérification si le clic est sur l'un des choix
           if (x >= 350 && x <= 450 && y >= 650 && y <= 750) {
             printf("valider");
-            grille_texture = plateau_texture_actuel;
+            grille_texture = plateau_texture_actuel; //pour le plateau de jeu
+            black_texture = IMG_LoadTexture(renderer, "image/black.png");//pour la couleur de pion du jeu
+            white_texture = IMG_LoadTexture(renderer, "image/white.png");//pour la couleur de pion du jeu
+            contour_texture = IMG_LoadTexture(renderer, "image/contour.png");//pour le contour du jeu
             afficher_menu();
           }
           
 
 
-          if (x >= 50 && x <= 150 && y >= 350 && y <= 450) {
-            printf("suivant");
-            if (plateau_texture_actuel == plateau_texture1){
+          if (x >= 75 && x <= 225 && y >= 350 && y <= 450) {
+            printf("precedent");
+            if (plateau_texture_actuel == plateau_texture3){
                 plateau_texture_actuel = plateau_texture2;
                 }
-                else{
+            else if (plateau_texture_actuel == plateau_texture2){
                 plateau_texture_actuel = plateau_texture1;
 
-            } 
+            }
+            else {
+              plateau_texture_actuel = plateau_texture3;
+            }
              // Appel de la fonction pour le choix 2
           }
-          if (x >= 650 && x <= 750 && y >= 350 && y <= 450) {
+          if (x >= 600 && x <= 750 && y >= 350 && y <= 450) {
             if (plateau_texture_actuel == plateau_texture1){
                 plateau_texture_actuel = plateau_texture2;
                 }
-                else{
-                plateau_texture_actuel = plateau_texture1;
+            else if (plateau_texture_actuel == plateau_texture2){
+                plateau_texture_actuel = plateau_texture3;
 
-            } 
-            printf("precedent");
+            }
+            else {
+              plateau_texture_actuel = plateau_texture1;
+            }
+            printf("suivant");
              // Appel de la fonction pour le choix 3
           }
-            if (x >= 680 && x <= 780 && y >= 100 && y <= 200) {
+            if (x >= 640 && x <= 740 && y >= 70 && y <= 170) {
             printf("\n Retour menu principale \n");
             afficher_menu();
 
@@ -204,26 +197,30 @@ SDL_FreeSurface(plateau2);
       }}
     }
 
-// Effacement de l'écran
-SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+
 SDL_RenderClear(renderer);
 
 
 // rectangle pour les choix
 SDL_Rect valider = { 350, 650, 100, 100 };
-SDL_Rect suivant = { 50, 350, 100, 100 };
-SDL_Rect precedent = { 650, 350, 100, 100 };
-SDL_Rect quit = { 680, 100, 100, 100 };
+SDL_Rect suivant = { 75, 350, 150, 100 };
+SDL_Rect precedent = { 600, 350, 150, 100 };//suivant et precedent sont inversé
+SDL_Rect quit = { 640, 70, 100, 100 };
 SDL_Rect plateau = { 300, 100, 250, 250 };
+int largeur_fenetre, hauteur_fenetre;
+SDL_GetWindowSize(window, &largeur_fenetre, &hauteur_fenetre);
+SDL_Rect fond_rect = { 0, 0, largeur_fenetre, hauteur_fenetre };
 
 
 // Copier la texture sur le renderer avec le rectangle de destination spécifié(affiche le png)
 
+SDL_RenderCopy(renderer, fond_texture, NULL, &fond_rect);
 SDL_RenderCopy(renderer, valider_texture, NULL, &valider);
 SDL_RenderCopy(renderer, suivant_texture, NULL, &suivant);
 SDL_RenderCopy(renderer, precedent_texture, NULL, &precedent);
 SDL_RenderCopy(renderer, quit_texture, NULL, &quit);
 SDL_RenderCopy(renderer, plateau_texture_actuel, NULL, &plateau);
+
 //Update Screen
 SDL_RenderPresent(renderer);
 }
@@ -236,7 +233,10 @@ SDL_DestroyTexture(precedent_texture);
 SDL_DestroyTexture(quit_texture);
 SDL_DestroyTexture(plateau_texture1);
 SDL_DestroyTexture(plateau_texture2);
+SDL_DestroyTexture(plateau_texture3);
 SDL_DestroyTexture(plateau_texture_actuel);
+SDL_DestroyTexture(fond_texture);
 
 printf("\n le menu des themes ce ferme\n");
+return 1;
 }

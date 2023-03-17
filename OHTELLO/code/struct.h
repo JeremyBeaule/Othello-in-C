@@ -3,6 +3,7 @@
 #include <math.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
+#include <stdlib.h>
 #define BOARD_SIZE 8
 #define CELL_SIZE 64
 #define PIECE_SIZE 50 //taille de pion en pixel
@@ -40,7 +41,7 @@ extern void Init_texture();
 Player* creer_joueur(char* nom, PlayerColor couleur) ;
 extern void init_All();
 extern void placer_pion(int x, int y,SDL_Texture* texture, Board* board);
-extern int afficher_menu() ;
+extern void afficher_menu() ;
 extern void start();
 
 //declaration pour ne pas a les placer en parametre
@@ -51,7 +52,7 @@ SDL_Renderer *renderer;
 SDL_Texture *black_texture;
 SDL_Texture *white_texture ;
 // Charger les textures la grille et le contour de jeu
-SDL_Surface* grille_surface ;
+SDL_Texture* fond_board;
 SDL_Texture* grille_texture ;
 SDL_Surface* contour_surface ;
 SDL_Texture* contour_texture ;

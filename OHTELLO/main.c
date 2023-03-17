@@ -7,6 +7,6 @@ init_All();
 printf("\n debut du programme\n");
 
 afficher_menu(renderer); //fichier affichage.c
-
+printf("\n fin du programme\n");
 return 0;
 }
