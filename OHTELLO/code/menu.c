@@ -126,9 +126,9 @@ SDL_Texture* quit_texture = IMG_LoadTexture(renderer, "image/quit.png");
 SDL_Texture* valider_texture = IMG_LoadTexture(renderer, "image/valider.png");
 SDL_Texture* suivant_texture = IMG_LoadTexture(renderer, "image/suivant.png");
 SDL_Texture* precedent_texture = IMG_LoadTexture(renderer, "image/precedent.png");
-SDL_Texture* plateau_texture1 = IMG_LoadTexture(renderer, "image/Game.jpg");
-SDL_Texture* plateau_texture2 = IMG_LoadTexture(renderer, "image/Board.png");
-SDL_Texture* plateau_texture3 = IMG_LoadTexture(renderer, "image/Board.png");
+SDL_Texture* plateau_texture1 = IMG_LoadTexture(renderer, "image/Board.png");
+SDL_Texture* plateau_texture2 = IMG_LoadTexture(renderer, "image/choix2.png");
+SDL_Texture* plateau_texture3 = IMG_LoadTexture(renderer, "image/choix3.png");
 SDL_Texture* fond_texture = IMG_LoadTexture(renderer, "image/fond_menu.png");
 
 SDL_Texture* plateau_texture_actuel = plateau_texture1;
@@ -153,22 +153,19 @@ SDL_Texture* plateau_texture_actuel = plateau_texture1;
           if (x >= 350 && x <= 450 && y >= 650 && y <= 750) {
             printf("valider");
             if(choix==1){
-                //grille_texture = IMG_LoadTexture(renderer, "image/black.png")
-                //black_texture = IMG_LoadTexture(renderer, "image/black.png");//pour la couleur de pion du jeu
-            //white_texture = IMG_LoadTexture(renderer, "image/white.png");//pour la couleur de pion du jeu
+              grille_texture = IMG_LoadTexture(renderer, "image/Board.png");
             //contour_texture = IMG_LoadTexture(renderer, "image/contour.png");//pour le contour du jeu
+            fond_board = IMG_LoadTexture(renderer, "image/fond_board.png");
             }
             else if(choix==2){
-                //grille_texture = IMG_LoadTexture(renderer, "image/black.png")
-                //black_texture = IMG_LoadTexture(renderer, "image/black.png");//pour la couleur de pion du jeu
-            //white_texture = IMG_LoadTexture(renderer, "image/white.png");//pour la couleur de pion du jeu
-            //contour_texture = IMG_LoadTexture(renderer, "image/contour.png");//pour le contour du jeu
+              grille_texture = IMG_LoadTexture(renderer, "image/Board2.png");
+              //contour_texture = IMG_LoadTexture(renderer, "image/contour.png");//pour le contour du jeu
+              fond_board = IMG_LoadTexture(renderer, "image/fond_board2.png");
             }
             else if(choix==3){
-                //grille_texture = IMG_LoadTexture(renderer, "image/black.png")
-                //black_texture = IMG_LoadTexture(renderer, "image/black.png");//pour la couleur de pion du jeu
-            //white_texture = IMG_LoadTexture(renderer, "image/white.png");//pour la couleur de pion du jeu
+              grille_texture = IMG_LoadTexture(renderer, "image/Board3.png");
             //contour_texture = IMG_LoadTexture(renderer, "image/contour.png");//pour le contour du jeu
+              fond_board = IMG_LoadTexture(renderer, "image/fond_board3.png");
             }
             afficher_menu();
           }
@@ -226,7 +223,7 @@ SDL_Rect valider = { 350, 650, 100, 100 };
 SDL_Rect suivant = { 75, 350, 150, 100 };
 SDL_Rect precedent = { 600, 350, 150, 100 };//suivant et precedent sont inversé
 SDL_Rect quit = { 640, 70, 100, 100 };
-SDL_Rect plateau = { 300, 100, 250, 250 };
+SDL_Rect plateau = { 235, 200, 350, 350 };
 int largeur_fenetre, hauteur_fenetre;
 SDL_GetWindowSize(window, &largeur_fenetre, &hauteur_fenetre);
 SDL_Rect fond_rect = { 0, 0, largeur_fenetre, hauteur_fenetre };
