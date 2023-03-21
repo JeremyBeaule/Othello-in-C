@@ -31,11 +31,11 @@ while (!quit) {
                 //verification_mouvement();
                 if(current_player==joueur_blanc){
                 printf("joueur blanc");
-                placer_pion(x, y,white_texture , &board); // la texture definit la couleur du pion qu'on va placer
+                if(placer_pion(x, y,white_texture , &board)==1) // la texture definit la couleur du pion qu'on va placer
                 current_player = joueur_noir;
                 }
                 else{
-                   placer_pion(x, y,black_texture , &board); // la texture definit la couleur du pion qu'on va placer 
+                   if(placer_pion(x, y,black_texture , &board)==1) // la texture definit la couleur du pion qu'on va placer 
                    current_player = joueur_blanc;
                 }
                 
@@ -56,3 +56,4 @@ IMG_Quit();
 SDL_Quit();
 return;
 }
+

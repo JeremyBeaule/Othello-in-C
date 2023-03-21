@@ -40,7 +40,7 @@ extern void wait_two_seconds() ;
 extern void Init_texture();
 Player* creer_joueur(char* nom, PlayerColor couleur) ;
 extern void init_All();
-extern void placer_pion(int x, int y,SDL_Texture* texture, Board* board);
+extern char placer_pion(int x, int y,SDL_Texture* texture, Board* board);
 extern void afficher_menu() ;
 extern void start();
 

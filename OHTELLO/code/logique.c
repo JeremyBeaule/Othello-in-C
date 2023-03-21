@@ -1,7 +1,95 @@
 #include "struct.h"
   extern  int screen_height;
   extern  int screen_width;
-void placer_pion(int x, int y, SDL_Texture* texture, Board* board) {
+int verif_place_horiz_d(int x, int y, Board* board){
+int x_board=x+1;//si x=7 c'est la mouise
+		if(board->cells[x_board][y].player==EMPTY || board->cells[x_board][y].player==current_player->couleur){
+			return 0;
+		}
+	while(board->cells[x_board][y].player!=current_player->couleur && board->cells[x_board][y].player!=EMPTY){
+		if(x_board>7)
+			return 0;
+		x_board++;
+	}
+	if(board->cells[x_board][y].player==EMPTY)
+		return 0;
+	return 1;
+}
+int verif_place_horiz_g(int x, int y, Board* board){
+int x_board=x-1;//si x=0 mm pb
+		if(board->cells[x_board][y].player==EMPTY || board->cells[x_board][y].player==current_player->couleur){
+			return 0;
+		}
+	while(board->cells[x_board][y].player!=current_player->couleur && board->cells[x_board][y].player!=EMPTY){
+		if(x_board<0)
+			return 0;
+		x_board--;
+	}
+	if(board->cells[x_board][y].player==EMPTY)
+		return 0;
+	return 1;
+}
+int verif_place_verti_h(int x, int y, Board* board){
+int y_board=y+1;//si y=7 c'est la mouise
+		if(board->cells[x][y_board].player==EMPTY || board->cells[x][y_board].player==current_player->couleur){
+			return 0;
+		}
+	while(board->cells[x][y_board].player!=current_player->couleur && board->cells[x][y_board].player!=EMPTY){
+		if(y_board>7)
+			return 0;
+		y_board++;
+	}
+	if(board->cells[x][y_board].player==EMPTY)
+		return 0;
+	return 1;
+}
+int verif_place_verti_b(int x, int y, Board* board){
+int y_board=y-1;//si y=0 c'est la mouise
+		if(board->cells[x][y_board].player==EMPTY || board->cells[x][y_board].player==current_player->couleur){
+			return 0;
+		}
+	while(board->cells[x][y_board].player!=current_player->couleur && board->cells[x][y_board].player!=EMPTY){
+		if(y_board<0)
+			return 0;
+		y_board--;
+	}
+	if(board->cells[x][y_board].player==EMPTY)
+		return 0;
+	return 1;
+}
+/*int verif_place_diag_gb(int x, int y, Board* board){
+int x_board=x+1;//si x=7 c'est la mouise
+int y_board=y-1;//si y=0 c'est la mouise
+		if(board->cells[x_board][y_board].player==EMPTY || board->cells[x_board][y_board].player==current_player->couleur){
+			return 0;
+		}
+	while(board->cells[x_board][y_board].player!=current_player->couleur && board->cells[x_board][y_board].player!=EMPTY){
+		if(x_board>7)
+			return 0;
+		if(y_board<0)
+			return 0;
+		
+		x_board++;
+		y_board--;
+	}
+	if(board->cells[x_board][y_board].player==EMPTY)
+		return 0;
+	return 1;
+}*/
+/*int verif_place_horiz_d(int x, int y, Board* board){
+
+		if(board->cells[x_board][y].player==EMPTY || board->cells[x_board][y].player==current_player->couleur){
+			return 0;
+		}
+	while(board->cells[x_board][y].player!=current_player->couleur && board->cells[x_board][y].player!=EMPTY){
+		
+		
+	}
+	if(board->cells[x_board][y].player==EMPTY)
+		return 0;
+	return 1;
+}*/
+char placer_pion(int x, int y, SDL_Texture* texture, Board* board) {//retourne 0 si le joueur n'a pas place son pion a reste son tour sinon retourne 1
     //permet d'avoir la cellule du tableau ou l'on clique
     int cell_x = (x - board->grid_x) / board->cell_size ;
     int cell_y = (y - board->grid_y) / board->cell_size ;
@@ -11,15 +99,20 @@ void placer_pion(int x, int y, SDL_Texture* texture, Board* board) {
 
     if (cell_x < 0  ||cell_x >= BOARD_SIZE ||x<screen_width*0.19|| cell_y < 0 || cell_y >= BOARD_SIZE||y<screen_height*0.2) {
         afficher_popup(renderer,"vous etes en dehors de la grille ");
-        return;
+        return 0;
     }
 
     Cell* cell = &board->cells[cell_x][cell_y];
 
+    if(verif_place_horiz_d(cell_x,cell_y,board)==0 && verif_place_horiz_g(cell_x,cell_y,board)==0 && verif_place_verti_h(cell_x,cell_y,board)==0 && verif_place_verti_b(cell_x,cell_y,board)==0 /*&& verif_place_diag_gb(cell_x,cell_y,board)==0*/){
+	printf("mauvais placement non respect regles");
+     return 0;
+     }
+
     if (cell->player != EMPTY) {
         // Case déjà occupée
         afficher_popup(renderer,"vous ne pouvez pas jouer le coup ");
-        return;
+        return 0;
     }
     if(current_player==joueur_blanc){
             cell->player = WHITE;
@@ -44,4 +137,6 @@ void placer_pion(int x, int y, SDL_Texture* texture, Board* board) {
     };
     SDL_RenderCopy(renderer, texture, NULL, &dest_rect);
     SDL_RenderPresent(renderer);
+        return 1;
 }
+
