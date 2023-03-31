@@ -39,7 +39,7 @@ void afficher_plateau(Board* board) {
     int border_y = margin_y - border_size;
     int border_width = grid_size + border_size * 2;
     int border_height = grid_size + border_size * 2;
-    
+   
     // Dessiner le contour du plateau
     SDL_Rect border_rect = {border_x, border_y, border_width, border_height};
     //rect pour le fond
@@ -69,6 +69,7 @@ void afficher_plateau(Board* board) {
         for (int j = 0; j < BOARD_SIZE; j++) {
             PlayerColor player = board->cells[i][j].player;
             if (player == BLACK) {
+
                 SDL_Rect rect = board->cells[i][j].rect;
                 rect.x = grid_x + i * cell_size+3;
                 rect.y = grid_y + j * cell_size+3;
@@ -76,6 +77,7 @@ void afficher_plateau(Board* board) {
                 rect.h = cell_size-5;
                 SDL_RenderCopy(renderer, black_texture, NULL, &rect);
             } else if (player == WHITE) {
+
                 SDL_Rect rect = board->cells[i][j].rect;
                 rect.x = grid_x + i * cell_size+3;
                 rect.y = grid_y + j * cell_size+3;

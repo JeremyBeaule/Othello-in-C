@@ -51,6 +51,7 @@ SDL_Renderer *renderer;
 // Charger les textures pour les pions noirs et blancs
 SDL_Texture *black_texture;
 SDL_Texture *white_texture ;
+SDL_Texture *test ;
 // Charger les textures la grille et le contour de jeu
 SDL_Texture* fond_board;
 SDL_Texture* grille_texture ;

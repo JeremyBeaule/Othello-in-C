@@ -71,6 +71,7 @@ renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 // Charger les textures pour les pions noirs et blancs
 black_texture = IMG_LoadTexture(renderer, "image/pion_noir.png");//si on ne choisit aucun theme celui ci est pris par defaut
 white_texture = IMG_LoadTexture(renderer, "image/pion_blanc.png");//si on ne choisit aucun theme celui ci est pris par defaut
+test = IMG_LoadTexture(renderer, "image/pion_nyan.png");//si on ne choisit aucun theme celui ci est pris par defaut
 // Charger les textures la grille
 grille_texture = IMG_LoadTexture(renderer, "image/Board.png");// si on ne choisit aucun theme celui ci est pris par defaut
 fond_board=IMG_LoadTexture(renderer, "image/fond_board.png");//si on ne choisit aucun theme celui ci est pris par defaut

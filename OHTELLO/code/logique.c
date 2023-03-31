@@ -50,6 +50,14 @@ int x_board=x+1;//si x=7 c'est la mouise
 	if(board->cells[x_board][y].player==EMPTY){
 		return 0;
 		}
+		x_board=x+1;
+	while(board->cells[x_board][y].player!=current_player->couleur && board->cells[x_board][y].player!=EMPTY){ 
+		printf("\n droite \n");
+
+		changer_texture_case(x_board,y,board,texture);
+		x_board++;
+	}
+	
 	return 1;
 }
 
@@ -69,10 +77,14 @@ int x_board=x-1;//si x=0 mm pb
 	if(board->cells[x_board][y].player==EMPTY){
 		return 0;
 	}
-
+	x_board=x-1;//si x=0 mm pb
+	while(board->cells[x_board][y].player!=current_player->couleur && board->cells[x_board][y].player!=EMPTY){
+		printf("\n gauche \n");
+		changer_texture_case(x_board,y,board,texture);
+		x_board--;
+	}
 	return 1;
 }
-
 
 int verif_place_verti_h(int x, int y, Board* board,SDL_Texture* texture){
 int y_board=y+1;//si y=7 c'est la mouise
@@ -89,7 +101,13 @@ int y_board=y+1;//si y=7 c'est la mouise
 	if(board->cells[x][y_board].player==EMPTY){
 		return 0;
 	}
+	y_board=y+1;
+	while(board->cells[x][y_board].player!=current_player->couleur && board->cells[x][y_board].player!=EMPTY){
+		printf("\n haut \n");
+		changer_texture_case(x,y_board,board,texture);
 
+		y_board++;
+	}
 	return 1;
 }
 
@@ -103,16 +121,20 @@ int y_board=y-1;//si y=0 c'est la mouise
 		if(y_board<0){
 			return 0;
 		}
-
-
 		y_board--;
 	}
 	if(board->cells[x][y_board].player==EMPTY){
 		return 0;
 	}
+	y_board=y-1;
+	while(board->cells[x][y_board].player!=current_player->couleur && board->cells[x][y_board].player!=EMPTY){
+		printf("\n bas \n");
+		changer_texture_case(x,y_board,board,texture);
+		y_board--;
+	}
 	return 1;
 }
-int verif_place_diag_bg(int x, int y, Board* board){//diag bas à gauche
+int verif_place_diag_bg(int x, int y, Board* board,SDL_Texture* texture){//diag bas à gauche
 int x_board=x-1;//si x=0 c'est la mouise
 int y_board=y-1;//si y=0 c'est la mouise
 		if(board->cells[x_board][y_board].player==EMPTY || board->cells[x_board][y_board].player==current_player->couleur){
@@ -127,13 +149,25 @@ int y_board=y-1;//si y=0 c'est la mouise
 		x_board--;
 		y_board--;
 	}
-	if(board->cells[x_board][y_board].player==EMPTY)
+	if(board->cells[x_board][y_board].player==EMPTY){
 		return 0;
+	}
+	x_board=x-1;//si x=0 c'est la mouise
+	y_board=y-1;
+	while(board->cells[x_board][y_board].player!=current_player->couleur && board->cells[x_board][y_board].player!=EMPTY){
+		printf("\n diag bas gauche\n");
+		changer_texture_case(x_board,y_board,board,texture);
+		x_board--;
+		y_board--;
+	}
 	return 1;
 }
-int verif_place_diag_bd(int x, int y, Board* board){//diag bas à droite 
+
+
+int verif_place_diag_bd(int x, int y, Board* board,SDL_Texture * texture ){//diag bas à droite 
 int x_board=x+1;//si x=7 c'est la mouise
 int y_board=y+1;//si y=7 c'est la mouise
+
 		if(board->cells[x_board][y_board].player==EMPTY || board->cells[x_board][y_board].player==current_player->couleur){
 			return 0;
 		}
@@ -148,9 +182,17 @@ int y_board=y+1;//si y=7 c'est la mouise
 	}
 	if(board->cells[x_board][y_board].player==EMPTY)
 		return 0;
+	x_board=x+1;//si x=7 c'est la mouise
+	y_board=y+1;
+	while(board->cells[x_board][y_board].player!=current_player->couleur && board->cells[x_board][y_board].player!=EMPTY){
+		printf("\n diag bas droite\n");
+		changer_texture_case(x_board,y_board,board,texture);
+		x_board++;
+		y_board++;
+	}
 	return 1;
 }
-int verif_place_diag_hg(int x, int y, Board* board){//diag haut gauche
+int verif_place_diag_hg(int x, int y, Board* board,SDL_Texture* texture){//diag haut gauche
 int x_board=x-1;//si x=0 c'est la mouise
 int y_board=y+1;//si y=7 c'est la mouise
 		if(board->cells[x_board][y_board].player==EMPTY || board->cells[x_board][y_board].player==current_player->couleur){
@@ -167,9 +209,17 @@ int y_board=y+1;//si y=7 c'est la mouise
 	}
 	if(board->cells[x_board][y_board].player==EMPTY)
 		return 0;
+	x_board=x-1;//si x=0 c'est la mouise
+	y_board=y+1;
+	while(board->cells[x_board][y_board].player!=current_player->couleur && board->cells[x_board][y_board].player!=EMPTY){
+		printf("\n diag haut gauche\n");
+		changer_texture_case(x_board,y_board,board,texture);
+		x_board--;
+		y_board++;
+	}
 	return 1;
 }
-int verif_place_diag_hd(int x, int y, Board* board){//diag  haut à droite
+int verif_place_diag_hd(int x, int y, Board* board,SDL_Texture* texture){//diag  haut à droite
 int x_board=x+1;//si x=7 c'est la mouise
 int y_board=y-1;//si y=0 c'est la mouise
 		if(board->cells[x_board][y_board].player==EMPTY || board->cells[x_board][y_board].player==current_player->couleur){//si la case est vide ou si c'est le joueur qui a joué
@@ -186,6 +236,14 @@ int y_board=y-1;//si y=0 c'est la mouise
 	}
 	if(board->cells[x_board][y_board].player==EMPTY)
 		return 0;
+	x_board=x+1;//si x=7 c'est la mouise
+	y_board=y-1;
+	while(board->cells[x_board][y_board].player!=current_player->couleur && board->cells[x_board][y_board].player!=EMPTY){
+		printf("\n diagonal haut droite\n");
+		changer_texture_case(x_board,y_board,board,texture);
+		x_board++;
+		y_board--;
+	}
 	return 1;
 }
 
@@ -193,9 +251,9 @@ char placer_pion(int x, int y, SDL_Texture* texture, Board* board) {//retourne 0
     //permet d'avoir la cellule du tableau ou l'on clique
     int cell_x = (x - board->grid_x) / board->cell_size ;
     int cell_y = (y - board->grid_y) / board->cell_size ;
+
     printf("\nboard->grid %d\n",board->grid_y);
     printf("\ncell_x:%d et celle_y:%d\n",cell_x,cell_y);
-	printf("\n texture:%d\n",texture);
 	
     if (cell_x < 0  ||cell_x >= BOARD_SIZE ||x<screen_width*0.19|| cell_y < 0 || cell_y >= BOARD_SIZE||y<screen_height*0.2) {
         afficher_popup(renderer,"vous etes en dehors de la grille ");
@@ -204,12 +262,28 @@ char placer_pion(int x, int y, SDL_Texture* texture, Board* board) {//retourne 0
 
     Cell* cell = &board->cells[cell_x][cell_y];
 
+	if (cell->player != EMPTY) {
+		afficher_popup(renderer,"case deja prise");
+		return 0;
+	}
 
-    if(verif_place_horiz_d(cell_x,cell_y,board,texture)==0 && verif_place_horiz_g(cell_x,cell_y,board,texture)==0 && verif_place_verti_h(cell_x,cell_y,board,texture)==0 && verif_place_verti_b(cell_x,cell_y,board,texture)==0 /*&& verif_place_diag_gb(cell_x,cell_y,board)==0*/){
+    if(verif_place_horiz_d(cell_x,cell_y,board,texture)==0 && verif_place_horiz_g(cell_x,cell_y,board,texture)==0 && verif_place_verti_h(cell_x,cell_y,board,texture)==0 && verif_place_verti_b(cell_x,cell_y,board,texture)==0 
+	&& verif_place_diag_bd(cell_x,cell_y, board,texture)==0 && verif_place_diag_bg(cell_x,cell_y, board,texture)==0&& verif_place_diag_hd(cell_x,cell_y, board,texture)==0&& verif_place_diag_hg(cell_x,cell_y, board,texture)==0){
 	printf(" \n mauvais placement non respect regles\n ");
-
     return 0;
      }
+	else{
+		verif_place_diag_bd(cell_x,cell_y, board,texture);
+		verif_place_diag_bg(cell_x,cell_y, board,texture);
+		verif_place_diag_hd(cell_x,cell_y, board,texture);
+		verif_place_diag_hg(cell_x,cell_y, board,texture);
+		verif_place_horiz_d(cell_x,cell_y,board,texture);
+		verif_place_horiz_g(cell_x,cell_y,board,texture);
+		verif_place_verti_h(cell_x,cell_y,board,texture);
+		verif_place_verti_b(cell_x,cell_y,board,texture);
+
+	}
+
 
 
     if(current_player==joueur_blanc){
