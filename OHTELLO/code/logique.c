@@ -1,37 +1,46 @@
+
 #include "struct.h"
   extern  int screen_height;
   extern  int screen_width;
-  
-  //permet de changer la texture de n mporte quelle case
-void changer_texture_case(int x, int y, Board* board,SDL_Texture* texture) {
-    // Vérifier que les indices sont valides
-		printf("\n coucfffou \n");
-    if (x < 0 || x >= BOARD_SIZE || y < 0 || y >= BOARD_SIZE) {
-        printf("Indices de case invalides\n");
-        return;
-    }
-	//on met a jour la cellule
-	Cell* cell = &board->cells[x][y];
-	if(current_player==joueur_blanc){
-            cell->player = WHITE;
-            }
-	else{
-            cell->player = BLACK;  
-            }
 
-    // Afficher la nouvelle texture
-    SDL_Rect dest_rect = {
-        board->grid_x + x * board->cell_size+3,
-        board->grid_y + y * board->cell_size+3,
-        board->cell_size-5,
-        board->cell_size-5
-    };
-    SDL_RenderCopy(renderer, texture, NULL, &dest_rect);
-    SDL_RenderPresent(renderer);
+int Detection_Fin(Board* board, SDL_Texture* texture){
+	int i,j;
+	int nb_case_vide=0;
+	for(i=0;i<8;i++){
+		for(j=0;j<8;j++){
+			if(board->cells[i][j].player==EMPTY){
+				nb_case_vide++;
+			}
+		}
+	}
+	if(nb_case_vide==0 || coup_jouable_ou_non(board,texture)==0){
+		printf("\npartie finie\n");
+		return 1;
+	}
+	return 0;
+
+}
+int coup_jouable_ou_non(Board* board, SDL_Texture* texture) {
+    int x, y;
+    for (x = 0; x < BOARD_SIZE; x++) {
+        for (y = 0; y < BOARD_SIZE; y++) {
+            if (verif_place_horiz_d(x, y, board, texture,0) == 1 ||
+                verif_place_horiz_g(x, y, board, texture,0) == 1 ||
+                verif_place_verti_h(x, y, board, texture,0) == 1 ||
+                verif_place_verti_b(x, y, board, texture,0) == 1 ||
+                verif_place_diag_bg(x, y, board, texture,0) == 1 ||
+                verif_place_diag_bd(x, y, board, texture,0) == 1 ||
+                verif_place_diag_hg(x, y, board, texture,0) == 1 ||
+                verif_place_diag_hd(x, y, board, texture,0) == 1) {
+                return 1;
+            }
+        }
+	}
+    return 0;
 }
 
 
-int verif_place_horiz_d(int x, int y, Board* board,SDL_Texture* texture){
+int verif_place_horiz_d(int x, int y, Board* board,SDL_Texture* texture,int changerTexture){
 int x_board=x+1;//si x=7 c'est la mouise
 
 		if(board->cells[x_board][y].player==EMPTY || board->cells[x_board][y].player==current_player->couleur){
@@ -51,18 +60,21 @@ int x_board=x+1;//si x=7 c'est la mouise
 		return 0;
 		}
 		x_board=x+1;
-	while(board->cells[x_board][y].player!=current_player->couleur && board->cells[x_board][y].player!=EMPTY){ 
-		printf("\n droite \n");
+	if(changerTexture==1){
+		
+		while(board->cells[x_board][y].player!=current_player->couleur && board->cells[x_board][y].player!=EMPTY){ 
+			//printf("\n droite \n");
 
-		changer_texture_case(x_board,y,board,texture);
-		x_board++;
+			changer_texture_case(x_board,y,board,texture);
+			x_board++;
+		}
 	}
 	
 	return 1;
 }
 
 
-int verif_place_horiz_g(int x, int y, Board* board,SDL_Texture* texture){
+int verif_place_horiz_g(int x, int y, Board* board,SDL_Texture* texture, int changerTexture){
 int x_board=x-1;//si x=0 mm pb
 		if(board->cells[x_board][y].player==EMPTY || board->cells[x_board][y].player==current_player->couleur){
 			return 0;
@@ -78,15 +90,17 @@ int x_board=x-1;//si x=0 mm pb
 		return 0;
 	}
 	x_board=x-1;//si x=0 mm pb
-	while(board->cells[x_board][y].player!=current_player->couleur && board->cells[x_board][y].player!=EMPTY){
-		printf("\n gauche \n");
-		changer_texture_case(x_board,y,board,texture);
-		x_board--;
+	if(changerTexture==1){
+		while(board->cells[x_board][y].player!=current_player->couleur && board->cells[x_board][y].player!=EMPTY){
+			//printf("\n gauche \n");
+			changer_texture_case(x_board,y,board,texture);
+			x_board--;
+		}
 	}
 	return 1;
 }
 
-int verif_place_verti_h(int x, int y, Board* board,SDL_Texture* texture){
+int verif_place_verti_h(int x, int y, Board* board,SDL_Texture* texture, int changerTexture){
 int y_board=y+1;//si y=7 c'est la mouise
 		if(board->cells[x][y_board].player==EMPTY || board->cells[x][y_board].player==current_player->couleur){
 			return 0;
@@ -102,17 +116,19 @@ int y_board=y+1;//si y=7 c'est la mouise
 		return 0;
 	}
 	y_board=y+1;
-	while(board->cells[x][y_board].player!=current_player->couleur && board->cells[x][y_board].player!=EMPTY){
-		printf("\n haut \n");
-		changer_texture_case(x,y_board,board,texture);
+	if(changerTexture==1){
+		while(board->cells[x][y_board].player!=current_player->couleur && board->cells[x][y_board].player!=EMPTY){
+			//printf("\n haut \n");
+			changer_texture_case(x,y_board,board,texture);
 
-		y_board++;
+			y_board++;
+		}
 	}
 	return 1;
 }
 
 
-int verif_place_verti_b(int x, int y, Board* board,SDL_Texture* texture){//verticale bas
+int verif_place_verti_b(int x, int y, Board* board,SDL_Texture* texture, int changerTexture){//verticale bas
 int y_board=y-1;//si y=0 c'est la mouise
 		if(board->cells[x][y_board].player==EMPTY || board->cells[x][y_board].player==current_player->couleur){
 			return 0;
@@ -127,14 +143,17 @@ int y_board=y-1;//si y=0 c'est la mouise
 		return 0;
 	}
 	y_board=y-1;
-	while(board->cells[x][y_board].player!=current_player->couleur && board->cells[x][y_board].player!=EMPTY){
-		printf("\n bas \n");
-		changer_texture_case(x,y_board,board,texture);
-		y_board--;
+	if(changerTexture==1){
+		while(board->cells[x][y_board].player!=current_player->couleur && board->cells[x][y_board].player!=EMPTY){
+			//printf("\n bas \n");
+			changer_texture_case(x,y_board,board,texture);
+			y_board--;
+		}
 	}
+
 	return 1;
 }
-int verif_place_diag_bg(int x, int y, Board* board,SDL_Texture* texture){//diag bas à gauche
+int verif_place_diag_bg(int x, int y, Board* board,SDL_Texture* texture,int changerTexture){//diag bas à gauche
 int x_board=x-1;//si x=0 c'est la mouise
 int y_board=y-1;//si y=0 c'est la mouise
 		if(board->cells[x_board][y_board].player==EMPTY || board->cells[x_board][y_board].player==current_player->couleur){
@@ -154,17 +173,19 @@ int y_board=y-1;//si y=0 c'est la mouise
 	}
 	x_board=x-1;//si x=0 c'est la mouise
 	y_board=y-1;
-	while(board->cells[x_board][y_board].player!=current_player->couleur && board->cells[x_board][y_board].player!=EMPTY){
-		printf("\n diag bas gauche\n");
-		changer_texture_case(x_board,y_board,board,texture);
-		x_board--;
-		y_board--;
+	if(changerTexture==1){
+		while(board->cells[x_board][y_board].player!=current_player->couleur && board->cells[x_board][y_board].player!=EMPTY){
+			//printf("\n diag bas gauche\n");
+			changer_texture_case(x_board,y_board,board,texture);
+			x_board--;
+			y_board--;
+		}
 	}
 	return 1;
 }
 
 
-int verif_place_diag_bd(int x, int y, Board* board,SDL_Texture * texture ){//diag bas à droite 
+int verif_place_diag_bd(int x, int y, Board* board,SDL_Texture * texture,int changerTexture ){//diag bas à droite 
 int x_board=x+1;//si x=7 c'est la mouise
 int y_board=y+1;//si y=7 c'est la mouise
 
@@ -184,15 +205,18 @@ int y_board=y+1;//si y=7 c'est la mouise
 		return 0;
 	x_board=x+1;//si x=7 c'est la mouise
 	y_board=y+1;
-	while(board->cells[x_board][y_board].player!=current_player->couleur && board->cells[x_board][y_board].player!=EMPTY){
-		printf("\n diag bas droite\n");
-		changer_texture_case(x_board,y_board,board,texture);
-		x_board++;
-		y_board++;
+	if(changerTexture==1){
+		while(board->cells[x_board][y_board].player!=current_player->couleur && board->cells[x_board][y_board].player!=EMPTY){
+			//printf("\n diag bas droite\n");
+			changer_texture_case(x_board,y_board,board,texture);
+			x_board++;
+			y_board++;
+		}
 	}
+
 	return 1;
 }
-int verif_place_diag_hg(int x, int y, Board* board,SDL_Texture* texture){//diag haut gauche
+int verif_place_diag_hg(int x, int y, Board* board,SDL_Texture* texture, int changerTexture){//diag haut gauche
 int x_board=x-1;//si x=0 c'est la mouise
 int y_board=y+1;//si y=7 c'est la mouise
 		if(board->cells[x_board][y_board].player==EMPTY || board->cells[x_board][y_board].player==current_player->couleur){
@@ -211,15 +235,16 @@ int y_board=y+1;//si y=7 c'est la mouise
 		return 0;
 	x_board=x-1;//si x=0 c'est la mouise
 	y_board=y+1;
+	if(changerTexture==1){
 	while(board->cells[x_board][y_board].player!=current_player->couleur && board->cells[x_board][y_board].player!=EMPTY){
-		printf("\n diag haut gauche\n");
+		//printf("\n diag haut gauche\n");
 		changer_texture_case(x_board,y_board,board,texture);
 		x_board--;
 		y_board++;
-	}
+	}}
 	return 1;
 }
-int verif_place_diag_hd(int x, int y, Board* board,SDL_Texture* texture){//diag  haut à droite
+int verif_place_diag_hd(int x, int y, Board* board,SDL_Texture* texture, int changerTexture){//diag  haut à droite
 int x_board=x+1;//si x=7 c'est la mouise
 int y_board=y-1;//si y=0 c'est la mouise
 		if(board->cells[x_board][y_board].player==EMPTY || board->cells[x_board][y_board].player==current_player->couleur){//si la case est vide ou si c'est le joueur qui a joué
@@ -238,11 +263,13 @@ int y_board=y-1;//si y=0 c'est la mouise
 		return 0;
 	x_board=x+1;//si x=7 c'est la mouise
 	y_board=y-1;
+	if(changerTexture==1){
 	while(board->cells[x_board][y_board].player!=current_player->couleur && board->cells[x_board][y_board].player!=EMPTY){
-		printf("\n diagonal haut droite\n");
+		//printf("\n diagonal haut droite\n");
 		changer_texture_case(x_board,y_board,board,texture);
 		x_board++;
 		y_board--;
+	}
 	}
 	return 1;
 }
@@ -252,8 +279,8 @@ char placer_pion(int x, int y, SDL_Texture* texture, Board* board) {//retourne 0
     int cell_x = (x - board->grid_x) / board->cell_size ;
     int cell_y = (y - board->grid_y) / board->cell_size ;
 
-    printf("\nboard->grid %d\n",board->grid_y);
-    printf("\ncell_x:%d et celle_y:%d\n",cell_x,cell_y);
+    //printf("\nboard->grid %d\n",board->grid_y);
+    //printf("\ncell_x:%d et celle_y:%d\n",cell_x,cell_y);
 	
     if (cell_x < 0  ||cell_x >= BOARD_SIZE ||x<screen_width*0.19|| cell_y < 0 || cell_y >= BOARD_SIZE||y<screen_height*0.2) {
         afficher_popup(renderer,"vous etes en dehors de la grille ");
@@ -267,20 +294,20 @@ char placer_pion(int x, int y, SDL_Texture* texture, Board* board) {//retourne 0
 		return 0;
 	}
 
-    if(verif_place_horiz_d(cell_x,cell_y,board,texture)==0 && verif_place_horiz_g(cell_x,cell_y,board,texture)==0 && verif_place_verti_h(cell_x,cell_y,board,texture)==0 && verif_place_verti_b(cell_x,cell_y,board,texture)==0 
-	&& verif_place_diag_bd(cell_x,cell_y, board,texture)==0 && verif_place_diag_bg(cell_x,cell_y, board,texture)==0&& verif_place_diag_hd(cell_x,cell_y, board,texture)==0&& verif_place_diag_hg(cell_x,cell_y, board,texture)==0){
+    if(verif_place_horiz_d(cell_x,cell_y,board,texture,1)==0 && verif_place_horiz_g(cell_x,cell_y,board,texture,1)==0 && verif_place_verti_h(cell_x,cell_y,board,texture,1)==0 && verif_place_verti_b(cell_x,cell_y,board,texture,1)==0 
+	&& verif_place_diag_bd(cell_x,cell_y, board,texture,1)==0 && verif_place_diag_bg(cell_x,cell_y, board,texture,1)==0&& verif_place_diag_hd(cell_x,cell_y, board,texture,1)==0&& verif_place_diag_hg(cell_x,cell_y, board,texture,1)==0){
 	printf(" \n mauvais placement non respect regles\n ");
     return 0;
      }
 	else{
-		verif_place_diag_bd(cell_x,cell_y, board,texture);
-		verif_place_diag_bg(cell_x,cell_y, board,texture);
-		verif_place_diag_hd(cell_x,cell_y, board,texture);
-		verif_place_diag_hg(cell_x,cell_y, board,texture);
-		verif_place_horiz_d(cell_x,cell_y,board,texture);
-		verif_place_horiz_g(cell_x,cell_y,board,texture);
-		verif_place_verti_h(cell_x,cell_y,board,texture);
-		verif_place_verti_b(cell_x,cell_y,board,texture);
+		verif_place_diag_bd(cell_x,cell_y, board,texture,1);
+		verif_place_diag_bg(cell_x,cell_y, board,texture,1);
+		verif_place_diag_hd(cell_x,cell_y, board,texture,1);
+		verif_place_diag_hg(cell_x,cell_y, board,texture,1);
+		verif_place_horiz_d(cell_x,cell_y,board,texture,1);
+		verif_place_horiz_g(cell_x,cell_y,board,texture,1);
+		verif_place_verti_h(cell_x,cell_y,board,texture,1);
+		verif_place_verti_b(cell_x,cell_y,board,texture,1);
 
 	}
 
@@ -306,6 +333,15 @@ char placer_pion(int x, int y, SDL_Texture* texture, Board* board) {//retourne 0
     };
     SDL_RenderCopy(renderer, texture, NULL, &dest_rect);
     SDL_RenderPresent(renderer);
+	int fin=Detection_Fin(board,texture);
+	printf("\n valeur de fin = %d \n",fin);
+	if(fin==1){
+		printf(" \n fin de la partie \n");
+		return 0;
+	}
+	else{
+			printf(" \n youpiiiiiiiiiiiiiiiiiiiiii\n");
+	}
 	printf("\n test fin placer_pion()\n");
         return 1;
 }

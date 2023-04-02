@@ -1,5 +1,5 @@
-
 #include "struct.h"
+
   extern  int screen_height;
   extern  int screen_width;// a changer dans init et affichage et logique.c si on change
   extern int grid_size ; //800*0.6
@@ -8,7 +8,6 @@
    extern int cell_size ;
   extern int grid_x ; //=margin x
   extern  int grid_y ;//=margin y
-
   
 //fonction qui bloque toutes les entrées utilisateurs pendant 2 secondes
 void wait_two_seconds() {
@@ -211,4 +210,80 @@ void afficher_popup(SDL_Renderer* renderer, const char* message) {
     SDL_DestroyTexture(texture);
     TTF_CloseFont(font);
 }
+  //permet de changer la texture de n mporte quelle case
+void changer_texture_case(int x, int y, Board* board,SDL_Texture* texture) {
+    // Vérifier que les indices sont valides
+	//	printf("\n changement de la texture \n");
+    if (x < 0 || x >= BOARD_SIZE || y < 0 || y >= BOARD_SIZE) {
+        printf("Indices de case invalides\n");
+        return;
+    }
+	//on met a jour la cellule
+	Cell* cell = &board->cells[x][y];
+	if(current_player==joueur_blanc){
+            cell->player = WHITE;
+            }
+	else{
+            cell->player = BLACK;  
+            }
 
+    // Afficher la nouvelle texture
+    SDL_Rect dest_rect = {
+        board->grid_x + x * board->cell_size+3,
+        board->grid_y + y * board->cell_size+3,
+        board->cell_size-5,
+        board->cell_size-5
+    };
+    SDL_RenderCopy(renderer, texture, NULL, &dest_rect);
+    SDL_RenderPresent(renderer);
+}
+void afficher_texture_coup_jouable(int x, int y, Board* board,SDL_Texture* texture){
+	    // Vérifier que les indices sont valides
+	//	printf("\n changement de la texture \n");
+    if (x < 0 || x >= BOARD_SIZE || y < 0 || y >= BOARD_SIZE) {
+        printf("Indices de case invalides\n");
+        return;
+    }
+    // Afficher la nouvelle texture
+    SDL_Rect dest_rect = {
+        board->grid_x + x * board->cell_size+3,
+        board->grid_y + y * board->cell_size+3,
+        board->cell_size-5,
+        board->cell_size-5
+    };
+    SDL_RenderCopy(renderer, texture, NULL, &dest_rect);
+    SDL_RenderPresent(renderer);
+
+}
+void afficher_coup_jouable(Board* board, SDL_Texture* texture){
+	int x, y;
+	for (x = 0; x < BOARD_SIZE; x++) {
+		for (y = 0; y < BOARD_SIZE; y++) {
+			if (verif_place_horiz_d(x, y, board, texture,0) == 1 && board->cells[x][y].player==EMPTY ){
+				afficher_texture_coup_jouable(x,y,board,texture);
+			}
+			if (verif_place_horiz_g(x, y, board, texture,0) == 1 && board->cells[x][y].player==EMPTY ){
+				afficher_texture_coup_jouable(x,y,board,texture);
+			}
+			if (verif_place_verti_h(x, y, board, texture,0) == 1 && board->cells[x][y].player==EMPTY ){
+				afficher_texture_coup_jouable(x,y,board,texture);
+			}
+			if (verif_place_verti_b(x, y, board, texture,0) == 1 && board->cells[x][y].player==EMPTY ){
+				afficher_texture_coup_jouable(x,y,board,texture);
+			}
+			if (verif_place_diag_bg(x, y, board, texture,0) == 1 && board->cells[x][y].player==EMPTY ){
+				afficher_texture_coup_jouable(x,y,board,texture);
+			}
+			if (verif_place_diag_bd(x, y, board, texture,0) == 1 && board->cells[x][y].player==EMPTY ){
+				afficher_texture_coup_jouable(x,y,board,texture);
+			}
+			if (verif_place_diag_hg(x, y, board, texture,0) == 1 && board->cells[x][y].player==EMPTY ){
+				afficher_texture_coup_jouable(x,y,board,texture);
+			}
+			if (verif_place_diag_hd(x, y, board, texture,0) == 1 && board->cells[x][y].player==EMPTY ){
+				afficher_texture_coup_jouable(x,y,board,texture);
+			}
+
+		}
+	}
+}

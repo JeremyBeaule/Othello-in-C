@@ -13,6 +13,7 @@ if (!black_texture) {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
+    return;
 
 }
 if (!white_texture) {
@@ -21,6 +22,7 @@ if (!white_texture) {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
+    return;
 
 }
 
@@ -29,21 +31,56 @@ if (!contour_texture) {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
+    return;
 
 }
+if (!grille_texture) {
+    printf("Erreur de chargement de la texture pour la grille: %s\n", IMG_GetError());
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+    return;
+
+}
+if (!fond_board) {
+    printf("Erreur de chargement de la texture pour le fond: %s\n", IMG_GetError());
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+    return;
+
+}
+if (!grey_texture) {
+    printf("Erreur de chargement de la texture pour le fond: %s\n", IMG_GetError());
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+    return;
+
+}
+if (!carre_grille_texture) {
+    printf("Erreur de chargement de la texture pour le fond: %s\n", IMG_GetError());
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+    return;
+
+}
+
 
 if (!renderer) {
     printf("Erreur de création du rendu SDL: %s\n", SDL_GetError());
     SDL_DestroyWindow(window);
     SDL_Quit();
+    return;
 
 }
 if (!window) {
     printf("Erreur de création de la fenêtre: %s\n", SDL_GetError());
     SDL_Quit();
+    return;
 
 }
-
 
 }
 Player* creer_joueur(char* nom, PlayerColor couleur) {
@@ -71,22 +108,16 @@ renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 // Charger les textures pour les pions noirs et blancs
 black_texture = IMG_LoadTexture(renderer, "image/pion_noir.png");//si on ne choisit aucun theme celui ci est pris par defaut
 white_texture = IMG_LoadTexture(renderer, "image/pion_blanc.png");//si on ne choisit aucun theme celui ci est pris par defaut
-test = IMG_LoadTexture(renderer, "image/pion_nyan.png");//si on ne choisit aucun theme celui ci est pris par defaut
+grey_texture = IMG_LoadTexture(renderer, "image/point_gris.png");//si on ne choisit aucun theme celui ci est pris par defaut
+carre_grille_texture = IMG_LoadTexture(renderer, "image/carre_grille.png");
+
 // Charger les textures la grille
 grille_texture = IMG_LoadTexture(renderer, "image/Board.png");// si on ne choisit aucun theme celui ci est pris par defaut
 fond_board=IMG_LoadTexture(renderer, "image/fond_board.png");//si on ne choisit aucun theme celui ci est pris par defaut
-
 // Charger les textures du contour
-
 contour_texture = IMG_LoadTexture(renderer, "image/contour_board.png");
 // Charger les textures du fond du menu
-
-Init_texture();
-
-
-
-
-    
+Init_texture();  
 }
 
 void initialiser_plateau(Board *board) {
