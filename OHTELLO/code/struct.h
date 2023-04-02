@@ -41,7 +41,7 @@ extern void init_All();
 extern void afficher_menu() ;
 
 //game.c
-extern void start();
+extern int start();
 
 
 //logique.c

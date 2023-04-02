@@ -39,7 +39,7 @@ SDL_GetWindowSize(window, &largeur_fenetre, &hauteur_fenetre);
           // Vérification si le clic est sur l'un des choix
           if (x >= 275 && x <= 525 && y >= 250 && y <= 350) {
             printf("\n Bouton 1 cliqué, lancement du programme\n");
-            start();
+            continuer = start();
           continue;
           }
           if (x >= 275 && x <= 525 && y >= 375 && y <= 475) {

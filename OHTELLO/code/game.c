@@ -1,5 +1,5 @@
 #include "struct.h"
-void start(){
+int start(){
 
 
 // Initialiser le plateau de jeu et l'afficher
@@ -64,6 +64,6 @@ SDL_DestroyRenderer(renderer);
 SDL_DestroyWindow(window);
 IMG_Quit();
 SDL_Quit();
-return;
+return 0 ;
 }
 
