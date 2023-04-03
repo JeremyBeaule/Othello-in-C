@@ -3,7 +3,6 @@
 int afficher_theme();
 
 void afficher_menu() {
-
   // Charger l'image à partir d'une image png'
 SDL_Texture* texture = IMG_LoadTexture(renderer, "image/fond_menu.png");
 SDL_Texture* son_on_texture = IMG_LoadTexture(renderer, "image/volume.png");
@@ -95,15 +94,9 @@ SDL_RenderCopy(renderer, Bt4_texture, NULL, &rect_choix4);
 //Update Screen
 SDL_RenderPresent(renderer);
 }
-
-// Free resources
-SDL_DestroyTexture(texture);
-SDL_DestroyTexture(Bstart_texture);
-SDL_DestroyTexture(Bt2_texture);
-SDL_DestroyTexture(Bt3_texture);
-SDL_DestroyTexture(son_on_texture);
-SDL_DestroyTexture(son_off_texture);
-SDL_DestroyTexture(Bt4_texture);
+SDL_Texture* textures[] = {texture, Bstart_texture, Bt2_texture, Bt3_texture, Bt4_texture, son_off_texture,son_on_texture, };
+int num_textures = sizeof(textures) / sizeof(SDL_Texture*);
+free_textures(textures,num_textures);
 SDL_DestroyRenderer(renderer);
 SDL_DestroyWindow(window);
 
@@ -161,6 +154,7 @@ SDL_Texture* plateau_texture_actuel = plateau_texture1;
               grille_texture = IMG_LoadTexture(renderer, "image/Board2.png");
               //contour_texture = IMG_LoadTexture(renderer, "image/contour.png");//pour le contour du jeu
               fond_board = IMG_LoadTexture(renderer, "image/fond_board2.png");
+              carre_grille_texture = IMG_LoadTexture(renderer, "image/carre_grille_bleu.png");
             }
             else if(choix==3){
               grille_texture = IMG_LoadTexture(renderer, "image/Board3.png");

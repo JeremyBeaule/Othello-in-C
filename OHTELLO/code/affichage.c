@@ -56,12 +56,12 @@ void afficher_plateau(Board* board) {
     SDL_RenderCopy(renderer, grille_texture, NULL, &grille_rect);//dessine le quadrillage
 
 
-    /*Dessiner le cadrillage
+    //Dessiner le cadrillage
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     for (int i = 1; i < BOARD_SIZE; i++) {
         SDL_RenderDrawLine(renderer, grid_x + i * cell_size, grid_y, grid_x + i * cell_size, grid_y + grid_size);
         SDL_RenderDrawLine(renderer, grid_x, grid_y + i * cell_size, grid_x + grid_size, grid_y + i * cell_size);
-    }*/
+    }
 
     // Dessiner les pions
     for (int i = 0; i < BOARD_SIZE; i++) {
@@ -286,4 +286,57 @@ void afficher_coup_jouable(Board* board, SDL_Texture* texture){
 
 		}
 	}
+}
+void afficher_image(SDL_Renderer* renderer,int vainqueur) {
+    // Charger l'image
+    SDL_Texture* texture = NULL;
+    // Créer la texture à partir de la surface
+    if ( vainqueur==1){
+    texture = IMG_LoadTexture(renderer, "image/pion_noir.png");
+    }
+    else{
+    texture = IMG_LoadTexture(renderer, "image/pion_blanc.png"); 
+    }
+    if (!texture) {
+        printf("Erreur de création de la texture : %s\n", SDL_GetError());
+        return;
+    }
+    // Récupérer les dimensions de la texture
+    int tex_w, tex_h;
+    SDL_QueryTexture(texture, NULL, NULL, &tex_w, &tex_h);
+    // Définir la zone d'affichage de l'image centrée
+    SDL_Rect dest_rect;
+    dest_rect.x = (screen_width - tex_w) / 2;
+    dest_rect.y = (screen_height - tex_h) / 2;
+    dest_rect.w = tex_w;
+    dest_rect.h = tex_h;
+    // Dessiner l'image centrée
+    SDL_RenderCopy(renderer, texture, NULL, &dest_rect);
+    // Rafraîchir l'affichage
+    SDL_RenderPresent(renderer);
+    
+    // Libérer les ressources
+    SDL_DestroyTexture(texture);
+}
+
+void Quit_end(SDL_Renderer* renderer){
+        // Charger l'image
+    SDL_Texture* texture = NULL;
+    texture = IMG_LoadTexture(renderer, "image/carre_grille.png");
+
+    // Récupérer les dimensions de la texture
+    int tex_w, tex_h;
+    SDL_QueryTexture(texture, NULL, NULL, &tex_w, &tex_h);
+    // Définir la zone d'affichage de l'image centrée
+    SDL_Rect dest_rect;
+    dest_rect.x = 350;
+    dest_rect.y = 350;
+    dest_rect.w = 200;
+    dest_rect.h = 200;
+    // Dessiner l'image centrée
+    SDL_RenderCopy(renderer, texture, NULL, &dest_rect);
+    // Rafraîchir l'affichage
+    SDL_RenderPresent(renderer);
+    // Libérer les ressources
+    SDL_DestroyTexture(texture);
 }

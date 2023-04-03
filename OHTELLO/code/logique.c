@@ -13,14 +13,14 @@ int Detection_Fin(Board* board, SDL_Texture* texture){
 			}
 		}
 	}
-	if(nb_case_vide==0 || coup_jouable_ou_non(board,texture)==0){
+	if(nb_case_vide==0 || verif_coup(board,texture)==0){
 		printf("\npartie finie\n");
 		return 1;
 	}
 	return 0;
 
 }
-int coup_jouable_ou_non(Board* board, SDL_Texture* texture) {
+int verif_coup(Board* board, SDL_Texture* texture) {
     int x, y;
     for (x = 0; x < BOARD_SIZE; x++) {
         for (y = 0; y < BOARD_SIZE; y++) {
@@ -37,6 +37,25 @@ int coup_jouable_ou_non(Board* board, SDL_Texture* texture) {
         }
 	}
     return 0;
+}
+int coup_jouable_ou_non(int cell_x, int cell_y, Board* board, SDL_Texture* texture){
+    if(verif_place_horiz_d(cell_x,cell_y,board,texture,1)==0 && verif_place_horiz_g(cell_x,cell_y,board,texture,1)==0 && verif_place_verti_h(cell_x,cell_y,board,texture,1)==0 && verif_place_verti_b(cell_x,cell_y,board,texture,1)==0 
+	&& verif_place_diag_bd(cell_x,cell_y, board,texture,1)==0 && verif_place_diag_bg(cell_x,cell_y, board,texture,1)==0&& verif_place_diag_hd(cell_x,cell_y, board,texture,1)==0&& verif_place_diag_hg(cell_x,cell_y, board,texture,1)==0){
+	printf(" \n mauvais placement non respect regles\n ");
+    return 0;
+     }
+	else{
+		verif_place_diag_bd(cell_x,cell_y, board,texture,1);
+		verif_place_diag_bg(cell_x,cell_y, board,texture,1);
+		verif_place_diag_hd(cell_x,cell_y, board,texture,1);
+		verif_place_diag_hg(cell_x,cell_y, board,texture,1);
+		verif_place_horiz_d(cell_x,cell_y,board,texture,1);
+		verif_place_horiz_g(cell_x,cell_y,board,texture,1);
+		verif_place_verti_h(cell_x,cell_y,board,texture,1);
+		verif_place_verti_b(cell_x,cell_y,board,texture,1);
+		return 1;
+	}
+	return 1;
 }
 
 
@@ -275,6 +294,7 @@ int y_board=y-1;//si y=0 c'est la mouise
 }
 
 char placer_pion(int x, int y, SDL_Texture* texture, Board* board) {//retourne 0 si le joueur n'a pas place son pion a reste son tour sinon retourne 1
+	int jouable;
     //permet d'avoir la cellule du tableau ou l'on clique
     int cell_x = (x - board->grid_x) / board->cell_size ;
     int cell_y = (y - board->grid_y) / board->cell_size ;
@@ -293,25 +313,11 @@ char placer_pion(int x, int y, SDL_Texture* texture, Board* board) {//retourne 0
 		afficher_popup(renderer,"case deja prise");
 		return 0;
 	}
-
-    if(verif_place_horiz_d(cell_x,cell_y,board,texture,1)==0 && verif_place_horiz_g(cell_x,cell_y,board,texture,1)==0 && verif_place_verti_h(cell_x,cell_y,board,texture,1)==0 && verif_place_verti_b(cell_x,cell_y,board,texture,1)==0 
-	&& verif_place_diag_bd(cell_x,cell_y, board,texture,1)==0 && verif_place_diag_bg(cell_x,cell_y, board,texture,1)==0&& verif_place_diag_hd(cell_x,cell_y, board,texture,1)==0&& verif_place_diag_hg(cell_x,cell_y, board,texture,1)==0){
-	printf(" \n mauvais placement non respect regles\n ");
-    return 0;
-     }
-	else{
-		verif_place_diag_bd(cell_x,cell_y, board,texture,1);
-		verif_place_diag_bg(cell_x,cell_y, board,texture,1);
-		verif_place_diag_hd(cell_x,cell_y, board,texture,1);
-		verif_place_diag_hg(cell_x,cell_y, board,texture,1);
-		verif_place_horiz_d(cell_x,cell_y,board,texture,1);
-		verif_place_horiz_g(cell_x,cell_y,board,texture,1);
-		verif_place_verti_h(cell_x,cell_y,board,texture,1);
-		verif_place_verti_b(cell_x,cell_y,board,texture,1);
-
+	jouable =coup_jouable_ou_non( cell_x, cell_y, board, texture);
+	if (jouable==0){
+		afficher_popup(renderer,"coup impossible");
+		return 0;
 	}
-
-
 
     if(current_player==joueur_blanc){
             cell->player = WHITE;
@@ -319,6 +325,7 @@ char placer_pion(int x, int y, SDL_Texture* texture, Board* board) {//retourne 0
 	else{
             cell->player = BLACK;  
             }
+
     current_player->score+=1;
     printf("\n ton score est : %d \n",current_player->score);
     printf("\n ton score est : %d \n",joueur_noir->score);
@@ -333,16 +340,45 @@ char placer_pion(int x, int y, SDL_Texture* texture, Board* board) {//retourne 0
     };
     SDL_RenderCopy(renderer, texture, NULL, &dest_rect);
     SDL_RenderPresent(renderer);
-	int fin=Detection_Fin(board,texture);
-	printf("\n valeur de fin = %d \n",fin);
-	if(fin==1){
-		printf(" \n fin de la partie \n");
-		return 0;
-	}
-	else{
-			printf(" \n youpiiiiiiiiiiiiiiiiiiiiii\n");
-	}
-	printf("\n test fin placer_pion()\n");
+
+
+	//printf("\n test fin placer_pion()\n");
         return 1;
 }
 
+void jouer(Board* board,int x,int y){
+	if(current_player==joueur_blanc){
+    afficher_coup_jouable(board,carre_grille_texture);//remetre les cases a leur textures normal
+             
+        if(placer_pion(x, y,white_texture , board)==1) {// la texture definit la couleur du pion qu'on va placer
+                    
+            current_player = joueur_noir;
+            SDL_Delay(500);
+                        }
+                    }
+        else {
+            printf("\njoueur noir\n");
+            afficher_coup_jouable(board,carre_grille_texture);//remetre les cases a leur textures normal
+
+                if(placer_pion(x, y,black_texture , board)==1){ // la texture definit la couleur du pion qu'on va placer 
+                   
+                   current_player = joueur_blanc;
+                    SDL_Delay(500);
+                   }
+
+                }
+			}
+void End_game(){
+
+		printf(" \n fin de la partie \n");
+        if (joueur_noir->score>joueur_blanc->score){
+            afficher_image(renderer,1);
+            Quit_end(renderer);
+
+        }
+        else{
+            afficher_image(renderer,2);
+            Quit_end(renderer);
+
+        }
+ }

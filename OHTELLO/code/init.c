@@ -144,3 +144,8 @@ void initialiser_plateau(Board *board) {
     board->cells[center - 1][center].player = BLACK;
     board->cells[center][center - 1].player = BLACK;
 }
+void free_textures(SDL_Texture** textures, int num_textures) {
+    for (int i = 0; i < num_textures; i++) {
+        SDL_DestroyTexture(textures[i]);
+    }
+}

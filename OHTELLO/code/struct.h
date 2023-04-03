@@ -36,6 +36,8 @@ extern void initialiser_plateau(Board *board);
 extern void Init_texture();
 Player* creer_joueur(char* nom, PlayerColor couleur) ;
 extern void init_All();
+void free_textures(SDL_Texture** textures, int num_textures);
+
 
 //menu.c
 extern void afficher_menu() ;
@@ -53,9 +55,11 @@ int verif_place_diag_bg(int x, int y, Board* board,SDL_Texture* texture, int cha
 int verif_place_diag_bd(int x, int y, Board* board,SDL_Texture* texture, int changerTexture);
 int verif_place_diag_hg(int x, int y, Board* board,SDL_Texture* texture, int changerTexture);
 int verif_place_diag_hd(int x, int y, Board* board,SDL_Texture* texture, int changerTexture);
-int coup_jouable_ou_non(Board* board, SDL_Texture* texture);
+int verif_coup(Board* board, SDL_Texture* texture);
 int Detection_Fin(Board* board, SDL_Texture* texture);
 char placer_pion(int x, int y, SDL_Texture* texture, Board* board);
+void jouer(Board* board,int x,int y);
+void End_game( );
 
 
 //affichage.c
@@ -66,6 +70,8 @@ extern void wait_two_seconds() ;
 void afficher_texture_coup_jouable(int x, int y, Board* board,SDL_Texture* texture);
 void afficher_coup_jouable(Board* board, SDL_Texture* texture);
 void changer_texture_case(int x, int y, Board* board,SDL_Texture* texture);
+void afficher_image(SDL_Renderer* renderer,int vainqueur) ;
+void Quit_end(SDL_Renderer* renderer );
 
 
 //declaration pour ne pas a les placer en parametre
