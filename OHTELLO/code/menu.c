@@ -63,7 +63,6 @@ void afficher_menu()
             }
             else{
             continuer = joueurvsjoueur(1);
-            }
             continue;
           }
           if (x >= 275 && x <= 525 && y >= 625 && y <= 725)

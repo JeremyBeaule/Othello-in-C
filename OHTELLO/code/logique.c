@@ -454,41 +454,8 @@ void End_game()
 	}
 }
 
-int charger_partie(Board *board, int chargement)
-{
-	// Initialiser le plateau de jeu et l'afficher
-	
-	initialiser_plateau(board);
 
-	if (chargement == 0) // int chargement correspond a si l'on charge ou non la partie, 0 = non
-	{
-		afficher_plateau(board, 1);
-		current_player = joueur_noir;
-		save_board(board);
-	}
-
-	else if (chargement == 1)
-	{
-		int couleur_joueur;
-		afficher_plateau(board, 0);
-		couleur_joueur = charger_pions(board);
-		if (couleur_joueur == 1)
-		{
-			current_player = joueur_noir;
-		}
-		else if (couleur_joueur == 2)
-		{
-			current_player = joueur_blanc;
-		}
-		else
-		{
-			printf("\n ERROR \n");
-			return 1;
-		}
-	}
-	return 0;
-}
-int passe_tour_ou_fin(Board *board){
+int passe_tour_ou_fin(Board *board){//si le joueur ne peut pas jouer, on passe au joueur suivant, si les 2 peuvent pas c est la fin de partie
 	int fin=0;
 	int coup_jouable = 0;
 		 for (int i = 0; i != 2; i++)
@@ -508,6 +475,7 @@ int passe_tour_ou_fin(Board *board){
 
 
             }
+			fin=0;
 
 			
         }

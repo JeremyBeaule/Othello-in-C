@@ -47,6 +47,7 @@ void save_board(Board *board);
 int charger_pions(Board *board);
 void efface_fichier();
 int is_file_empty();
+int charger_partie(Board *board, int chargement);
 
 // menu.c
 extern void afficher_menu();
@@ -67,7 +68,7 @@ int verif_coup(Board *board);
 char placer_pion(int x, int y, SDL_Texture *texture, Board *board);
 int jouer(Board *board, int x, int y,int coup_jouable);
 void End_game();
-int charger_partie(Board *board, int chargement);
+
 int Detection_complet(Board *board);
 int passe_tour_ou_fin(Board *board);
 int finis_ou_pas(Board *board);
