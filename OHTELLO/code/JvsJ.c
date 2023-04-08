@@ -1,37 +1,11 @@
 #include "struct.h"
 int joueurvsjoueur(int chargement)
-{ // int chargement correspond a si l'on charge ou non la partie, 0 = non
+{ 
     // Initialiser le plateau de jeu et l'afficher
     Board board;
-    initialiser_plateau(&board);
-
-    if (chargement == 0)
-    {
-        afficher_plateau(&board, 1);
-        current_player = joueur_noir;
-        save_board(&board);
-    }
-
-    else if (chargement == 1)
-    {
-        int couleur_joueur;
-        afficher_plateau(&board, 0);
-        couleur_joueur = charger_pions(&board);
-        if (couleur_joueur == 1)
-        {
-            current_player = joueur_noir;
-        }
-        else if (couleur_joueur == 2)
-        {
-            current_player = joueur_blanc;
-        }
-        else
-        {
-            printf("\n ERROR \n");
-            return 1;
-        }
-    }
+    charger_partie(&board, chargement); //logique.c 
     int fin = 0;
+    int coup_jouable = 0; // si c est egal a 2 ca veux dire que les 2 adversaires on passer leur tour donc que c est finis
     // Attendre que l'utilisateur ferme la fenêtre
     SDL_Event event;
     int quit = 0;
@@ -39,7 +13,13 @@ int joueurvsjoueur(int chargement)
     {
         affiche_tour(renderer);
         afficher_coup_jouable(&board, grey_texture); // afficher les coups jouables pour le joueur en cours
-
+        fin = finis_ou_pas(&board);//si la grille est complete ou si il n y a plus de coup jouable des 2 cotés
+        
+        if (fin == 1)//si la partie est finis
+        {
+            End_game();//on affiche le gagnant
+            efface_fichier();//on efface la sauvegarde
+        }
         while (SDL_PollEvent(&event))
         {
 
@@ -57,15 +37,15 @@ int joueurvsjoueur(int chargement)
                     int x = event.button.x;
                     int y = event.button.y;
                     printf("%d =x et %d = y\n,", x, y);
+
                     // verification_mouvement();
                     if (fin == 0)
                     {
-                        jouer(&board, x, y);
-                        fin = Detection_Fin(&board, white_texture);
+                        coup_jouable = jouer(&board, x, y, coup_jouable); // remet a 0 le compteur pour le coup jouable, dans le cas ou un joueur a passer son tour mais que l autre peut jouer
+                        
                     }
                     if (fin == 1)
-                    {
-                        End_game();
+                    {//pour cliquer et revenir au menu
                         if (x > 350 && x < 550 && y > 350 && y < 550)
                         { // il faut changer la zone de clique en dehors de la grille sinon ca click tout seul sur le bouton fin si on place le dernier bouton dans la zone
                             printf("\n click sur le bouton fin \n");
@@ -79,7 +59,7 @@ int joueurvsjoueur(int chargement)
         }
         SDL_RenderPresent(renderer);
     }
-    printf("programme finis");
+    printf("\n programme de jeu finis, retour au menu principal \n");
 
     // Libérer les ressources allouées
     SDL_DestroyTexture(black_texture);

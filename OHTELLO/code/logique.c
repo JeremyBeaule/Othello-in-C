@@ -3,7 +3,7 @@
 extern int screen_height;
 extern int screen_width;
 
-int Detection_Fin(Board *board, SDL_Texture *texture)
+int Detection_complet(Board *board)
 {
 	int i, j;
 	int nb_case_vide = 0;
@@ -17,28 +17,28 @@ int Detection_Fin(Board *board, SDL_Texture *texture)
 			}
 		}
 	}
-	if (nb_case_vide == 0 || verif_coup(board, texture) == 0)
+	if (nb_case_vide == 0)
 	{
 		printf("\npartie finie\n");
 		return 1;
 	}
 	return 0;
 }
-int verif_coup(Board *board, SDL_Texture *texture)
+int verif_coup(Board *board)
 {
 	int x, y;
 	for (x = 0; x < BOARD_SIZE; x++)
 	{
 		for (y = 0; y < BOARD_SIZE; y++)
 		{
-			if (verif_place_horiz_d(x, y, board, texture, 0) == 1 ||
-				verif_place_horiz_g(x, y, board, texture, 0) == 1 ||
-				verif_place_verti_h(x, y, board, texture, 0) == 1 ||
-				verif_place_verti_b(x, y, board, texture, 0) == 1 ||
-				verif_place_diag_bg(x, y, board, texture, 0) == 1 ||
-				verif_place_diag_bd(x, y, board, texture, 0) == 1 ||
-				verif_place_diag_hg(x, y, board, texture, 0) == 1 ||
-				verif_place_diag_hd(x, y, board, texture, 0) == 1)
+			if (verif_place_horiz_d(x, y, board, white_texture, 0) == 1 ||
+				verif_place_horiz_g(x, y, board, white_texture, 0) == 1 ||
+				verif_place_verti_h(x, y, board, white_texture, 0) == 1 ||
+				verif_place_verti_b(x, y, board, white_texture, 0) == 1 ||
+				verif_place_diag_bg(x, y, board, white_texture, 0) == 1 ||
+				verif_place_diag_bd(x, y, board, white_texture, 0) == 1 ||
+				verif_place_diag_hg(x, y, board, white_texture, 0) == 1 ||
+				verif_place_diag_hd(x, y, board, white_texture, 0) == 1)
 			{
 				return 1;
 			}
@@ -366,12 +366,14 @@ char placer_pion(int x, int y, SDL_Texture *texture, Board *board)
 	}
 
 	Cell *cell = &board->cells[cell_x][cell_y];
-
+	// verifie si la cellule est pas vide
 	if (cell->player != EMPTY)
 	{
 		afficher_popup(renderer, "case deja prise");
 		return 0;
 	}
+
+	// verifie les regles
 	jouable = coup_jouable_ou_non(cell_x, cell_y, board, texture);
 	if (jouable == 0)
 	{
@@ -379,6 +381,7 @@ char placer_pion(int x, int y, SDL_Texture *texture, Board *board)
 		return 0;
 	}
 
+	// changement de joueur
 	if (current_player == joueur_blanc)
 	{
 		cell->player = WHITE;
@@ -405,17 +408,17 @@ char placer_pion(int x, int y, SDL_Texture *texture, Board *board)
 	// printf("\n test fin placer_pion()\n");
 	return 1;
 }
-
-void jouer(Board *board, int x, int y)
+int jouer(Board *board, int x, int y, int coup_jouable)
 {
 
 	if (current_player == joueur_blanc)
 	{
+
 		afficher_coup_jouable(board, carre_grille_texture); // remetre les cases a leur textures normal
 
 		if (placer_pion(x, y, white_texture, board) == 1)
 		{ // la texture definit la couleur du pion qu'on va placer
-
+			coup_jouable = 0;
 			current_player = joueur_noir;
 			SDL_Delay(500);
 		}
@@ -427,12 +430,13 @@ void jouer(Board *board, int x, int y)
 
 		if (placer_pion(x, y, black_texture, board) == 1)
 		{ // la texture definit la couleur du pion qu'on va placer
-
+			coup_jouable = 0;
 			current_player = joueur_blanc;
 			SDL_Delay(500);
 		}
 	}
 	save_board(board);
+	return coup_jouable;
 }
 void End_game()
 {
@@ -448,4 +452,75 @@ void End_game()
 		afficher_image(renderer, 2);
 		Quit_end(renderer);
 	}
+}
+
+int charger_partie(Board *board, int chargement)
+{
+	// Initialiser le plateau de jeu et l'afficher
+	
+	initialiser_plateau(board);
+
+	if (chargement == 0) // int chargement correspond a si l'on charge ou non la partie, 0 = non
+	{
+		afficher_plateau(board, 1);
+		current_player = joueur_noir;
+		save_board(board);
+	}
+
+	else if (chargement == 1)
+	{
+		int couleur_joueur;
+		afficher_plateau(board, 0);
+		couleur_joueur = charger_pions(board);
+		if (couleur_joueur == 1)
+		{
+			current_player = joueur_noir;
+		}
+		else if (couleur_joueur == 2)
+		{
+			current_player = joueur_blanc;
+		}
+		else
+		{
+			printf("\n ERROR \n");
+			return 1;
+		}
+	}
+	return 0;
+}
+int passe_tour_ou_fin(Board *board){
+	int fin=0;
+	int coup_jouable = 0;
+		 for (int i = 0; i != 2; i++)
+        {
+            if (verif_coup(board) == 0 )
+            {
+                coup_jouable++;
+                printf("\naucun coup jouable pour le joueur en cours, on passe au joueur suivant\n");
+                if (current_player == joueur_blanc)
+                {
+                    current_player = joueur_noir;
+                }
+                else if (current_player == joueur_noir)
+                {
+                    current_player = joueur_blanc;
+                }
+
+
+            }
+
+			
+        }
+		    if (coup_jouable == 2)
+            {
+                fin = 1;
+            }
+		return fin;
+}
+int finis_ou_pas(Board *board){
+	if(passe_tour_ou_fin(board)==1 ||Detection_complet(board)==1){
+
+		return 1;
+	}
+	return 0;
 }

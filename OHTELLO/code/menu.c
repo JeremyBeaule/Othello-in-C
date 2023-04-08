@@ -43,7 +43,7 @@ void afficher_menu()
           if (x >= 275 && x <= 525 && y >= 250 && y <= 350)
           {
             printf("\n Bouton 1 cliqué, lancement du programme\n");
-            efface_fichier();
+            
             continuer = joueurvsjoueur(0);
             continue;
           }
@@ -57,7 +57,13 @@ void afficher_menu()
           if (x >= 275 && x <= 525 && y >= 500 && y <= 600)
           {
             printf("\n Bouton 3 cliqué, chargement de la partie\n");
+            if(is_file_empty()==1){
+              printf(" \nle fichier est vide, lancement d'une nouvelle partie\n");
+              continuer = joueurvsjoueur(0);
+            }
+            else{
             continuer = joueurvsjoueur(1);
+            }
             continue;
           }
           if (x >= 275 && x <= 525 && y >= 625 && y <= 725)

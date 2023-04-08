@@ -11,7 +11,7 @@ void save_board(Board *board)
         printf("Erreur : impossible d'ouvrir le fichier ");
         return;
     }
-    printf("enregistrement");
+   // printf("enregistrement");
 
     for (int i = 0; i < BOARD_SIZE; i++)
     {
@@ -73,4 +73,21 @@ void efface_fichier()
     FILE *fp = fopen("code/enregistrement.txt", "w");
 
     fclose(fp);
+}
+
+int is_file_empty() {
+    FILE* fp = fopen("code/enregistrement.txt", "r");
+    if (fp == NULL) {
+        printf("Erreur : impossible d'ouvrir le fichier\n");
+        return 1;
+    }
+
+    int is_empty = 1;
+    char c = fgetc(fp);
+    if (c != EOF) {
+        is_empty = 0;
+    }
+
+    fclose(fp);
+    return is_empty;
 }
