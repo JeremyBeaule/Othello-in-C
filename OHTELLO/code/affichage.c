@@ -29,7 +29,7 @@ void wait_two_seconds() {
 }
 
 
-void afficher_plateau(Board* board) {
+void afficher_plateau(Board* board, int choix) { //le choix correspond a si l'on charge une partie ou non, pour savoir si on affiche les 4 pions au centre ou non
     SDL_RenderClear(renderer);
 
     // Calculer la taille de la bordure en fonction de la taille de la grille
@@ -52,8 +52,8 @@ void afficher_plateau(Board* board) {
     //dessine le fond
     SDL_RenderCopy(renderer, fond_board, NULL, &rect);
     // Dessiner l'image de fond pour la grille et pour le contour de la grille
-    SDL_RenderCopy(renderer, contour_texture, NULL, &border_rect);
-    SDL_RenderCopy(renderer, grille_texture, NULL, &grille_rect);//dessine le quadrillage
+    SDL_RenderCopy(renderer, contour_texture, NULL, &border_rect);//dessine le contour du plateau
+    SDL_RenderCopy(renderer, grille_texture, NULL, &grille_rect);//dessine le plateau
 
 
     //Dessiner le cadrillage
@@ -64,25 +64,27 @@ void afficher_plateau(Board* board) {
     }
 
     // Dessiner les pions
-    for (int i = 0; i < BOARD_SIZE; i++) {
-        for (int j = 0; j < BOARD_SIZE; j++) {
-            PlayerColor player = board->cells[i][j].player;
-            if (player == BLACK) {
+    if (choix==1){
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                PlayerColor player = board->cells[i][j].player;
+                if (player == BLACK) {
 
-                SDL_Rect rect = board->cells[i][j].rect;
-                rect.x = grid_x + i * cell_size+3;
-                rect.y = grid_y + j * cell_size+3;
-                rect.w = cell_size-5;
-                rect.h = cell_size-5;
-                SDL_RenderCopy(renderer, black_texture, NULL, &rect);
-            } else if (player == WHITE) {
+                    SDL_Rect rect = board->cells[i][j].rect;
+                    rect.x = grid_x + i * cell_size+3;
+                    rect.y = grid_y + j * cell_size+3;
+                    rect.w = cell_size-5;
+                    rect.h = cell_size-5;
+                    SDL_RenderCopy(renderer, black_texture, NULL, &rect);
+                } else if (player == WHITE) {
 
-                SDL_Rect rect = board->cells[i][j].rect;
-                rect.x = grid_x + i * cell_size+3;
-                rect.y = grid_y + j * cell_size+3;
-                rect.w = cell_size-5;
-                rect.h = cell_size-5;
-                SDL_RenderCopy(renderer, white_texture, NULL, &rect);
+                    SDL_Rect rect = board->cells[i][j].rect;
+                    rect.x = grid_x + i * cell_size+3;
+                    rect.y = grid_y + j * cell_size+3;
+                    rect.w = cell_size-5;
+                    rect.h = cell_size-5;
+                    SDL_RenderCopy(renderer, white_texture, NULL, &rect);
+                }
             }
         }
     }
@@ -257,21 +259,27 @@ void afficher_texture_coup_jouable(int x, int y, Board* board,SDL_Texture* textu
 }
 void afficher_coup_jouable(Board* board, SDL_Texture* texture){
 	int x, y;
+
 	for (x = 0; x < BOARD_SIZE; x++) {
 		for (y = 0; y < BOARD_SIZE; y++) {
 			if (verif_place_horiz_d(x, y, board, texture,0) == 1 && board->cells[x][y].player==EMPTY ){
+       
 				afficher_texture_coup_jouable(x,y,board,texture);
 			}
 			if (verif_place_horiz_g(x, y, board, texture,0) == 1 && board->cells[x][y].player==EMPTY ){
+              
 				afficher_texture_coup_jouable(x,y,board,texture);
 			}
 			if (verif_place_verti_h(x, y, board, texture,0) == 1 && board->cells[x][y].player==EMPTY ){
+        
 				afficher_texture_coup_jouable(x,y,board,texture);
 			}
 			if (verif_place_verti_b(x, y, board, texture,0) == 1 && board->cells[x][y].player==EMPTY ){
+         
 				afficher_texture_coup_jouable(x,y,board,texture);
 			}
 			if (verif_place_diag_bg(x, y, board, texture,0) == 1 && board->cells[x][y].player==EMPTY ){
+              
 				afficher_texture_coup_jouable(x,y,board,texture);
 			}
 			if (verif_place_diag_bd(x, y, board, texture,0) == 1 && board->cells[x][y].player==EMPTY ){
@@ -340,3 +348,30 @@ void Quit_end(SDL_Renderer* renderer){
     // Libérer les ressources
     SDL_DestroyTexture(texture);
 }
+
+
+ void placer_pion_chargement_partie(Board* board, int cell_x, int cell_y, int joueur){
+	SDL_Texture* texture= NULL;
+	if(joueur==1){//joueur noir
+        texture = black_texture;
+       board->cells[cell_x][cell_y].player = BLACK;
+	}
+	else if(joueur==2){
+		texture = white_texture;
+        board->cells[cell_x][cell_y].player = WHITE;
+	}
+
+    // Afficher le pion
+    SDL_Rect dest_rect = {
+        board->grid_x + cell_x * board->cell_size+3,
+        board->grid_y + cell_y * board->cell_size+3,
+        board->cell_size-5,
+        board->cell_size-5
+    };
+    SDL_RenderCopy(renderer, texture, NULL, &dest_rect);
+    SDL_RenderPresent(renderer);
+
+
+	//printf("\n test fin placer_pion()\n");
+
+ }

@@ -347,6 +347,7 @@ char placer_pion(int x, int y, SDL_Texture* texture, Board* board) {//retourne 0
 }
 
 void jouer(Board* board,int x,int y){
+	
 	if(current_player==joueur_blanc){
     afficher_coup_jouable(board,carre_grille_texture);//remetre les cases a leur textures normal
              
@@ -367,9 +368,10 @@ void jouer(Board* board,int x,int y){
                    }
 
                 }
+				save_board(board);
 			}
-void End_game(){
-
+void End_game(){	
+		
 		printf(" \n fin de la partie \n");
         if (joueur_noir->score>joueur_blanc->score){
             afficher_image(renderer,1);
@@ -382,3 +384,4 @@ void End_game(){
 
         }
  }
+

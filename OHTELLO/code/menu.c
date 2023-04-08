@@ -38,7 +38,8 @@ SDL_GetWindowSize(window, &largeur_fenetre, &hauteur_fenetre);
           // Vérification si le clic est sur l'un des choix
           if (x >= 275 && x <= 525 && y >= 250 && y <= 350) {
             printf("\n Bouton 1 cliqué, lancement du programme\n");
-            continuer = start();
+            efface_fichier();
+            continuer = joueurvsjoueur(0);
           continue;
           }
           if (x >= 275 && x <= 525 && y >= 375 && y <= 475) {
@@ -48,8 +49,8 @@ SDL_GetWindowSize(window, &largeur_fenetre, &hauteur_fenetre);
             continue;
           }
           if (x >= 275 && x <= 525 && y >= 500 && y <= 600) {
-
-            start();
+            printf("\n Bouton 3 cliqué, chargement de la partie\n");
+            joueurvsjoueur(1);
             continue;
           }
           if (x >= 275 && x <= 525 && y >= 625 && y <= 725) {

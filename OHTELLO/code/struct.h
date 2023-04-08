@@ -38,12 +38,17 @@ Player* creer_joueur(char* nom, PlayerColor couleur) ;
 extern void init_All();
 void free_textures(SDL_Texture** textures, int num_textures);
 
+//load.c
+void save_board(Board* board);
+int charger_pions(Board* board);
+void efface_fichier();
+
 
 //menu.c
 extern void afficher_menu() ;
 
-//game.c
-extern int start();
+//JvsJ.c
+extern int joueurvsjoueur(int chargement);
 
 
 //logique.c
@@ -62,8 +67,10 @@ void jouer(Board* board,int x,int y);
 void End_game( );
 
 
+
+
 //affichage.c
-extern void afficher_plateau(Board* board) ;
+extern void afficher_plateau(Board* board, int choix) ;
 extern void affiche_tour(SDL_Renderer* renderer);
 extern void afficher_popup(SDL_Renderer* renderer, const char* message);
 extern void wait_two_seconds() ;
@@ -72,6 +79,9 @@ void afficher_coup_jouable(Board* board, SDL_Texture* texture);
 void changer_texture_case(int x, int y, Board* board,SDL_Texture* texture);
 void afficher_image(SDL_Renderer* renderer,int vainqueur) ;
 void Quit_end(SDL_Renderer* renderer );
+
+ void placer_pion_chargement_partie(Board* board, int cell_x, int cell_y, int joueur);
+
 
 
 //declaration pour ne pas a les placer en parametre

@@ -100,7 +100,7 @@ void init_All(){
     //creation des joueurs
 joueur_noir = creer_joueur("Noir", BLACK);
 joueur_blanc = creer_joueur("Blanc", WHITE);
-current_player = joueur_blanc; // Le joueur courant est le joueur 1
+current_player = joueur_noir; // Le joueur courant est le joueur 1
 //creation de la fenetre
 window = SDL_CreateWindow("Othello", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, BOARD_SIZE * CELL_SIZE+300, BOARD_SIZE * CELL_SIZE+300,0);
 //creation du renderer, ce qu on va mettre a jour pour afficher des choses
