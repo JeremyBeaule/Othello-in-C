@@ -51,12 +51,14 @@ void afficher_plateau(Board *board, int choix)
 
     // dessine le quadrillage
     SDL_Rect grille_rect = {grid_x, grid_y, grid_size, grid_size};
+     SDL_Rect previous = {300, 650, 100, 100};//bouton precedent
     SDL_RenderClear(renderer);
     // dessine le fond
     SDL_RenderCopy(renderer, fond_board, NULL, &rect);
     // Dessiner l'image de fond pour la grille et pour le contour de la grille
     SDL_RenderCopy(renderer, contour_texture, NULL, &border_rect); // dessine le contour du plateau
     SDL_RenderCopy(renderer, grille_texture, NULL, &grille_rect);  // dessine le plateau
+      SDL_RenderCopy(renderer, previous_texture, NULL, &previous);  // dessine le bouton "precedent"
 
     // Dessiner le cadrillage
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);

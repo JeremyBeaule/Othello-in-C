@@ -48,13 +48,14 @@ int verif_coup(Board *board)
 }
 int coup_jouable_ou_non(int cell_x, int cell_y, Board *board, SDL_Texture *texture)
 {
-	if (verif_place_horiz_d(cell_x, cell_y, board, texture, 1) == 0 && verif_place_horiz_g(cell_x, cell_y, board, texture, 1) == 0 && verif_place_verti_h(cell_x, cell_y, board, texture, 1) == 0 && verif_place_verti_b(cell_x, cell_y, board, texture, 1) == 0 && verif_place_diag_bd(cell_x, cell_y, board, texture, 1) == 0 && verif_place_diag_bg(cell_x, cell_y, board, texture, 1) == 0 && verif_place_diag_hd(cell_x, cell_y, board, texture, 1) == 0 && verif_place_diag_hg(cell_x, cell_y, board, texture, 1) == 0)
+	if (verif_place_horiz_d(cell_x, cell_y, board, texture, 0) == 0 && verif_place_horiz_g(cell_x, cell_y, board, texture, 0) == 0 && verif_place_verti_h(cell_x, cell_y, board, texture, 0) == 0 && verif_place_verti_b(cell_x, cell_y, board, texture, 0) == 0 && verif_place_diag_bd(cell_x, cell_y, board, texture, 0) == 0 && verif_place_diag_bg(cell_x, cell_y, board, texture, 0) == 0 && verif_place_diag_hd(cell_x, cell_y, board, texture, 0) == 0 && verif_place_diag_hg(cell_x, cell_y, board, texture, 0) == 0)
 	{
 		printf(" \n mauvais placement non respect regles\n ");
 		return 0;
 	}
 	else
 	{
+	save_board(board,"code/precedent.txt");//pour revenir en arriere
 		verif_place_diag_bd(cell_x, cell_y, board, texture, 1);
 		verif_place_diag_bg(cell_x, cell_y, board, texture, 1);
 		verif_place_diag_hd(cell_x, cell_y, board, texture, 1);
@@ -359,11 +360,6 @@ char placer_pion(int x, int y, SDL_Texture *texture, Board *board)
 	// printf("\nboard->grid %d\n",board->grid_y);
 	// printf("\ncell_x:%d et celle_y:%d\n",cell_x,cell_y);
 
-	if (cell_x < 0 || cell_x >= BOARD_SIZE || x < screen_width * 0.19 || cell_y < 0 || cell_y >= BOARD_SIZE || y < screen_height * 0.2)
-	{
-		afficher_popup(renderer, "vous etes en dehors de la grille ");
-		return 0;
-	}
 
 	Cell *cell = &board->cells[cell_x][cell_y];
 	// verifie si la cellule est pas vide
@@ -381,7 +377,7 @@ char placer_pion(int x, int y, SDL_Texture *texture, Board *board)
 		return 0;
 	}
 
-	// changement de joueur
+	// mis a jour de la cellule
 	if (current_player == joueur_blanc)
 	{
 		cell->player = WHITE;
@@ -410,7 +406,7 @@ char placer_pion(int x, int y, SDL_Texture *texture, Board *board)
 }
 int jouer(Board *board, int x, int y, int coup_jouable)
 {
-
+	
 	if (current_player == joueur_blanc)
 	{
 
@@ -418,6 +414,7 @@ int jouer(Board *board, int x, int y, int coup_jouable)
 
 		if (placer_pion(x, y, white_texture, board) == 1)
 		{ // la texture definit la couleur du pion qu'on va placer
+				
 			coup_jouable = 0;
 			current_player = joueur_noir;
 			SDL_Delay(500);
@@ -430,12 +427,13 @@ int jouer(Board *board, int x, int y, int coup_jouable)
 
 		if (placer_pion(x, y, black_texture, board) == 1)
 		{ // la texture definit la couleur du pion qu'on va placer
+					
 			coup_jouable = 0;
 			current_player = joueur_blanc;
 			SDL_Delay(500);
 		}
 	}
-	save_board(board);
+	
 	return coup_jouable;
 }
 void End_game()

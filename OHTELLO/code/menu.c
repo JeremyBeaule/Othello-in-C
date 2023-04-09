@@ -57,7 +57,7 @@ void afficher_menu()
           if (x >= 275 && x <= 525 && y >= 500 && y <= 600)
           {
             printf("\n Bouton 3 cliqué, chargement de la partie\n");
-            if(is_file_empty()==1){
+            if(is_file_empty("code/enregistrement.txt")==1){
               printf(" \nle fichier est vide, lancement d'une nouvelle partie\n");
               continuer = joueurvsjoueur(0);
             }
@@ -110,7 +110,7 @@ void afficher_menu()
 
     // Update Screen
     SDL_RenderPresent(renderer);
-  }
+  }}
   SDL_Texture *textures[] = {
       texture,
       Bstart_texture,
@@ -130,6 +130,7 @@ void afficher_menu()
   printf("\n le menu ce ferme\n");
   exit(EXIT_SUCCESS);
 }
+
 
 int afficher_theme()
 {

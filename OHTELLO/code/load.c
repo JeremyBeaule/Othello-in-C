@@ -1,11 +1,11 @@
 #include "struct.h"
 #include "stdbool.h"
 
-void save_board(Board *board)
+void save_board(Board *board,const char  *filename)
 {
     FILE *fp = NULL;
     printf("enregistrement du plateau");
-    fp = fopen("code/enregistrement.txt", "w");
+    fp = fopen(filename, "w");
     if (fp == NULL)
     {
         printf("Erreur : impossible d'ouvrir le fichier ");
@@ -29,11 +29,11 @@ void save_board(Board *board)
     fclose(fp);
 }
 
-int charger_pions(Board *board)
+int charger_pions(Board *board,const char  *filename)
 {
     FILE *fp = NULL;
     printf("\n chargement en cours \n");
-    fp = fopen("code/enregistrement.txt", "r");
+    fp = fopen(filename, "r");
     if (fp == NULL)
     {
         printf("\nErreur : impossible d'ouvrir le fichier\n");
@@ -68,15 +68,15 @@ int charger_pions(Board *board)
     fclose(fp);
     return couleur;
 }
-void efface_fichier()
+void efface_fichier(const char  *filename)
 {
-    FILE *fp = fopen("code/enregistrement.txt", "w");
+    FILE *fp = fopen(filename, "w");
 
     fclose(fp);
 }
 
-int is_file_empty() {
-    FILE* fp = fopen("code/enregistrement.txt", "r");
+int is_file_empty(const char  *filename) {
+    FILE* fp = fopen(filename, "r");
     if (fp == NULL) {
         printf("Erreur : impossible d'ouvrir le fichier\n");
         return 1;
@@ -91,7 +91,7 @@ int is_file_empty() {
     fclose(fp);
     return is_empty;
 }
-int charger_partie(Board *board, int chargement)
+int charger_partie(Board *board, int chargement,const char *filename)
 {
 	// Initialiser le plateau de jeu et l'afficher
 	
@@ -99,16 +99,17 @@ int charger_partie(Board *board, int chargement)
 
 	if (chargement == 0) // int chargement correspond a si l'on charge ou non la partie, 0 = non
 	{
+        printf("chargement = 0");
 		afficher_plateau(board, 1);
 		current_player = joueur_noir;
-		save_board(board);
+		save_board(board,filename);
 	}
 
 	else if (chargement == 1)
 	{
 		int couleur_joueur;
 		afficher_plateau(board, 0);
-		couleur_joueur = charger_pions(board);
+		couleur_joueur = charger_pions(board,filename);
 		if (couleur_joueur == 1)
 		{
 			current_player = joueur_noir;

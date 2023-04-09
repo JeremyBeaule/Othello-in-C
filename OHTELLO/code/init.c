@@ -112,7 +112,7 @@ void init_All()
     white_texture = IMG_LoadTexture(renderer, "image/pion_blanc.png"); // si on ne choisit aucun theme celui ci est pris par defaut
     grey_texture = IMG_LoadTexture(renderer, "image/point_gris.png");  // si on ne choisit aucun theme celui ci est pris par defaut
     carre_grille_texture = IMG_LoadTexture(renderer, "image/carre_grille.png");
-
+    previous_texture = IMG_LoadTexture(renderer,"image/home.png");
     // Charger les textures la grille
     grille_texture = IMG_LoadTexture(renderer, "image/Board.png");  // si on ne choisit aucun theme celui ci est pris par defaut
     fond_board = IMG_LoadTexture(renderer, "image/fond_board.png"); // si on ne choisit aucun theme celui ci est pris par defaut

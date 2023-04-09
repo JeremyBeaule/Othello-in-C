@@ -1,9 +1,9 @@
 #include "struct.h"
-int joueurvsjoueur(int chargement)
+int joueurvsjoueur(int chargement)//si chargement =0 c est une nouvelle partie, si un c est un chargement de partie
 {
     // Initialiser le plateau de jeu et l'afficher
     Board board;
-    charger_partie(&board, chargement); // logique.c
+    charger_partie(&board, chargement,"code/enregistrement.txt"); // load.c
     int fin = 0;
     int coup_jouable = 0; // si c est egal a 2 ca veux dire que les 2 adversaires on passer leur tour donc que c est finis
     // Attendre que l'utilisateur ferme la fenêtre
@@ -18,7 +18,7 @@ int joueurvsjoueur(int chargement)
         if (fin == 1) // si la partie est finis
         {
             End_game();       // on affiche le gagnant
-            efface_fichier(); // on efface la sauvegarde
+            efface_fichier("code/enregistrement.txt"); // on efface la sauvegarde
         }
         while (SDL_PollEvent(&event))
         {
@@ -36,24 +36,39 @@ int joueurvsjoueur(int chargement)
                 {
                     int x = event.button.x;
                     int y = event.button.y;
+                    int cell_x = (x - board.grid_x) / board.cell_size;
+                    int cell_y = (y - board.grid_y) / board.cell_size;
                     printf("%d =x et %d = y\n,", x, y);
                     if (fin == 0)
                     {
-                        coup_jouable = jouer(&board, x, y, coup_jouable); // remet a 0 le compteur pour le coup jouable, dans le cas ou un joueur a passer son tour mais que l autre peut jouer
+                        if (cell_x < 0 || cell_x >= BOARD_SIZE || x < 800 * 0.19 || cell_y < 0 || cell_y >= BOARD_SIZE || y < 800 * 0.2) // si en dehors de la grille
+                        {
+                            if (x > 300 && x < 400 && y > 650 && y < 750)
+                            {
+                                printf("\n precedent \n");
+
+
+
+                                charger_partie(&board, 1,"code/precedent.txt"); //charger le coup precedent
+                                // TODO
+                                // revenir en arriere lors du clique sur un bouton
+                                // rajouter les elements graphiques sur la fonction affichez_plateau
+                            }
+                            printf("\n hors grille \n");
+                        }
+                        else
+                        {
+                            
+                            coup_jouable = jouer(&board, x, y, coup_jouable); // remet a 0 le compteur pour le coup jouable, dans le cas ou un joueur a passer son tour mais que l autre peut jouer
+                            save_board(&board,"code/enregistrement.txt");
+                        }
 
                         if (x > 350 && x < 550 && y > 350 && y < 550)
                         {
                             // TODO
-                            // revenir en arriere lors du clique sur un bouton
-                            //rajouter les elements graphiques sur la fonction affichez_plateau
-                        }
-                        if (x > 350 && x < 550 && y > 350 && y < 550)
-                        {
-                            // TODO
                             // activer ou desactiver l'enregistrement de partie automatique et changer l emoticon
-                            //on enregistre dans tout les cas pour revenir un coup en arriere mais si on desactive la sauvegarde auto et que l'on quitte le jeu alors le fichier s efface
-                            //il faut rajouter une condition dans le SDL_QUIT
-                        
+                            // on enregistre dans tout les cas pour revenir un coup en arriere mais si on desactive la sauvegarde auto et que l'on quitte le jeu alors le fichier s efface
+                            // il faut rajouter une condition dans le SDL_QUIT
                         }
                     }
                     if (fin == 1)

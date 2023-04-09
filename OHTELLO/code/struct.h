@@ -43,11 +43,11 @@ extern void init_All();
 void free_textures(SDL_Texture **textures, int num_textures);
 
 // load.c
-void save_board(Board *board);
-int charger_pions(Board *board);
-void efface_fichier();
-int is_file_empty();
-int charger_partie(Board *board, int chargement);
+void save_board(Board *board,const char  *filename);
+int charger_pions(Board *board,const char  *filename);
+void efface_fichier(const char  *filename);
+int is_file_empty(const char  *filename);
+int charger_partie(Board *board, int chargement,const char  *filename);
 
 // menu.c
 extern void afficher_menu();
@@ -101,6 +101,7 @@ SDL_Texture *fond_board;
 SDL_Texture *grille_texture;
 SDL_Surface *contour_surface;
 SDL_Texture *contour_texture;
+SDL_Texture *previous_texture;
 Player *joueur_noir;
 Player *joueur_blanc;
 Player *current_player;
