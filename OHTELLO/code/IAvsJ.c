@@ -25,9 +25,11 @@ int IAvsjoueur(int chargement) // si chargement =0 c est une nouvelle partie, si
             efface_fichier("code/enregistrement.txt"); // on efface la sauvegarde
             efface_fichier("code/precedent.txt");      // on efface la sauvegarde
         }
+        else
+        {
         jouer_IA(&board);
         SDL_Delay(500);
-
+        }
         while (SDL_PollEvent(&event))
         {
 

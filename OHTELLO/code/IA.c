@@ -117,7 +117,7 @@ GameTreeNode *generate_children(Board *board, PlayerColor color, int *num_childr
     GameTreeNode *children = NULL;
     *num_children = 0;
 
-    if (depth >= 5)
+    if (depth >= 8) //1,3,5,7 les nombres pair bug et au dessus de 7 trop gourmand en ressources
     {
         return NULL;
     }
@@ -173,7 +173,7 @@ GameTreeNode *generate_children(Board *board, PlayerColor color, int *num_childr
 void IA(Board *board, int *best_move_x, int *best_move_y)
 {
     // printf("\n IA \n");
-    int depth = 0; // You can adjust the depth based on your desired complexity
+    int depth = 1; // You can adjust the depth based on your desired complexity
     int bestScore = INT_MIN;
     int num_children;
     GameTreeNode root;

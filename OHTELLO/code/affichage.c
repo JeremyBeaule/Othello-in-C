@@ -300,6 +300,7 @@ void afficher_coup_jouable(Board *board, SDL_Texture *texture)
 
                 afficher_texture_coup_jouable(x, y, board, texture);
             }
+            /**/
             if (verif_place_verti_h(x, y, board, texture, 0) == 1 && board->cells[x][y].player == EMPTY)
             {
 
