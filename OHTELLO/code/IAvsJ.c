@@ -1,27 +1,33 @@
 #include "struct.h"
-int joueurvsjoueur(int chargement)//si chargement =0 c est une nouvelle partie, si un c est un chargement de partie
+int IAvsjoueur(int chargement) // si chargement =0 c est une nouvelle partie, si un c est un chargement de partie
 {
     // Initialiser le plateau de jeu et l'afficher
     Board board;
-    charger_partie(&board, chargement,"code/enregistrement.txt"); // load.c
-    efface_fichier("code/precedent.txt"); // on efface la sauvegarde
+    charger_partie(&board, chargement, "code/enregistrement.txt"); // load.c
+    efface_fichier("code/precedent.txt");                          // on efface la sauvegarde
     int fin = 0;
-    int coup_jouable = 0; // si c est egal a 2 ca veux dire que les 2 adversaires on passer leur tour donc que c est finis
+
     // Attendre que l'utilisateur ferme la fenêtre
     SDL_Event event;
     int quit = 0;
+
     while (quit == 0)
     {
         affiche_tour(renderer);
+
         afficher_coup_jouable(&board, grey_texture); // afficher les coups jouables pour le joueur en cours
-        fin = finis_ou_pas(&board);                  // si la grille est complete ou si il n y a plus de coup jouable des 2 cotés
+
+        fin = finis_ou_pas(&board); // si la grille est complete ou si il n y a plus de coup jouable des 2 cotés
 
         if (fin == 1) // si la partie est finis
         {
-            End_game();       // on affiche le gagnant
+            End_game();                                // on affiche le gagnant
             efface_fichier("code/enregistrement.txt"); // on efface la sauvegarde
-            efface_fichier("code/precedent.txt"); // on efface la sauvegarde
+            efface_fichier("code/precedent.txt");      // on efface la sauvegarde
         }
+        jouer_IA(&board);
+        SDL_Delay(500);
+
         while (SDL_PollEvent(&event))
         {
 
@@ -40,7 +46,8 @@ int joueurvsjoueur(int chargement)//si chargement =0 c est une nouvelle partie, 
                     int y = event.button.y;
                     int cell_x = (x - board.grid_x) / board.cell_size;
                     int cell_y = (y - board.grid_y) / board.cell_size;
-                    printf("%d =x et %d = y\n,", x, y);
+                    // printf("%d =x et %d = y\n,", x, y);
+
                     if (fin == 0)
                     {
                         if (cell_x < 0 || cell_x >= BOARD_SIZE || x < 800 * 0.19 || cell_y < 0 || cell_y >= BOARD_SIZE || y < 800 * 0.2) // si en dehors de la grille
@@ -49,20 +56,17 @@ int joueurvsjoueur(int chargement)//si chargement =0 c est une nouvelle partie, 
                             {
                                 printf("\n precedent \n");
 
+                                charger_partie(&board, 1, "code/precedent.txt"); // charger le coup precedent
 
-
-                                charger_partie(&board, 1,"code/precedent.txt"); //charger le coup precedent
-                                // TODO
-                                // revenir en arriere lors du clique sur un bouton
-                                // rajouter les elements graphiques sur la fonction affichez_plateau
                             }
                             printf("\n hors grille \n");
                         }
                         else
                         {
-                            
-                            coup_jouable = jouer(&board, x, y, coup_jouable); // remet a 0 le compteur pour le coup jouable, dans le cas ou un joueur a passer son tour mais que l autre peut jouer
-                            save_board(&board,"code/enregistrement.txt");
+
+                            jouer_joueur(&board, x, y);
+                            save_board(&board, "code/enregistrement.txt");
+                            printf("\ncurrent player = %s\n", current_player->nom);
                         }
 
                         if (x > 350 && x < 550 && y > 350 && y < 550)

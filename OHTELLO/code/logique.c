@@ -46,16 +46,21 @@ int verif_coup(Board *board)
 	}
 	return 0;
 }
-int coup_jouable_ou_non(int cell_x, int cell_y, Board *board, SDL_Texture *texture)
+int coup_jouable_ou_non(int cell_x, int cell_y, Board *board, SDL_Texture *texture, int choix)
 {
 	if (verif_place_horiz_d(cell_x, cell_y, board, texture, 0) == 0 && verif_place_horiz_g(cell_x, cell_y, board, texture, 0) == 0 && verif_place_verti_h(cell_x, cell_y, board, texture, 0) == 0 && verif_place_verti_b(cell_x, cell_y, board, texture, 0) == 0 && verif_place_diag_bd(cell_x, cell_y, board, texture, 0) == 0 && verif_place_diag_bg(cell_x, cell_y, board, texture, 0) == 0 && verif_place_diag_hd(cell_x, cell_y, board, texture, 0) == 0 && verif_place_diag_hg(cell_x, cell_y, board, texture, 0) == 0)
 	{
+		// si le coup est pas jouable
 		printf(" \n mauvais placement non respect regles\n ");
 		return 0;
 	}
-	else
+	else // si jouable on flip les pions
 	{
-	save_board(board,"code/precedent.txt");//pour revenir en arriere
+
+		if (choix == 1)
+		{
+			save_board(board, "code/precedent.txt"); // pour revenir en arriere
+		}
 		verif_place_diag_bd(cell_x, cell_y, board, texture, 1);
 		verif_place_diag_bg(cell_x, cell_y, board, texture, 1);
 		verif_place_diag_hd(cell_x, cell_y, board, texture, 1);
@@ -72,6 +77,10 @@ int coup_jouable_ou_non(int cell_x, int cell_y, Board *board, SDL_Texture *textu
 int verif_place_horiz_d(int x, int y, Board *board, SDL_Texture *texture, int changerTexture)
 {
 	int x_board = x + 1; // si x=7 c'est la mouise
+	if (x_board > 7)
+	{
+		return 0;
+	}
 
 	if (board->cells[x_board][y].player == EMPTY || board->cells[x_board][y].player == current_player->couleur)
 	{
@@ -112,6 +121,10 @@ int verif_place_horiz_d(int x, int y, Board *board, SDL_Texture *texture, int ch
 int verif_place_horiz_g(int x, int y, Board *board, SDL_Texture *texture, int changerTexture)
 {
 	int x_board = x - 1; // si x=0 mm pb
+	if (x_board < 0)
+	{
+		return 0;
+	}
 	if (board->cells[x_board][y].player == EMPTY || board->cells[x_board][y].player == current_player->couleur)
 	{
 		return 0;
@@ -144,6 +157,10 @@ int verif_place_horiz_g(int x, int y, Board *board, SDL_Texture *texture, int ch
 
 int verif_place_verti_h(int x, int y, Board *board, SDL_Texture *texture, int changerTexture)
 {
+	if (y == 7)
+	{
+		return 0;
+	}
 	int y_board = y + 1; // si y=7 c'est la mouise
 	if (board->cells[x][y_board].player == EMPTY || board->cells[x][y_board].player == current_player->couleur)
 	{
@@ -177,8 +194,13 @@ int verif_place_verti_h(int x, int y, Board *board, SDL_Texture *texture, int ch
 }
 
 int verif_place_verti_b(int x, int y, Board *board, SDL_Texture *texture, int changerTexture)
-{						 // verticale bas
+{ // verticale bas
+
 	int y_board = y - 1; // si y=0 c'est la mouise
+	if (y_board < 0)
+	{
+		return 0;
+	}
 	if (board->cells[x][y_board].player == EMPTY || board->cells[x][y_board].player == current_player->couleur)
 	{
 		return 0;
@@ -212,6 +234,11 @@ int verif_place_diag_bg(int x, int y, Board *board, SDL_Texture *texture, int ch
 {						 // diag bas à gauche
 	int x_board = x - 1; // si x=0 c'est la mouise
 	int y_board = y - 1; // si y=0 c'est la mouise
+	if (x_board < 0 || y_board < 0)
+	{
+		return 0;
+	}
+
 	if (board->cells[x_board][y_board].player == EMPTY || board->cells[x_board][y_board].player == current_player->couleur)
 	{
 		return 0;
@@ -249,6 +276,10 @@ int verif_place_diag_bd(int x, int y, Board *board, SDL_Texture *texture, int ch
 {						 // diag bas à droite
 	int x_board = x + 1; // si x=7 c'est la mouise
 	int y_board = y + 1; // si y=7 c'est la mouise
+	if (x_board > 7 || y_board > 7)
+	{
+		return 0;
+	}
 
 	if (board->cells[x_board][y_board].player == EMPTY || board->cells[x_board][y_board].player == current_player->couleur)
 	{
@@ -285,6 +316,10 @@ int verif_place_diag_hg(int x, int y, Board *board, SDL_Texture *texture, int ch
 {						 // diag haut gauche
 	int x_board = x - 1; // si x=0 c'est la mouise
 	int y_board = y + 1; // si y=7 c'est la mouise
+	if (x_board < 0 || y_board > 7)
+	{
+		return 0;
+	}
 	if (board->cells[x_board][y_board].player == EMPTY || board->cells[x_board][y_board].player == current_player->couleur)
 	{
 		return 0;
@@ -319,6 +354,10 @@ int verif_place_diag_hd(int x, int y, Board *board, SDL_Texture *texture, int ch
 {						 // diag  haut à droite
 	int x_board = x + 1; // si x=7 c'est la mouise
 	int y_board = y - 1; // si y=0 c'est la mouise
+	if (x_board > 7 || y_board < 0)
+	{
+		return 0;
+	}
 	if (board->cells[x_board][y_board].player == EMPTY || board->cells[x_board][y_board].player == current_player->couleur)
 	{ // si la case est vide ou si c'est le joueur qui a joué
 		return 0;
@@ -360,7 +399,6 @@ char placer_pion(int x, int y, SDL_Texture *texture, Board *board)
 	// printf("\nboard->grid %d\n",board->grid_y);
 	// printf("\ncell_x:%d et celle_y:%d\n",cell_x,cell_y);
 
-
 	Cell *cell = &board->cells[cell_x][cell_y];
 	// verifie si la cellule est pas vide
 	if (cell->player != EMPTY)
@@ -370,7 +408,7 @@ char placer_pion(int x, int y, SDL_Texture *texture, Board *board)
 	}
 
 	// verifie les regles
-	jouable = coup_jouable_ou_non(cell_x, cell_y, board, texture);
+	jouable = coup_jouable_ou_non(cell_x, cell_y, board, texture,1);
 	if (jouable == 0)
 	{
 		afficher_popup(renderer, "coup impossible");
@@ -406,7 +444,7 @@ char placer_pion(int x, int y, SDL_Texture *texture, Board *board)
 }
 int jouer(Board *board, int x, int y, int coup_jouable)
 {
-	
+
 	if (current_player == joueur_blanc)
 	{
 
@@ -414,7 +452,7 @@ int jouer(Board *board, int x, int y, int coup_jouable)
 
 		if (placer_pion(x, y, white_texture, board) == 1)
 		{ // la texture definit la couleur du pion qu'on va placer
-				
+
 			coup_jouable = 0;
 			current_player = joueur_noir;
 			SDL_Delay(500);
@@ -427,13 +465,13 @@ int jouer(Board *board, int x, int y, int coup_jouable)
 
 		if (placer_pion(x, y, black_texture, board) == 1)
 		{ // la texture definit la couleur du pion qu'on va placer
-					
+
 			coup_jouable = 0;
 			current_player = joueur_blanc;
 			SDL_Delay(500);
 		}
 	}
-	
+
 	return coup_jouable;
 }
 void End_game()
@@ -452,39 +490,37 @@ void End_game()
 	}
 }
 
-
-int passe_tour_ou_fin(Board *board){//si le joueur ne peut pas jouer, on passe au joueur suivant, si les 2 peuvent pas c est la fin de partie
-	int fin=0;
+int passe_tour_ou_fin(Board *board)
+{ // si le joueur ne peut pas jouer, on passe au joueur suivant, si les 2 peuvent pas c est la fin de partie
+	int fin = 0;
 	int coup_jouable = 0;
-		 for (int i = 0; i != 2; i++)
-        {
-            if (verif_coup(board) == 0 )
-            {
-                coup_jouable++;
-                printf("\naucun coup jouable pour le joueur en cours, on passe au joueur suivant\n");
-                if (current_player == joueur_blanc)
-                {
-                    current_player = joueur_noir;
-                }
-                else if (current_player == joueur_noir)
-                {
-                    current_player = joueur_blanc;
-                }
-
-
-            }
-			fin=0;
-
-			
-        }
-		    if (coup_jouable == 2)
-            {
-                fin = 1;
-            }
-		return fin;
+	for (int i = 0; i != 2; i++)
+	{
+		if (verif_coup(board) == 0)
+		{
+			coup_jouable++;
+			printf("\naucun coup jouable pour le joueur en cours, on passe au joueur suivant\n");
+			if (current_player == joueur_blanc)
+			{
+				current_player = joueur_noir;
+			}
+			else if (current_player == joueur_noir)
+			{
+				current_player = joueur_blanc;
+			}
+		}
+		fin = 0;
+	}
+	if (coup_jouable == 2)
+	{
+		fin = 1;
+	}
+	return fin;
 }
-int finis_ou_pas(Board *board){
-	if(passe_tour_ou_fin(board)==1 ||Detection_complet(board)==1){
+int finis_ou_pas(Board *board)
+{
+	if (passe_tour_ou_fin(board) == 1 || Detection_complet(board) == 1)
+	{
 
 		return 1;
 	}

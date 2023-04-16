@@ -39,6 +39,7 @@ void afficher_menu()
           // Récupération des coordonnées de la souris lors du clic
           int x = evenement.button.x;
           int y = evenement.button.y;
+          printf("Clic en (%d, %d)", x, y);
           // Vérification si le clic est sur l'un des choix
           if (x >= 275 && x <= 525 && y >= 250 && y <= 350)
           {
@@ -65,9 +66,13 @@ void afficher_menu()
             continuer = joueurvsjoueur(1);
             continue;
           }
+          }
           if (x >= 275 && x <= 525 && y >= 625 && y <= 725)
           {
-            return; // Appel de la fonction pour le choix 3
+            printf("\n Bouton 4 cliqué, versus IA\n");
+            continuer = IAvsjoueur(0);
+            printf("\n fin versus IA\n");
+            continue;
           }
           if (x >= 700 && x <= 780 && y >= 700 && y <= 780)
           {
@@ -110,7 +115,7 @@ void afficher_menu()
 
     // Update Screen
     SDL_RenderPresent(renderer);
-  }}
+  }
   SDL_Texture *textures[] = {
       texture,
       Bstart_texture,

@@ -106,7 +106,8 @@ int charger_partie(Board *board, int chargement,const char *filename)
 	}
 
 	else if (chargement == 1)
-	{
+	{       
+        
 		int couleur_joueur;
 		afficher_plateau(board, 0);
 		couleur_joueur = charger_pions(board,filename);

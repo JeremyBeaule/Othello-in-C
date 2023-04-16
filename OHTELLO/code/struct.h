@@ -52,6 +52,12 @@ int charger_partie(Board *board, int chargement,const char  *filename);
 // menu.c
 extern void afficher_menu();
 
+//IAvsJ.c
+extern int IAvsjoueur(int chargement);
+//IA.c
+void jouer_IA(Board *board);
+void jouer_joueur(Board *board, int x, int y);
+
 // JvsJ.c
 extern int joueurvsjoueur(int chargement);
 
@@ -68,7 +74,7 @@ int verif_coup(Board *board);
 char placer_pion(int x, int y, SDL_Texture *texture, Board *board);
 int jouer(Board *board, int x, int y,int coup_jouable);
 void End_game();
-
+int coup_jouable_ou_non(int cell_x, int cell_y, Board *board, SDL_Texture *texture, int choix);
 int Detection_complet(Board *board);
 int passe_tour_ou_fin(Board *board);
 int finis_ou_pas(Board *board);
