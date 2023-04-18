@@ -261,7 +261,7 @@ void jouer_IA(Board *board, int difficulte)
         printf("\n L'ia a jouer son coup \n");
         current_player = joueur_blanc;
         SDL_RenderPresent(renderer);
-        SDL_Delay(100);
+        SDL_Delay(1000);
     }
     printf("\n L'ia a finis son tour \n");
 }

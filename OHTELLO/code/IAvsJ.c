@@ -29,6 +29,8 @@ int IAvsjoueur(int chargement, int difficulte) // si chargement =0 c est une nou
         else
         {
             jouer_IA(&board, difficulte);
+            
+            
             SDL_Delay(500);
         }
         while (SDL_PollEvent(&event))
@@ -86,6 +88,7 @@ int IAvsjoueur(int chargement, int difficulte) // si chargement =0 c est une nou
                         {
 
                             jouer_joueur(&board, x, y);
+                        
                             save_board(&board, "code/enregistrement.txt");
                             printf("\ncurrent player = %s\n", current_player->nom);
                         }

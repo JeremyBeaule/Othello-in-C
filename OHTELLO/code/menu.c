@@ -192,7 +192,7 @@ int afficher_theme()
   SDL_Texture *valider_texture = IMG_LoadTexture(renderer, "image/valider.png");
   SDL_Texture *suivant_texture = IMG_LoadTexture(renderer, "image/suivant.png");
   SDL_Texture *precedent_texture = IMG_LoadTexture(renderer, "image/precedent.png");
-  SDL_Texture *plateau_texture1 = IMG_LoadTexture(renderer, "image/Board.png");
+  SDL_Texture *plateau_texture1 = IMG_LoadTexture(renderer, "image/choix1.png");
   SDL_Texture *plateau_texture2 = IMG_LoadTexture(renderer, "image/choix2.png");
   SDL_Texture *plateau_texture3 = IMG_LoadTexture(renderer, "image/choix3.png");
   SDL_Texture *fond_texture = IMG_LoadTexture(renderer, "image/fond_menu.png");
@@ -201,7 +201,7 @@ int afficher_theme()
 
   // Boucle principale du menu
   int continuer = 1;
-  int choix;
+  int choix = 1;
   SDL_Event evenement;
   while (continuer)
   {
@@ -228,19 +228,31 @@ int afficher_theme()
               grille_texture = IMG_LoadTexture(renderer, "image/Board.png");
               // contour_texture = IMG_LoadTexture(renderer, "image/contour.png");//pour le contour du jeu
               fond_board = IMG_LoadTexture(renderer, "image/fond_board.png");
+              carre_grille_texture = IMG_LoadTexture(renderer, "image/carre_grille.png");
+              contour_texture = IMG_LoadTexture(renderer, "image/contour_board.png");
+              white_texture= IMG_LoadTexture(renderer, "image/pion_blanc.png");
+              black_texture= IMG_LoadTexture(renderer, "image/pion_noir.png");
             }
             else if (choix == 2)
             {
               grille_texture = IMG_LoadTexture(renderer, "image/Board2.png");
               // contour_texture = IMG_LoadTexture(renderer, "image/contour.png");//pour le contour du jeu
               fond_board = IMG_LoadTexture(renderer, "image/fond_board2.png");
-              carre_grille_texture = IMG_LoadTexture(renderer, "image/carre_grille_bleu.png");
+              carre_grille_texture = IMG_LoadTexture(renderer, "image/carre_grille2.png");
+              contour_texture = IMG_LoadTexture(renderer, "image/contour_board2.png");
+              white_texture= IMG_LoadTexture(renderer, "image/pion_jaune.png");
+              black_texture= IMG_LoadTexture(renderer, "image/pion_bleu.png");
             }
             else if (choix == 3)
             {
               grille_texture = IMG_LoadTexture(renderer, "image/Board3.png");
               // contour_texture = IMG_LoadTexture(renderer, "image/contour.png");//pour le contour du jeu
               fond_board = IMG_LoadTexture(renderer, "image/fond_board3.png");
+              carre_grille_texture = IMG_LoadTexture(renderer, "image/carre_grille3.png");
+             
+              contour_texture = IMG_LoadTexture(renderer, "image/contour_board3.png");
+              white_texture= IMG_LoadTexture(renderer, "image/pion_nyan.png");
+              black_texture= IMG_LoadTexture(renderer, "image/pion_uni.png");
             }
             afficher_menu();
           }

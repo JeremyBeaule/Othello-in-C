@@ -34,9 +34,9 @@ void wait_two_seconds()
 void afficher_plateau(Board *board, int choix)
 { // le choix correspond a si l'on charge une partie ou non, pour savoir si on affiche les 4 pions au centre ou non
     SDL_RenderClear(renderer);
-    SDL_Texture *menu = IMG_LoadTexture(renderer, "image/bouton-load.png");
-    SDL_Texture *previous = IMG_LoadTexture(renderer, "image/bouton-load.png");
-    SDL_Texture *information = IMG_LoadTexture(renderer, "image/bouton-load.png");
+    SDL_Texture *menu = IMG_LoadTexture(renderer, "image/home.png");
+    SDL_Texture *previous = IMG_LoadTexture(renderer, "image/previous.png");
+    SDL_Texture *information = IMG_LoadTexture(renderer, "image/info.png");
 
     // Calculer la taille de la bordure en fonction de la taille de la grille
     int border_size = (int)(grid_size * 0.07); // Par exemple, la bordure peut faire 5% de la taille de la grille
@@ -50,7 +50,7 @@ void afficher_plateau(Board *board, int choix)
     // rect pour le fond
     int largeur_fenetre, hauteur_fenetre;
     SDL_GetWindowSize(window, &largeur_fenetre, &hauteur_fenetre);
-    SDL_Rect rect = {0, 0, largeur_fenetre, hauteur_fenetre};
+    SDL_Rect rect_fenetre = {0, 0, largeur_fenetre, hauteur_fenetre};
 
     // dessine le quadrillage
     SDL_Rect grille_rect = {grid_x, grid_y, grid_size, grid_size};
@@ -60,7 +60,7 @@ void afficher_plateau(Board *board, int choix)
     SDL_Rect rect_info = {700, 350, 100, 50};     // bouton information
     SDL_RenderClear(renderer);
     // dessine le fond
-    SDL_RenderCopy(renderer, fond_board, NULL, &rect);
+    SDL_RenderCopy(renderer, fond_board, NULL, &rect_fenetre);
     // Dessiner l'image de fond pour la grille et pour le contour de la grille
     SDL_RenderCopy(renderer, contour_texture, NULL, &border_rect); // dessine le contour du plateau
     SDL_RenderCopy(renderer, grille_texture, NULL, &grille_rect);  // dessine le plateau
@@ -69,13 +69,28 @@ void afficher_plateau(Board *board, int choix)
     SDL_RenderCopy(renderer, information, NULL, &rect_info);       // dessine le bouton information
 
     // Dessiner le cadrillage
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    int line_width = 5; // Définir la largeur de la ligne
+    SDL_Rect rect;
+
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     for (int i = 1; i < BOARD_SIZE; i++)
     {
-        SDL_RenderDrawLine(renderer, grid_x + i * cell_size, grid_y, grid_x + i * cell_size, grid_y + grid_size);
-        SDL_RenderDrawLine(renderer, grid_x, grid_y + i * cell_size, grid_x + grid_size, grid_y + i * cell_size);
+        rect.x = grid_x + i * cell_size - line_width / 2;
+        rect.y = grid_y;
+        rect.w = line_width;
+        rect.h = grid_size;
+        SDL_RenderFillRect(renderer, &rect);
+
+        rect.x = grid_x;
+        rect.y = grid_y + i * cell_size - line_width / 2;
+        rect.w = grid_size;
+        rect.h = line_width;
+        SDL_RenderFillRect(renderer, &rect);
     }
 
+
+
+    SDL_RenderDrawRect(renderer, &grille_rect);
     // Dessiner les pions
     if (choix == 1)
     {
@@ -115,65 +130,26 @@ void affiche_tour(SDL_Renderer *renderer)
 {
     // Charger la police d'écriture
 
-    TTF_Font *font = TTF_OpenFont("image/ASMAN.TTF", 24);
-    if (!font)
-    {
-        printf("Erreur de chargement de la police : %s\n", TTF_GetError());
-        return;
-    }
-
+    SDL_Rect rect_tour = {0, 0, 200, 75};
     // Créer le message
-    const char *message;
-    message = "au noir de commencer";
+
     if (current_player->couleur == WHITE)
     {
-        message = "Tour du joueur blanc";
+        SDL_RenderCopy(renderer, tour_blanc, NULL, &rect_tour);
     }
     else
     {
-        message = "Tour du joueur noir";
+        SDL_RenderCopy(renderer, tour_noir, NULL, &rect_tour);
     }
 
-    // Créer une surface avec le message
-    SDL_Color color = {255, 255, 255}; // Couleur du texte (blanc)
-    SDL_Surface *surface = TTF_RenderText_Solid(font, message, color);
-    if (!surface)
-    {
-        printf("Erreur de création de la surface : %s\n", SDL_GetError());
-        TTF_CloseFont(font);
-        return;
-    }
-
-    // Créer une texture à partir de la surface
-    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
-    if (!texture)
-    {
-        printf("Erreur de création de la texture : %s\n", SDL_GetError());
-        SDL_FreeSurface(surface);
-        TTF_CloseFont(font);
-        return;
-    }
-
-    // Définir la zone d'affichage du texte
-    SDL_Rect text_rect;
-    text_rect.x = 20;              // Position x du texte (20 pixels de marge)
-    text_rect.y = 20;              // Position y du texte (20 pixels de marge)
-    text_rect.w = surface->w + 20; // Largeur du texte
-    text_rect.h = surface->h;      // Hauteur du texte
-
-    // Effacer la zone de texte précédente
-    SDL_SetRenderDrawColor(renderer, 50, 128, 65, 255); // Couleur de fond de la zone de texte (noir)
-    SDL_RenderFillRect(renderer, &text_rect);
-    text_rect.w = surface->w;
     // Dessiner le texte
-    SDL_RenderCopy(renderer, texture, NULL, &text_rect);
 
     // Rafraîchir l'affichage
     SDL_RenderPresent(renderer);
 
     // Libérer les ressources
-    SDL_FreeSurface(surface);
-    SDL_DestroyTexture(texture);
+    SDL_DestroyTexture(tour_blanc);
+    SDL_DestroyTexture(tour_noir);
     TTF_CloseFont(font);
 }
 void afficher_popup(SDL_Renderer *renderer, const char *message)
@@ -339,7 +315,7 @@ void afficher_coup_jouable(Board *board, SDL_Texture *texture)
         }
     }
 }
-void afficher_image(SDL_Renderer *renderer, int vainqueur) //afficher l image pour le vainqueur
+void afficher_image(SDL_Renderer *renderer, int vainqueur) // afficher l image pour le vainqueur
 {
     // Charger l'image
     SDL_Texture *texture = NULL;
@@ -374,8 +350,8 @@ void afficher_image(SDL_Renderer *renderer, int vainqueur) //afficher l image po
     // Libérer les ressources
     SDL_DestroyTexture(texture);
 }
-//la fonction suivante est useless, on peut tout faire dans afficher image
-void Quit_end(SDL_Renderer *renderer) //affichage de fin de partie 
+// la fonction suivante est useless, on peut tout faire dans afficher image
+void Quit_end(SDL_Renderer *renderer) // affichage de fin de partie
 {
     // Charger l'image
     SDL_Texture *texture = NULL;

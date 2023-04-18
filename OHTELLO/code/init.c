@@ -53,7 +53,7 @@ void Init_texture()
     }
     if (!grey_texture)
     {
-        printf("Erreur de chargement de la texture pour le fond: %s\n", IMG_GetError());
+        printf("Erreur de chargement de la texture pour la previsu du coup: %s\n", IMG_GetError());
         SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(window);
         SDL_Quit();
@@ -61,7 +61,23 @@ void Init_texture()
     }
     if (!carre_grille_texture)
     {
-        printf("Erreur de chargement de la texture pour le fond: %s\n", IMG_GetError());
+        printf("Erreur de chargement de la texture pour le carre de texture de la grille: %s\n", IMG_GetError());
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return;
+    }
+    if (!tour_blanc)
+    {
+        printf("Erreur de chargement de la texture pour le tour du joueur blanc: %s\n", IMG_GetError());
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return;
+    }
+    if (!tour_noir)
+    {
+        printf("Erreur de chargement de la texture pour le tour du joueur noir: %s\n", IMG_GetError());
         SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(window);
         SDL_Quit();
@@ -115,10 +131,14 @@ void init_All()
 
     // Charger les textures la grille
     grille_texture = IMG_LoadTexture(renderer, "image/Board.png");  // si on ne choisit aucun theme celui ci est pris par defaut
+    // Charger les textures du fond du menu
     fond_board = IMG_LoadTexture(renderer, "image/fond_board.png"); // si on ne choisit aucun theme celui ci est pris par defaut
     // Charger les textures du contour
     contour_texture = IMG_LoadTexture(renderer, "image/contour_board.png");
-    // Charger les textures du fond du menu
+    //charger fond pour afficher le tour du joueur en cours
+    tour_blanc =  IMG_LoadTexture(renderer, "image/bouton-quit.png");
+    tour_noir =  IMG_LoadTexture(renderer, "image/bouton-quit.png");
+    
     Init_texture();
 }
 

@@ -108,6 +108,8 @@ SDL_Texture *grille_texture;
 SDL_Surface *contour_surface;
 SDL_Texture *contour_texture;
 SDL_Texture *previous_texture;
+SDL_Texture *tour_blanc;
+SDL_Texture *tour_noir;
 Player *joueur_noir;
 Player *joueur_blanc;
 Player *current_player;
