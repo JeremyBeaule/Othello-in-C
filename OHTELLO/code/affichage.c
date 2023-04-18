@@ -34,6 +34,9 @@ void wait_two_seconds()
 void afficher_plateau(Board *board, int choix)
 { // le choix correspond a si l'on charge une partie ou non, pour savoir si on affiche les 4 pions au centre ou non
     SDL_RenderClear(renderer);
+    SDL_Texture *menu = IMG_LoadTexture(renderer, "image/bouton-load.png");
+    SDL_Texture *previous = IMG_LoadTexture(renderer, "image/bouton-load.png");
+    SDL_Texture *information = IMG_LoadTexture(renderer, "image/bouton-load.png");
 
     // Calculer la taille de la bordure en fonction de la taille de la grille
     int border_size = (int)(grid_size * 0.07); // Par exemple, la bordure peut faire 5% de la taille de la grille
@@ -51,14 +54,19 @@ void afficher_plateau(Board *board, int choix)
 
     // dessine le quadrillage
     SDL_Rect grille_rect = {grid_x, grid_y, grid_size, grid_size};
-     SDL_Rect previous = {300, 650, 100, 100};//bouton precedent
+
+    SDL_Rect rect_menu = {700, 120, 100, 50};     // bouton menu
+    SDL_Rect rect_previous = {700, 600, 100, 50}; // bouton precedent
+    SDL_Rect rect_info = {700, 350, 100, 50};     // bouton information
     SDL_RenderClear(renderer);
     // dessine le fond
     SDL_RenderCopy(renderer, fond_board, NULL, &rect);
     // Dessiner l'image de fond pour la grille et pour le contour de la grille
     SDL_RenderCopy(renderer, contour_texture, NULL, &border_rect); // dessine le contour du plateau
     SDL_RenderCopy(renderer, grille_texture, NULL, &grille_rect);  // dessine le plateau
-      SDL_RenderCopy(renderer, previous_texture, NULL, &previous);  // dessine le bouton "precedent"
+    SDL_RenderCopy(renderer, previous, NULL, &rect_previous);      // dessine le bouton "precedent"
+    SDL_RenderCopy(renderer, menu, NULL, &rect_menu);              // dessine le bouton menu
+    SDL_RenderCopy(renderer, information, NULL, &rect_info);       // dessine le bouton information
 
     // Dessiner le cadrillage
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
@@ -331,7 +339,7 @@ void afficher_coup_jouable(Board *board, SDL_Texture *texture)
         }
     }
 }
-void afficher_image(SDL_Renderer *renderer, int vainqueur)
+void afficher_image(SDL_Renderer *renderer, int vainqueur) //afficher l image pour le vainqueur
 {
     // Charger l'image
     SDL_Texture *texture = NULL;
@@ -366,8 +374,8 @@ void afficher_image(SDL_Renderer *renderer, int vainqueur)
     // Libérer les ressources
     SDL_DestroyTexture(texture);
 }
-
-void Quit_end(SDL_Renderer *renderer)
+//la fonction suivante est useless, on peut tout faire dans afficher image
+void Quit_end(SDL_Renderer *renderer) //affichage de fin de partie 
 {
     // Charger l'image
     SDL_Texture *texture = NULL;

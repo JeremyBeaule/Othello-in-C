@@ -45,18 +45,32 @@ int joueurvsjoueur(int chargement)//si chargement =0 c est une nouvelle partie, 
                     {
                         if (cell_x < 0 || cell_x >= BOARD_SIZE || x < 800 * 0.19 || cell_y < 0 || cell_y >= BOARD_SIZE || y < 800 * 0.2) // si en dehors de la grille
                         {
-                            if (x > 300 && x < 400 && y > 650 && y < 750)
+                            if (x > 700 && x < 800 && y > 600 && y < 650) //click bouton precedent
                             {
                                 printf("\n precedent \n");
-
-
-
-                                charger_partie(&board, 1,"code/precedent.txt"); //charger le coup precedent
-                                // TODO
-                                // revenir en arriere lors du clique sur un bouton
-                                // rajouter les elements graphiques sur la fonction affichez_plateau
+                                if (is_file_empty("code/precedent.txt"))
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    charger_partie(&board, 1, "code/precedent.txt"); // charger le coup precedent
+                                }
                             }
-                            printf("\n hors grille \n");
+
+                            if (x > 700 && x < 800 && y > 120 && y < 170) //bouton menu
+                            {
+                                printf("\n menu \n");
+                                save_board(&board, "code/enregistrement.txt");
+                                return 1;
+                                
+                            }
+                            if (x > 700 && x < 800 && y > 350 && y < 400)//bouton information
+                            {
+                                printf("\n information \n");
+                                
+                            }
+               
                         }
                         else
                         {

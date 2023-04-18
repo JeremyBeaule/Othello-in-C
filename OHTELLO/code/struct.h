@@ -53,9 +53,9 @@ int charger_partie(Board *board, int chargement,const char  *filename);
 extern void afficher_menu();
 
 //IAvsJ.c
-extern int IAvsjoueur(int chargement);
+extern int IAvsjoueur(int chargement,int difficulte);
 //IA.c
-void jouer_IA(Board *board);
+void jouer_IA(Board *board,int difficulte);
 void jouer_joueur(Board *board, int x, int y);
 
 // JvsJ.c
