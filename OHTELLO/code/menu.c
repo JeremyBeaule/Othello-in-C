@@ -15,12 +15,18 @@ void afficher_menu()
   SDL_Texture *Bt2_texture = IMG_LoadTexture(renderer, "image/bouton-quit.png");
   SDL_Texture *Bt3_texture = IMG_LoadTexture(renderer, "image/bouton-load.png");
   SDL_Texture *Bt4_texture = IMG_LoadTexture(renderer, "image/bouton-load.png");
-
+  SDL_Texture *Bt4_texture_2 = IMG_LoadTexture(renderer, "image/bouton-quit.png");
+  SDL_Texture *Bt4_texture_3 = IMG_LoadTexture(renderer, "image/bouton-start.png");
+  SDL_Texture *Bt5_texture = IMG_LoadTexture(renderer, "image/bouton-load.png");
+  SDL_Texture *Bt_next = IMG_LoadTexture(renderer, "image/precedent.png");
+  SDL_Texture *Nom = IMG_LoadTexture(renderer, "image/bouton-load.png");
+  SDL_Texture *niveau_actuelle= Bt4_texture;
   // Récupérer les dimensions de la fenêtre
   int largeur_fenetre, hauteur_fenetre;
   SDL_GetWindowSize(window, &largeur_fenetre, &hauteur_fenetre);
   // Boucle principale du menu
   int continuer = 1;
+  int choix = 6;
   SDL_Event evenement;
   while (continuer)
   {
@@ -48,14 +54,14 @@ void afficher_menu()
             continuer = joueurvsjoueur(0);
             continue;
           }
-          if (x >= 275 && x <= 525 && y >= 375 && y <= 475)
+          if (x >= 275 && x <= 525 && y >= 350 && y <= 450)
           {
             printf("\n Bouton 2 cliqué, choix du theme\n");
             continuer = afficher_theme();
             printf("fin");
             continue;
           }
-          if (x >= 275 && x <= 525 && y >= 500 && y <= 600)
+          if (x >= 275 && x <= 525 && y >= 450 && y <= 550)
           {
             printf("\n Bouton 3 cliqué, chargement de la partie\n");
             if(is_file_empty("code/enregistrement.txt")==1){
@@ -67,14 +73,43 @@ void afficher_menu()
             continue;
           }
           }
-          if (x >= 275 && x <= 525 && y >= 625 && y <= 725)
+          if (x >= 275 && x <= 525 && y >= 550 && y <= 650)
           {
             printf("\n Bouton 4 cliqué, versus IA\n");
-            continuer = IAvsjoueur(0);
+            printf("\n choix = %d\n",choix);
+            continuer = IAvsjoueur(0,choix);
             printf("\n fin versus IA\n");
             continue;
           }
-          if (x >= 700 && x <= 780 && y >= 700 && y <= 780)
+           if (x >= 275 && x <= 525 && y >= 650 && y <= 750)
+          {
+            printf("\n Bouton 5 cliqué, versus IA\n");
+            continuer = 0;
+            printf("\n fin versus IA\n");
+            continue;
+          }
+           if (x >= 565 && x <= 665 && y >= 565 && y <= 635)
+          {
+            printf("\n Bouton modification niveau IA, versus IA\n"); //plus le choix est elevé plus c est facile, si choix =1 tres dur
+             if (niveau_actuelle == Bt4_texture)
+            {
+              niveau_actuelle = Bt4_texture_2;
+              choix = 4;
+            }
+            else if (niveau_actuelle == Bt4_texture_2)
+            {
+              niveau_actuelle = Bt4_texture_3;
+              choix = 1;
+            }
+            else if (niveau_actuelle== Bt4_texture_3)
+            {
+              niveau_actuelle = Bt4_texture;
+              choix = 6;
+            }
+            printf("\n fin versus IA\n");
+            continue;
+          }
+          if (x >= 680 && x <= 760 && y >= 50 && y <= 130)
           {
             if (son_actuelle == son_off_texture)
             {
@@ -99,10 +134,13 @@ void afficher_menu()
 
     // rectangle pour les choix
     SDL_Rect rect_choix1 = {275, 250, 250, 100};
-    SDL_Rect rect_choix2 = {275, 375, 250, 100};
-    SDL_Rect rect_choix3 = {275, 500, 250, 100};
-    SDL_Rect rect_choix4 = {275, 625, 250, 100};
-    SDL_Rect son = {700, 700, 80, 80};
+    SDL_Rect rect_choix2 = {275, 350, 250, 100};
+    SDL_Rect rect_choix3 = {275, 450, 250, 100};
+    SDL_Rect rect_choix4 = {275, 550, 250, 100};
+    SDL_Rect rect_choix5 = {275, 650, 250, 100};
+    SDL_Rect rect_next= {550, 565, 100, 70};
+    SDL_Rect rect_nom = {200, 50, 400, 200};
+    SDL_Rect son = {680, 50, 80, 80};
     SDL_RenderClear(renderer);
 
     // Copier la texture sur le renderer avec le rectangle de destination spécifié(affiche le png)
@@ -111,7 +149,10 @@ void afficher_menu()
     SDL_RenderCopy(renderer, Bstart_texture, NULL, &rect_choix1);
     SDL_RenderCopy(renderer, Bt2_texture, NULL, &rect_choix2);
     SDL_RenderCopy(renderer, Bt3_texture, NULL, &rect_choix3);
-    SDL_RenderCopy(renderer, Bt4_texture, NULL, &rect_choix4);
+    SDL_RenderCopy(renderer, niveau_actuelle, NULL, &rect_choix4);
+    SDL_RenderCopy(renderer, Bt5_texture, NULL, &rect_choix5);
+    SDL_RenderCopy(renderer, Nom, NULL, &rect_nom);
+    SDL_RenderCopy(renderer, Bt_next, NULL, &rect_next);
 
     // Update Screen
     SDL_RenderPresent(renderer);
@@ -122,8 +163,12 @@ void afficher_menu()
       Bt2_texture,
       Bt3_texture,
       Bt4_texture,
+      Bt5_texture,
       son_off_texture,
       son_on_texture,
+      Bt4_texture_2,
+      Bt4_texture_3,
+      Nom,
   };
   int num_textures = sizeof(textures) / sizeof(SDL_Texture *);
   free_textures(textures, num_textures);

@@ -1,11 +1,12 @@
 #include "struct.h"
-int IAvsjoueur(int chargement) // si chargement =0 c est une nouvelle partie, si un c est un chargement de partie
+int IAvsjoueur(int chargement, int difficulte) // si chargement =0 c est une nouvelle partie, si un c est un chargement de partie
 {
     // Initialiser le plateau de jeu et l'afficher
     Board board;
     charger_partie(&board, chargement, "code/enregistrement.txt"); // load.c
     efface_fichier("code/precedent.txt");                          // on efface la sauvegarde
     int fin = 0;
+    printf("\ndiffulté actuelle: %d\n", difficulte);
 
     // Attendre que l'utilisateur ferme la fenêtre
     SDL_Event event;
@@ -27,8 +28,8 @@ int IAvsjoueur(int chargement) // si chargement =0 c est une nouvelle partie, si
         }
         else
         {
-        jouer_IA(&board);
-        SDL_Delay(500);
+            jouer_IA(&board, difficulte);
+            SDL_Delay(500);
         }
         while (SDL_PollEvent(&event))
         {
@@ -54,14 +55,32 @@ int IAvsjoueur(int chargement) // si chargement =0 c est une nouvelle partie, si
                     {
                         if (cell_x < 0 || cell_x >= BOARD_SIZE || x < 800 * 0.19 || cell_y < 0 || cell_y >= BOARD_SIZE || y < 800 * 0.2) // si en dehors de la grille
                         {
-                            if (x > 300 && x < 400 && y > 650 && y < 750)
+                            if (x > 700 && x < 800 && y > 600 && y < 650) //click bouton precedent
                             {
                                 printf("\n precedent \n");
-
-                                charger_partie(&board, 1, "code/precedent.txt"); // charger le coup precedent
-
+                                if (is_file_empty("code/precedent.txt"))
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    charger_partie(&board, 1, "code/precedent.txt"); // charger le coup precedent
+                                }
                             }
-                            printf("\n hors grille \n");
+
+                            if (x > 700 && x < 800 && y > 120 && y < 170) //bouton menu
+                            {
+                                printf("\n menu \n");
+                                save_board(&board, "code/enregistrement.txt");
+                                return 1;
+                                
+                            }
+                            if (x > 700 && x < 800 && y > 350 && y < 400)//bouton information
+                            {
+                                printf("\n information \n");
+                                
+                            }
+               
                         }
                         else
                         {

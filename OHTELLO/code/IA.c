@@ -117,7 +117,7 @@ GameTreeNode *generate_children(Board *board, PlayerColor color, int *num_childr
     GameTreeNode *children = NULL;
     *num_children = 0;
 
-    if (depth >= 8) //1,3,5,7 les nombres pair bug et au dessus de 7 trop gourmand en ressources
+    if (depth >= 7) //1,3,5,7 les nombres pair bug et au dessus de 7 trop gourmand en ressources
     {
         return NULL;
     }
@@ -170,10 +170,10 @@ GameTreeNode *generate_children(Board *board, PlayerColor color, int *num_childr
     return children;
 }
 
-void IA(Board *board, int *best_move_x, int *best_move_y)
+void IA(Board *board, int *best_move_x, int *best_move_y, int difficulte)
 {
     // printf("\n IA \n");
-    int depth = 1; // You can adjust the depth based on your desired complexity
+    int depth = difficulte; // You can adjust the depth based on your desired complexity
     int bestScore = INT_MIN;
     int num_children;
     GameTreeNode root;
@@ -245,7 +245,7 @@ char placer_pion_IA(int x, int y, SDL_Texture *texture, Board *board)
     return 1;
 }
 
-void jouer_IA(Board *board)
+void jouer_IA(Board *board, int difficulte)
 {
 
     if (current_player == joueur_noir)
@@ -255,7 +255,7 @@ void jouer_IA(Board *board)
         afficher_coup_jouable(board, carre_grille_texture); // remetre les cases a leur textures normal
 
         int best_move_x, best_move_y;
-        IA(board, &best_move_x, &best_move_y);
+        IA(board, &best_move_x, &best_move_y,difficulte);
         printf("\nbest_move_x = %d, best_move_y = %d\n", best_move_x, best_move_y);
         placer_pion_IA(best_move_x, best_move_y, black_texture, board);
         printf("\n L'ia a jouer son coup \n");
