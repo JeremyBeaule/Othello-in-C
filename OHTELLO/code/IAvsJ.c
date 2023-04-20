@@ -14,15 +14,14 @@ int IAvsjoueur(int chargement, int difficulte) // si chargement =0 c est une nou
 
     while (quit == 0)
     {
+        fin = finis_ou_pas(&board);                  // si la grille est complete ou si il n y a plus de coup jouable des 2 cotés
+        if (fin==0){
         affiche_tour(renderer);
-
         afficher_coup_jouable(&board, grey_texture); // afficher les coups jouables pour le joueur en cours
-
-        fin = finis_ou_pas(&board); // si la grille est complete ou si il n y a plus de coup jouable des 2 cotés
-
+        }
         if (fin == 1) // si la partie est finis
         {
-            End_game();                                // on affiche le gagnant
+            End_game(&board);                                // on affiche le gagnant
             efface_fichier("code/enregistrement.txt"); // on efface la sauvegarde
             efface_fichier("code/precedent.txt");      // on efface la sauvegarde
         }

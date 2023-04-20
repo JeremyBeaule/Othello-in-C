@@ -97,6 +97,7 @@ void Init_texture()
         SDL_Quit();
         return;
     }
+
 }
 Player *creer_joueur(char *nom, PlayerColor couleur)
 {
@@ -138,6 +139,8 @@ void init_All()
     //charger fond pour afficher le tour du joueur en cours
     tour_blanc =  IMG_LoadTexture(renderer, "image/bouton-quit.png");
     tour_noir =  IMG_LoadTexture(renderer, "image/bouton-quit.png");
+        // Charger le fichier audio WAV
+   
     
     Init_texture();
 }

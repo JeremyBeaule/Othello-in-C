@@ -423,7 +423,7 @@ char placer_pion(int x, int y, SDL_Texture *texture, Board *board)
 	// permet d'avoir la cellule du tableau ou l'on clique
 	int cell_x = (x - board->grid_x) / board->cell_size;
 	int cell_y = (y - board->grid_y) / board->cell_size;
-
+	playSound("son/pion.wav");
 	// printf("\nboard->grid %d\n",board->grid_y);
 	// printf("\ncell_x:%d et celle_y:%d\n",cell_x,cell_y);
 
@@ -431,6 +431,7 @@ char placer_pion(int x, int y, SDL_Texture *texture, Board *board)
 	// verifie si la cellule est pas vide
 	if (cell->player != EMPTY)
 	{
+		playSound("son/error.wav");
 		afficher_popup(renderer, "case deja prise");
 		return 0;
 	}
@@ -439,6 +440,7 @@ char placer_pion(int x, int y, SDL_Texture *texture, Board *board)
 	jouable = coup_jouable_ou_non(cell_x, cell_y, board, texture, 1);
 	if (jouable == 0)
 	{
+		playSound("son/error.wav");
 		afficher_popup(renderer, "coup impossible");
 		return 0;
 	}
@@ -454,9 +456,9 @@ char placer_pion(int x, int y, SDL_Texture *texture, Board *board)
 	}
 
 	current_player->score += 1;
-	printf("\n ton score est : %d \n", current_player->score);
-	printf("\n ton score est : %d \n", joueur_noir->score);
-	printf("\n la case est  : %d  (0=vide, 1=noir,2=blanc)\n", board->cells[2][3].player); // verifie une case en particulier
+	// printf("\n ton score est : %d \n", current_player->score);
+	// printf("\n ton score est : %d \n", joueur_noir->score);
+	// printf("\n la case est  : %d  (0=vide, 1=noir,2=blanc)\n", board->cells[2][3].player); // verifie une case en particulier
 
 	// Afficher le pion
 	SDL_Rect dest_rect = {
@@ -488,7 +490,7 @@ int jouer(Board *board, int x, int y, int coup_jouable)
 	}
 	else
 	{
-		printf("\njoueur noir\n");
+		// printf("\njoueur noir\n");
 		afficher_coup_jouable(board, carre_grille_texture); // remetre les cases a leur textures normal
 
 		if (placer_pion(x, y, black_texture, board) == 1)
@@ -502,12 +504,14 @@ int jouer(Board *board, int x, int y, int coup_jouable)
 
 	return coup_jouable;
 }
-void End_game()
+void End_game(Board *board)
 {
-
+	playSound("son/win.wav");
 	printf(" \n fin de la partie \n");
+	score(board);
 	if (joueur_noir->score > joueur_blanc->score)
 	{
+
 		afficher_image(renderer, 1);
 		Quit_end(renderer);
 	}
@@ -527,7 +531,7 @@ int passe_tour_ou_fin(Board *board)
 		if (verif_coup(board) == 0)
 		{
 			coup_jouable++;
-			printf("\naucun coup jouable pour le joueur en cours, on passe au joueur suivant\n");
+			// printf("\naucun coup jouable pour le joueur en cours, on passe au joueur suivant\n");
 			if (current_player == joueur_blanc)
 			{
 				current_player = joueur_noir;
@@ -553,4 +557,26 @@ int finis_ou_pas(Board *board)
 		return 1;
 	}
 	return 0;
+}
+void score(Board *board)//calcul le score de chaque joueur
+{
+	// printf("\n evaluate_board\n");
+
+	joueur_blanc->score = 0;
+	joueur_noir->score = 0;
+
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			if (board->cells[i][j].player == BLACK)
+			{
+				joueur_noir->score++;
+			}
+			else if (board->cells[i][j].player == WHITE)
+			{
+				joueur_blanc->score++;
+			}
+		}
+	}
 }

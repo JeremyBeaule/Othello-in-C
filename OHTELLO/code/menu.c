@@ -4,6 +4,7 @@ int afficher_theme();
 
 void afficher_menu()
 {
+
   // Charger l'image à partir d'une image png'
   SDL_Texture *texture = IMG_LoadTexture(renderer, "image/fond_menu.png");
   SDL_Texture *son_on_texture = IMG_LoadTexture(renderer, "image/volume.png");
@@ -27,6 +28,7 @@ void afficher_menu()
   // Boucle principale du menu
   int continuer = 1;
   int choix = 6;
+
   SDL_Event evenement;
   while (continuer)
   {
@@ -45,7 +47,7 @@ void afficher_menu()
           // Récupération des coordonnées de la souris lors du clic
           int x = evenement.button.x;
           int y = evenement.button.y;
-          printf("Clic en (%d, %d)", x, y);
+          //printf("Clic en (%d, %d)", x, y);
           // Vérification si le clic est sur l'un des choix
           if (x >= 275 && x <= 525 && y >= 250 && y <= 350)
           {
@@ -111,13 +113,16 @@ void afficher_menu()
           }
           if (x >= 680 && x <= 760 && y >= 50 && y <= 130)
           {
+            playAndStop("son/ambiance.wav");
             if (son_actuelle == son_off_texture)
             {
               son_actuelle = son_on_texture;
+              
             }
             else
             {
               son_actuelle = son_off_texture;
+              
             }
             continue;
           }

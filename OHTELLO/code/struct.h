@@ -4,6 +4,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
 #include <stdlib.h>
+#include <stdbool.h> 
 #define BOARD_SIZE 8
 #define CELL_SIZE 64
 #define PIECE_SIZE 50 // taille de pion en pixel
@@ -52,6 +53,7 @@ int charger_partie(Board *board, int chargement,const char  *filename);
 // menu.c
 extern void afficher_menu();
 
+
 //IAvsJ.c
 extern int IAvsjoueur(int chargement,int difficulte);
 //IA.c
@@ -73,11 +75,12 @@ int verif_place_diag_hd(int x, int y, Board *board, SDL_Texture *texture, int ch
 int verif_coup(Board *board);
 char placer_pion(int x, int y, SDL_Texture *texture, Board *board);
 int jouer(Board *board, int x, int y,int coup_jouable);
-void End_game();
+void End_game(Board *board);
 int coup_jouable_ou_non(int cell_x, int cell_y, Board *board, SDL_Texture *texture, int choix);
 int Detection_complet(Board *board);
 int passe_tour_ou_fin(Board *board);
 int finis_ou_pas(Board *board);
+void score(Board *board);
 
 
 // affichage.c
@@ -90,8 +93,16 @@ void afficher_coup_jouable(Board *board, SDL_Texture *texture);
 void changer_texture_case(int x, int y, Board *board, SDL_Texture *texture);
 void afficher_image(SDL_Renderer *renderer, int vainqueur);
 void Quit_end(SDL_Renderer *renderer);
-
 void placer_pion_chargement_partie(Board *board, int cell_x, int cell_y, int joueur);
+void showInformation(const char *image_path, int width, int height);
+
+
+//son.c
+ 
+extern void son();
+extern void playSound(const char *filename);
+extern void playAndStop(const char *filename) ;
+
 
 // declaration pour ne pas a les placer en parametre
 
@@ -113,4 +124,5 @@ SDL_Texture *tour_noir;
 Player *joueur_noir;
 Player *joueur_blanc;
 Player *current_player;
+
 TTF_Font *font; // police d ecriture

@@ -88,8 +88,6 @@ void afficher_plateau(Board *board, int choix)
         SDL_RenderFillRect(renderer, &rect);
     }
 
-
-
     SDL_RenderDrawRect(renderer, &grille_rect);
     // Dessiner les pions
     if (choix == 1)
@@ -398,4 +396,32 @@ void placer_pion_chargement_partie(Board *board, int cell_x, int cell_y, int jou
     SDL_RenderPresent(renderer);
 
     // printf("\n test fin placer_pion()\n");
+}
+
+void showInformation(const char *image_path, int width, int height) {
+    SDL_Window *windows = SDL_CreateWindow("Mon Image", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 0);
+    SDL_Renderer *rendererer = SDL_CreateRenderer(windows, -1, 0);
+
+    SDL_Surface *image_surface = IMG_Load(image_path);
+    SDL_Texture *image_texture = SDL_CreateTextureFromSurface(rendererer, image_surface);
+
+    SDL_Rect dest_rect = {0, 0, width, height};
+    SDL_RenderCopy(rendererer, image_texture, NULL, &dest_rect);
+    SDL_RenderPresent(rendererer);
+
+    SDL_Event e;
+    bool running = true;
+
+    while (running) {
+        while (SDL_PollEvent(&e)) {
+            if (e.type == SDL_WINDOWEVENT && e.window.event == SDL_WINDOWEVENT_CLOSE) {
+                running = false;
+            }
+        }
+    }
+
+    SDL_DestroyTexture(image_texture);
+    SDL_FreeSurface(image_surface);
+    SDL_DestroyRenderer(rendererer);
+    SDL_DestroyWindow(windows);
 }

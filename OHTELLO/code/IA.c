@@ -213,7 +213,7 @@ char placer_pion_IA(int x, int y, SDL_Texture *texture, Board *board)
     int jouable = 0;
 
     Cell *cell = &board->cells[x][y];
-
+    playSound("son/pion.wav");
     // verifie les regles
     jouable = coup_jouable_ou_non(x, y, board, texture, 0);
     if (jouable == 0)
