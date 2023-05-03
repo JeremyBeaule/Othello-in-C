@@ -12,13 +12,13 @@ void afficher_menu()
   SDL_Texture *son_actuelle = son_on_texture;
 
   // Créer une texture à partir de la surface de l'image
-  SDL_Texture *Bstart_texture = IMG_LoadTexture(renderer, "image/bouton-start.png");
-  SDL_Texture *Bt2_texture = IMG_LoadTexture(renderer, "image/bouton-quit.png");
-  SDL_Texture *Bt3_texture = IMG_LoadTexture(renderer, "image/bouton-load.png");
-  SDL_Texture *Bt4_texture = IMG_LoadTexture(renderer, "image/bouton-load.png");
-  SDL_Texture *Bt4_texture_2 = IMG_LoadTexture(renderer, "image/bouton-quit.png");
-  SDL_Texture *Bt4_texture_3 = IMG_LoadTexture(renderer, "image/bouton-start.png");
-  SDL_Texture *Bt5_texture = IMG_LoadTexture(renderer, "image/bouton-load.png");
+  SDL_Texture *Bstart_texture = IMG_LoadTexture(renderer, "image/new_game.png");
+  SDL_Texture *Bt2_texture = IMG_LoadTexture(renderer, "image/theme.png");
+  SDL_Texture *Bt3_texture = IMG_LoadTexture(renderer, "image/load.png");
+  SDL_Texture *Bt4_texture = IMG_LoadTexture(renderer, "image/VSIA1.png");
+  SDL_Texture *Bt4_texture_2 = IMG_LoadTexture(renderer, "image/VSIA2.png");
+  SDL_Texture *Bt4_texture_3 = IMG_LoadTexture(renderer, "image/VSIA3.png");
+  SDL_Texture *Bt5_texture = IMG_LoadTexture(renderer, "image/quit.png");
   SDL_Texture *Bt_next = IMG_LoadTexture(renderer, "image/precedent.png");
   SDL_Texture *Nom = IMG_LoadTexture(renderer, "image/bouton-load.png");
   SDL_Texture *niveau_actuelle= Bt4_texture;
@@ -242,7 +242,7 @@ int afficher_theme()
             {
               grille_texture = IMG_LoadTexture(renderer, "image/Board2.png");
               // contour_texture = IMG_LoadTexture(renderer, "image/contour.png");//pour le contour du jeu
-              fond_board = IMG_LoadTexture(renderer, "image/fond_board2.png");
+              fond_board = IMG_LoadTexture(renderer, "image/fond_board.png");
               carre_grille_texture = IMG_LoadTexture(renderer, "image/carre_grille2.png");
               contour_texture = IMG_LoadTexture(renderer, "image/contour_board2.png");
               white_texture= IMG_LoadTexture(renderer, "image/pion_jaune.png");
@@ -252,7 +252,7 @@ int afficher_theme()
             {
               grille_texture = IMG_LoadTexture(renderer, "image/Board3.png");
               // contour_texture = IMG_LoadTexture(renderer, "image/contour.png");//pour le contour du jeu
-              fond_board = IMG_LoadTexture(renderer, "image/fond_board3.png");
+              fond_board = IMG_LoadTexture(renderer, "image/fond_board.png");
               carre_grille_texture = IMG_LoadTexture(renderer, "image/carre_grille3.png");
              
               contour_texture = IMG_LoadTexture(renderer, "image/contour_board3.png");

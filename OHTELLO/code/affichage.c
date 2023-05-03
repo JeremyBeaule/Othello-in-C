@@ -35,7 +35,7 @@ void afficher_plateau(Board *board, int choix)
 { // le choix correspond a si l'on charge une partie ou non, pour savoir si on affiche les 4 pions au centre ou non
     SDL_RenderClear(renderer);
     SDL_Texture *menu = IMG_LoadTexture(renderer, "image/home.png");
-    SDL_Texture *previous = IMG_LoadTexture(renderer, "image/previous.png");
+    SDL_Texture *previous = IMG_LoadTexture(renderer, "image/back.png");
     SDL_Texture *information = IMG_LoadTexture(renderer, "image/info.png");
 
     // Calculer la taille de la bordure en fonction de la taille de la grille
@@ -55,9 +55,9 @@ void afficher_plateau(Board *board, int choix)
     // dessine le quadrillage
     SDL_Rect grille_rect = {grid_x, grid_y, grid_size, grid_size};
 
-    SDL_Rect rect_menu = {700, 120, 100, 50};     // bouton menu
-    SDL_Rect rect_previous = {700, 600, 100, 50}; // bouton precedent
-    SDL_Rect rect_info = {700, 350, 100, 50};     // bouton information
+    SDL_Rect rect_menu = {300, 40, 200, 75};     // bouton menu
+    SDL_Rect rect_previous = {650, 350, 150, 75}; // bouton precedent
+    SDL_Rect rect_info = {20, 20, 200, 100};     // bouton information
     SDL_RenderClear(renderer);
     // dessine le fond
     SDL_RenderCopy(renderer, fond_board, NULL, &rect_fenetre);
@@ -128,7 +128,7 @@ void affiche_tour(SDL_Renderer *renderer)
 {
     // Charger la police d'écriture
 
-    SDL_Rect rect_tour = {0, 0, 200, 75};
+    SDL_Rect rect_tour = {200, 700, 300, 85};
     // Créer le message
 
     if (current_player->couleur == WHITE)
@@ -146,75 +146,33 @@ void affiche_tour(SDL_Renderer *renderer)
     SDL_RenderPresent(renderer);
 
     // Libérer les ressources
-    SDL_DestroyTexture(tour_blanc);
-    SDL_DestroyTexture(tour_noir);
-    TTF_CloseFont(font);
+
+
 }
 void afficher_popup(SDL_Renderer *renderer, const char *message)
 {
     // Charger la police d'écriture
+    SDL_Texture *error = IMG_LoadTexture(renderer, "image/error.png");
 
-    TTF_Font *font = TTF_OpenFont("image/ASMAN.TTF", 24);
-    if (!font)
-    {
-        printf("Erreur de chargement de la police : %s\n", TTF_GetError());
-        return;
-    }
-
-    // Créer une surface avec le message
-    SDL_Color color = {255, 255, 255}; // Couleur du texte (blanc)
-    SDL_Surface *surface = TTF_RenderText_Solid(font, message, color);
-    if (!surface)
-    {
-        printf("Erreur de création de la surface : %s\n", SDL_GetError());
-        TTF_CloseFont(font);
-        return;
-    }
-
-    // Créer une texture à partir de la surface
-    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
-    if (!texture)
-    {
-        printf("Erreur de création de la texture : %s\n", SDL_GetError());
-        SDL_FreeSurface(surface);
-        TTF_CloseFont(font);
-        return;
-    }
-
-    // Créer un rectangle pour la boîte de dialogue
-    SDL_Rect rect;
-    rect.x = (800 - surface->w - 20) / 2; // Position x de la boîte de dialogue (centrée horizontalement)
-    rect.y = 50;                          // Position y de la boîte de dialogue (en haut de l'écran)
-    rect.w = surface->w + 20;             // Largeur de la boîte de dialogue (surface + 20 pixels de padding)
-    rect.h = surface->h + 20;             // Hauteur de la boîte de dialogue (surface + 20 pixels de padding)
-
-    // Dessiner la boîte de dialogue
-    SDL_SetRenderDrawColor(renderer, 50, 128, 65, 255); // Couleur de fond de la boîte de dialogue (noir)
-    SDL_RenderFillRect(renderer, &rect);
-
-    // Dessiner le texte
-    SDL_Rect text_rect;
-    text_rect.x = rect.x + 10; // Position x du texte (10 pixels de padding)
-    text_rect.y = rect.y + 10; // Position y du texte (10 pixels de padding)
-    text_rect.w = surface->w;
-    text_rect.h = surface->h;
-    SDL_RenderCopy(renderer, texture, NULL, &text_rect);
+    SDL_Rect rect_error = {200, 700, 300, 85};     // bouton information
+    
+    // dessine le fond
+    SDL_RenderCopy(renderer, error, NULL, &rect_error);
 
     // Rafraîchir l'affichage
     SDL_RenderPresent(renderer);
-
+    
     // Attendre 2 secondes
     wait_two_seconds();
+    affiche_tour(renderer);
+    
 
-    // Dessiner un rectangle noir pour effacer le texte
-    SDL_SetRenderDrawColor(renderer, 50, 128, 65, 255);
-    SDL_RenderFillRect(renderer, &rect);
-    SDL_RenderPresent(renderer);
 
-    // Libérer les ressources
-    SDL_FreeSurface(surface);
-    SDL_DestroyTexture(texture);
-    TTF_CloseFont(font);
+
+
+
+SDL_DestroyTexture(error);
+ 
 }
 // permet de changer la texture de n mporte quelle case
 void changer_texture_case(int x, int y, Board *board, SDL_Texture *texture)

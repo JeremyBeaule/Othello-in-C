@@ -51,7 +51,7 @@ int joueurvsjoueur(int chargement)//si chargement =0 c est une nouvelle partie, 
                     {
                         if (cell_x < 0 || cell_x >= BOARD_SIZE || x < 800 * 0.19 || cell_y < 0 || cell_y >= BOARD_SIZE || y < 800 * 0.2) // si en dehors de la grille
                         {
-                            if (x > 700 && x < 800 && y > 600 && y < 650) //click bouton precedent
+                            if (x > 650 && x < 800 && y > 350 && y < 425) //click bouton precedent
                             {
                                 printf("\n precedent \n");
                                 if (is_file_empty("code/precedent.txt"))
@@ -64,14 +64,14 @@ int joueurvsjoueur(int chargement)//si chargement =0 c est une nouvelle partie, 
                                 }
                             }
 
-                            if (x > 700 && x < 800 && y > 120 && y < 170) //bouton menu
+                            if (x > 300 && x < 500 && y > 40 && y < 115) //bouton menu
                             {
                                 printf("\n menu \n");
                                 save_board(&board, "code/enregistrement.txt");
                                 return 1;
                                 
                             }
-                            if (x > 700 && x < 800 && y > 350 && y < 400)//bouton information
+                            if (x > 20 && x < 220 && y > 20 && y < 120)//bouton information
                             {
                                 showInformation("image/pion_noir.png",400,600);
                                 printf("\n information \n");

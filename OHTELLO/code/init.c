@@ -137,8 +137,8 @@ void init_All()
     // Charger les textures du contour
     contour_texture = IMG_LoadTexture(renderer, "image/contour_board.png");
     //charger fond pour afficher le tour du joueur en cours
-    tour_blanc =  IMG_LoadTexture(renderer, "image/bouton-quit.png");
-    tour_noir =  IMG_LoadTexture(renderer, "image/bouton-quit.png");
+    tour_blanc =  IMG_LoadTexture(renderer, "image/Tour_Blanc.png");
+    tour_noir =  IMG_LoadTexture(renderer, "image/Tour_Noir.png");
         // Charger le fichier audio WAV
    
     
