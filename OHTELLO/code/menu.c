@@ -243,7 +243,7 @@ int afficher_theme()
               grille_texture = IMG_LoadTexture(renderer, "image/Board2.png");
               // contour_texture = IMG_LoadTexture(renderer, "image/contour.png");//pour le contour du jeu
               fond_board = IMG_LoadTexture(renderer, "image/fond_board.png");
-              carre_grille_texture = IMG_LoadTexture(renderer, "image/carre_grille2.png");
+              carre_grille_texture = IMG_LoadTexture(renderer, "image/carre_grille_2.png");
               contour_texture = IMG_LoadTexture(renderer, "image/contour_board2.png");
               white_texture= IMG_LoadTexture(renderer, "image/pion_jaune.png");
               black_texture= IMG_LoadTexture(renderer, "image/pion_bleu.png");
@@ -253,7 +253,7 @@ int afficher_theme()
               grille_texture = IMG_LoadTexture(renderer, "image/Board3.png");
               // contour_texture = IMG_LoadTexture(renderer, "image/contour.png");//pour le contour du jeu
               fond_board = IMG_LoadTexture(renderer, "image/fond_board.png");
-              carre_grille_texture = IMG_LoadTexture(renderer, "image/carre_grille3.png");
+              carre_grille_texture = IMG_LoadTexture(renderer, "image/carre_grille_3.png");
              
               contour_texture = IMG_LoadTexture(renderer, "image/contour_board3.png");
               white_texture= IMG_LoadTexture(renderer, "image/pion_nyan.png");
