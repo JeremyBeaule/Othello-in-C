@@ -27,8 +27,9 @@ int IAvsjoueur(int chargement, int difficulte) // si chargement =0 c est une nou
         }
         else
         {
-            jouer_IA(&board, difficulte);
             
+            jouer_IA(&board, difficulte);
+          
             
             SDL_Delay(500);
         }
@@ -76,8 +77,9 @@ int IAvsjoueur(int chargement, int difficulte) // si chargement =0 c est une nou
                                 return 1;
                                 
                             }
-                            if (x > 70 && x < 140 && y > 70 && y < 100)//bouton information
+                            if (x > 60 && x < 160 && y > 60 && y < 110)//bouton information
                             {
+                                showInformation();
                                 printf("\n information \n");
                                 
                             }
@@ -102,7 +104,7 @@ int IAvsjoueur(int chargement, int difficulte) // si chargement =0 c est une nou
                     }
                     if (fin == 1)
                     { // pour cliquer et revenir au menu
-                        if (x > 350 && x < 550 && y > 350 && y < 550)
+                        if (x > 275 && x < 625 && y > 550 && y < 650)
                         { // il faut changer la zone de clique en dehors de la grille sinon ca click tout seul sur le bouton fin si on place le dernier bouton dans la zone
                             printf("\n click sur le bouton fin \n");
                             return 1;

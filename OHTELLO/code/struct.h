@@ -91,10 +91,9 @@ extern void wait_two_seconds();
 void afficher_texture_coup_jouable(int x, int y, Board *board, SDL_Texture *texture);
 void afficher_coup_jouable(Board *board, SDL_Texture *texture);
 void changer_texture_case(int x, int y, Board *board, SDL_Texture *texture);
-void afficher_image(SDL_Renderer *renderer, int vainqueur);
-void Quit_end(SDL_Renderer *renderer);
+void afficher_image_fin(SDL_Renderer *renderer, int vainqueur);
 void placer_pion_chargement_partie(Board *board, int cell_x, int cell_y, int joueur);
-void showInformation(const char *image_path, int width, int height);
+void showInformation();
 
 
 //son.c

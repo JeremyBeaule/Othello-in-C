@@ -21,6 +21,7 @@ void afficher_menu()
   SDL_Texture *Bt5_texture = IMG_LoadTexture(renderer, "image/quit.png");
   SDL_Texture *Bt_next = IMG_LoadTexture(renderer, "image/precedent.png");
   SDL_Texture *Nom = IMG_LoadTexture(renderer, "image/bouton-load.png");
+  SDL_Texture *Title = IMG_LoadTexture(renderer, "image/titre.png");
   SDL_Texture *niveau_actuelle= Bt4_texture;
   // Récupérer les dimensions de la fenêtre
   int largeur_fenetre, hauteur_fenetre;
@@ -145,6 +146,7 @@ void afficher_menu()
     SDL_Rect rect_choix5 = {275, 650, 250, 100};
     SDL_Rect rect_next= {550, 565, 100, 70};
     SDL_Rect rect_nom = {200, 50, 400, 200};
+    SDL_Rect rect_titre = {240, 90, 320, 100};
     SDL_Rect son = {680, 50, 80, 80};
     SDL_RenderClear(renderer);
 
@@ -158,6 +160,7 @@ void afficher_menu()
     SDL_RenderCopy(renderer, Bt5_texture, NULL, &rect_choix5);
     SDL_RenderCopy(renderer, Nom, NULL, &rect_nom);
     SDL_RenderCopy(renderer, Bt_next, NULL, &rect_next);
+    SDL_RenderCopy(renderer, Title, NULL, &rect_titre);
 
     // Update Screen
     SDL_RenderPresent(renderer);
@@ -174,6 +177,7 @@ void afficher_menu()
       Bt4_texture_2,
       Bt4_texture_3,
       Nom,
+      Title,
   };
   int num_textures = sizeof(textures) / sizeof(SDL_Texture *);
   free_textures(textures, num_textures);
@@ -193,7 +197,7 @@ int afficher_theme()
   SDL_SetRenderDrawColor(renderer, 50, 128, 65, 255);
   SDL_RenderClear(renderer);
   // Créer une texture à partir de la surface de l'image
-  SDL_Texture *quit_texture = IMG_LoadTexture(renderer, "image/quit.png");
+  SDL_Texture *quit_texture = IMG_LoadTexture(renderer, "image/logo_home.png");
   SDL_Texture *valider_texture = IMG_LoadTexture(renderer, "image/valider.png");
   SDL_Texture *suivant_texture = IMG_LoadTexture(renderer, "image/suivant.png");
   SDL_Texture *precedent_texture = IMG_LoadTexture(renderer, "image/precedent.png");

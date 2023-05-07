@@ -512,13 +512,13 @@ void End_game(Board *board)
 	if (joueur_noir->score > joueur_blanc->score)
 	{
 
-		afficher_image(renderer, 1);
-		Quit_end(renderer);
+		afficher_image_fin(renderer, 1);
+		
 	}
 	else
 	{
-		afficher_image(renderer, 2);
-		Quit_end(renderer);
+		afficher_image_fin(renderer, 2);
+		
 	}
 }
 

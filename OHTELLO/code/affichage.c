@@ -57,7 +57,7 @@ void afficher_plateau(Board *board, int choix)
 
     SDL_Rect rect_menu = {300, 40, 200, 75};     // bouton menu
     SDL_Rect rect_previous = {650, 350, 150, 75}; // bouton precedent
-    SDL_Rect rect_info = {20, 20, 200, 100};     // bouton information
+    SDL_Rect rect_info = {60, 60, 100, 50};     // bouton information
     SDL_RenderClear(renderer);
     // dessine le fond
     SDL_RenderCopy(renderer, fond_board, NULL, &rect_fenetre);
@@ -128,7 +128,7 @@ void affiche_tour(SDL_Renderer *renderer)
 {
     // Charger la police d'écriture
 
-    SDL_Rect rect_tour = {200, 700, 300, 85};
+    SDL_Rect rect_tour = {250, 700, 300, 85};
     // Créer le message
 
     if (current_player->couleur == WHITE)
@@ -154,7 +154,7 @@ void afficher_popup(SDL_Renderer *renderer, const char *message)
     // Charger la police d'écriture
     SDL_Texture *error = IMG_LoadTexture(renderer, "image/error.png");
 
-    SDL_Rect rect_error = {200, 700, 300, 85};     // bouton information
+    SDL_Rect rect_error = {250, 700, 300, 85};     // bouton information
     
     // dessine le fond
     SDL_RenderCopy(renderer, error, NULL, &rect_error);
@@ -271,18 +271,20 @@ void afficher_coup_jouable(Board *board, SDL_Texture *texture)
         }
     }
 }
-void afficher_image(SDL_Renderer *renderer, int vainqueur) // afficher l image pour le vainqueur
+void afficher_image_fin(SDL_Renderer *renderer, int vainqueur) // afficher l image pour le vainqueur
 {
     // Charger l'image
     SDL_Texture *texture = NULL;
+    SDL_Texture *quit = NULL;
+    quit = IMG_LoadTexture(renderer, "image/quit.png");
     // Créer la texture à partir de la surface
     if (vainqueur == 1)
     {
-        texture = IMG_LoadTexture(renderer, "image/pion_noir.png");
+        texture = IMG_LoadTexture(renderer, "image/fin_noir.png");
     }
     else
     {
-        texture = IMG_LoadTexture(renderer, "image/pion_blanc.png");
+        texture = IMG_LoadTexture(renderer, "image/fin_blanc.png");
     }
     if (!texture)
     {
@@ -292,43 +294,33 @@ void afficher_image(SDL_Renderer *renderer, int vainqueur) // afficher l image p
     // Récupérer les dimensions de la texture
     int tex_w, tex_h;
     SDL_QueryTexture(texture, NULL, NULL, &tex_w, &tex_h);
+     int bt_w, bt_h;
+    SDL_QueryTexture(texture, NULL, NULL, &bt_w, &bt_h);
     // Définir la zone d'affichage de l'image centrée
     SDL_Rect dest_rect;
-    dest_rect.x = (screen_width - tex_w) / 2;
-    dest_rect.y = (screen_height - tex_h) / 2;
-    dest_rect.w = tex_w;
-    dest_rect.h = tex_h;
+    dest_rect.x = 150;
+    dest_rect.y = 100 ;
+    dest_rect.w = 600;
+    dest_rect.h = 500;
+
+      
+    // Définir la zone d'affichage du bouton
+    SDL_Rect dest_rect2;
+    dest_rect2.x = 275;
+    dest_rect2.y = 550;
+    dest_rect2.w = 350;
+    dest_rect2.h = 100;
     // Dessiner l'image centrée
     SDL_RenderCopy(renderer, texture, NULL, &dest_rect);
+    SDL_RenderCopy(renderer, quit, NULL, &dest_rect2);
     // Rafraîchir l'affichage
     SDL_RenderPresent(renderer);
 
     // Libérer les ressources
     SDL_DestroyTexture(texture);
+    SDL_DestroyTexture(quit);
 }
-// la fonction suivante est useless, on peut tout faire dans afficher image
-void Quit_end(SDL_Renderer *renderer) // affichage de fin de partie
-{
-    // Charger l'image
-    SDL_Texture *texture = NULL;
-    texture = IMG_LoadTexture(renderer, "image/carre_grille.png");
 
-    // Récupérer les dimensions de la texture
-    int tex_w, tex_h;
-    SDL_QueryTexture(texture, NULL, NULL, &tex_w, &tex_h);
-    // Définir la zone d'affichage de l'image centrée
-    SDL_Rect dest_rect;
-    dest_rect.x = 350;
-    dest_rect.y = 350;
-    dest_rect.w = 200;
-    dest_rect.h = 200;
-    // Dessiner l'image centrée
-    SDL_RenderCopy(renderer, texture, NULL, &dest_rect);
-    // Rafraîchir l'affichage
-    SDL_RenderPresent(renderer);
-    // Libérer les ressources
-    SDL_DestroyTexture(texture);
-}
 
 void placer_pion_chargement_partie(Board *board, int cell_x, int cell_y, int joueur)
 {
@@ -356,30 +348,47 @@ void placer_pion_chargement_partie(Board *board, int cell_x, int cell_y, int jou
     // printf("\n test fin placer_pion()\n");
 }
 
-void showInformation(const char *image_path, int width, int height) {
-    SDL_Window *windows = SDL_CreateWindow("Mon Image", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 0);
-    SDL_Renderer *rendererer = SDL_CreateRenderer(windows, -1, 0);
 
-    SDL_Surface *image_surface = IMG_Load(image_path);
-    SDL_Texture *image_texture = SDL_CreateTextureFromSurface(rendererer, image_surface);
 
-    SDL_Rect dest_rect = {0, 0, width, height};
-    SDL_RenderCopy(rendererer, image_texture, NULL, &dest_rect);
-    SDL_RenderPresent(rendererer);
+void showInformation () {
+    const int SCREEN_WIDTH = 580;
+const int SCREEN_HEIGHT = 480;
+    SDL_Window* imageWindow = SDL_CreateWindow("Information", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    SDL_Renderer* imageRenderer = SDL_CreateRenderer(imageWindow, -1, SDL_RENDERER_ACCELERATED);
+
+    SDL_Surface* imageSurface = IMG_Load("image/regle.png");
+    SDL_Texture* imageTexture = SDL_CreateTextureFromSurface(imageRenderer, imageSurface);
+    SDL_FreeSurface(imageSurface);
+
+    SDL_Rect imageRect;
+    imageRect.x = 0;
+    imageRect.y = 0;
+    SDL_QueryTexture(imageTexture, NULL, NULL, &imageRect.w, &imageRect.h);
 
     SDL_Event e;
-    bool running = true;
+    bool quit = false;
 
-    while (running) {
-        while (SDL_PollEvent(&e)) {
+    while (!quit) {
+        while (SDL_PollEvent(&e) != 0) {
             if (e.type == SDL_WINDOWEVENT && e.window.event == SDL_WINDOWEVENT_CLOSE) {
-                running = false;
+                quit = true;
+                break;
+            } else if (e.type == SDL_MOUSEWHEEL) {
+                if (e.wheel.y > 0) {
+                    imageRect.y += 10;
+                } else if (e.wheel.y < 0) {
+                    imageRect.y -= 10;
+                }
+         
             }
         }
+
+        SDL_RenderClear(imageRenderer);
+        SDL_RenderCopy(imageRenderer, imageTexture, NULL, &imageRect);
+        SDL_RenderPresent(imageRenderer);
     }
 
-    SDL_DestroyTexture(image_texture);
-    SDL_FreeSurface(image_surface);
-    SDL_DestroyRenderer(rendererer);
-    SDL_DestroyWindow(windows);
+    SDL_DestroyTexture(imageTexture);
+    SDL_DestroyRenderer(imageRenderer);
+    SDL_DestroyWindow(imageWindow);
 }

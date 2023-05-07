@@ -263,7 +263,7 @@ void jouer_IA(Board *board, int difficulte)
         SDL_RenderPresent(renderer);
         SDL_Delay(1000);
     }
-    printf("\n L'ia a finis son tour \n");
+    //printf("\n L'ia a finis son tour \n");
 }
 
 void jouer_joueur(Board *board, int x, int y)

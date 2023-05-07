@@ -71,9 +71,9 @@ int joueurvsjoueur(int chargement)//si chargement =0 c est une nouvelle partie, 
                                 return 1;
                                 
                             }
-                            if (x > 20 && x < 220 && y > 20 && y < 120)//bouton information
+                            if (x > 60 && x < 160 && y > 60 && y < 110)//bouton information
                             {
-                                showInformation("image/pion_noir.png",400,600);
+                                showInformation();
                                 printf("\n information \n");
                                 
                             }
@@ -88,7 +88,7 @@ int joueurvsjoueur(int chargement)//si chargement =0 c est une nouvelle partie, 
                     }
                     if (fin == 1)
                     { // pour cliquer et revenir au menu
-                        if (x > 350 && x < 550 && y > 350 && y < 550)
+                        if (x > 275 && x < 625 && y > 550 && y < 650)
                         { // il faut changer la zone de clique en dehors de la grille sinon ca click tout seul sur le bouton fin si on place le dernier bouton dans la zone
                             printf("\n click sur le bouton fin \n");
                            quit = 1;

@@ -26,9 +26,6 @@ void son() {
 }
 
 
-bool isSoundFinished(int channel) {
-    return Mix_Playing(channel) == 0;
-}
 
 void playAndStop(const char *filename) {
     static Mix_Chunk *son = NULL;
