@@ -1,0 +1,35 @@
+detail des fichiers:
+affichage.c:
+il y a une fonction de timer qui bloque tout les inputs joueur, que l on utilise pour afficher un message 
+la fonction afficher plateau qui permet d'afficher le plateau et de dessiner les pions au centres
+la fonction affiche_tour pour afficher a qui c'est le tour de jouer
+la fonction affiche_popup qui affiche les message du type, vous etes en dehors de la grille ou case occupé
+
+logique.c:
+la fonction placer_pion qui permet pour l instant juste de placer un pion en fonction de l'endroit ou l'on clique avec la souris
+
+init.c:
+elle declare les variables globales utiles a affichages.c  ainsi que a logique.c
+la fonction init_texture verifie que toute les textures fenetre etc se sont bien chargés
+la fonction cree_joueur, qui permet de creer un joueur tout simplement
+initialiser plateau qui initalise toute les case du tableau a vide sauf les 4 pions de base, et qui determine la taille de chaque case
+la fonction init_all qui initalise toute les textures joueur image etc
+
+menu.c:
+il y a une seule fonction de type int qui renvoie 1,2 ou 3 celon quelle bouton on a cliqué, c'est la premiere page du programme et c'est a partir 
+de la valeur de retour de cette fonction que l'on lancera dans le main le joueur vs joueur ou joueur vs IA etc
+
+game.c:
+la fonction start() represente la boucle principale du jeu, donc on initalise puis on affiche le plateau, dans la boucle on affiche_tour() a chaque fois
+et l'on a une condition pour savoir si le joueur actuelle est blanc ou noir, puis on inverse pour avoir l'alternance entre les 2 joueurs, sans oublier que l'on 
+place un pion avec la texture correspondant a la couleur du joueur;
+
+main.c:
+j'ai le retour de la fonction du menu.c pour choisir quelle programme lancer, sans oublier la fonction init_all qui me permet de tout initialiser pour tout mon programme
+(la creation de la fenetre, le renderer, les images des pions, du plateau, la creation des 2 joueurs)
+
+struct.h:
+le fichier regroupe toute les structures necessaires au programmes, ainsi que la declaration de toute les fonctions
+Il contient aussi la declaration d'un grand nombre de variable, cela permet de les declaré uniquement ici et ne pas les placer en parametre de fonction, ce qui 
+permet une meilleur visibilité au detriment d'un peu moins de comprehension du code; et le tout est initaliser dans init.c dans la fonction init_all. ce qui me
+permet d'y avoir acces depuis n'importe ou dans le fichier

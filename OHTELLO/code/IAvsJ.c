@@ -57,7 +57,7 @@ int IAvsjoueur(int chargement, int difficulte) // si chargement =0 c est une nou
                     {
                         if (cell_x < 0 || cell_x >= BOARD_SIZE || x < 800 * 0.19 || cell_y < 0 || cell_y >= BOARD_SIZE || y < 800 * 0.2) // si en dehors de la grille
                         {
-                            if (x > 550 && x < 650 && y > 700 && y < 750)//click bouton precedent
+                            if (x > 650 && x < 800 && y > 350 && y < 425)//click bouton precedent
                             {
                                 printf("\n precedent \n");
                                 if (is_file_empty("code/precedent.txt"))
@@ -70,7 +70,7 @@ int IAvsjoueur(int chargement, int difficulte) // si chargement =0 c est une nou
                                 }
                             }
 
-                            if (x > 300 && x < 450 && y > 40 && y < 95) //bouton menu
+                            if (x > 300 && x < 500 && y > 40 && y < 115) //bouton menu
                             {
                                 printf("\n menu \n");
                                 save_board(&board, "code/enregistrement.txt");
@@ -94,18 +94,11 @@ int IAvsjoueur(int chargement, int difficulte) // si chargement =0 c est une nou
                             printf("\ncurrent player = %s\n", current_player->nom);
                         }
 
-                        if (x > 350 && x < 550 && y > 350 && y < 550)
-                        {
-                            // TODO
-                            // activer ou desactiver l'enregistrement de partie automatique et changer l emoticon
-                            // on enregistre dans tout les cas pour revenir un coup en arriere mais si on desactive la sauvegarde auto et que l'on quitte le jeu alors le fichier s efface
-                            // il faut rajouter une condition dans le SDL_QUIT
-                        }
                     }
                     if (fin == 1)
                     { // pour cliquer et revenir au menu
                         if (x > 275 && x < 625 && y > 550 && y < 650)
-                        { // il faut changer la zone de clique en dehors de la grille sinon ca click tout seul sur le bouton fin si on place le dernier bouton dans la zone
+                        { 
                             printf("\n click sur le bouton fin \n");
                             return 1;
                         }

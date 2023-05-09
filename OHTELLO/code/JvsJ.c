@@ -89,7 +89,7 @@ int joueurvsjoueur(int chargement)//si chargement =0 c est une nouvelle partie, 
                     if (fin == 1)
                     { // pour cliquer et revenir au menu
                         if (x > 275 && x < 625 && y > 550 && y < 650)
-                        { // il faut changer la zone de clique en dehors de la grille sinon ca click tout seul sur le bouton fin si on place le dernier bouton dans la zone
+                        { 
                             printf("\n click sur le bouton fin \n");
                            quit = 1;
                         }
